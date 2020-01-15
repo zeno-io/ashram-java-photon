@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright 2018-2025 the original author or authors.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~   http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://maven.apache.org/POM/4.0.0"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.github.flysium-io</groupId>
+  <artifactId>photon-bucket-pom</artifactId>
+  <version>1.0.0</version><!--<version>1.0.0-SNAPSHOT</version>-->
+  <packaging>pom</packaging>
+  <name>Photon bucket POM</name>
+  <url>https://github.com/SvenAugustus/photon-bucket</url>
+  <inceptionYear>2019</inceptionYear>
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <scm>
+    <tag>master</tag><!-- <tag>v${project.version}</tag> -->
+    <url>git@github.com:SvenAugustus/photon-bucket.git</url>
+    <connection>scm:git@github.com:SvenAugustus/photon-bucket.git</connection>
+    <developerConnection>scm:git@github.com:SvenAugustus/photon-bucket.git
+    </developerConnection>
+  </scm>
+
+  <issueManagement>
+    <system>GitHub Issues</system>
+    <url>https://github.com/SvenAugustus/photon-bucket/issues</url>
+  </issueManagement>
+
+  <developers>
+    <developer>
+      <name>SvenAugustus</name>
+      <email>svenaugustus@outlook.com</email>
+      <organization>Flysium-IO</organization>
+      <timezone>+8</timezone>
+    </developer>
+  </developers>
+
+  <modules>
+    <module>jdk-lang-samples</module>
+    <module>jdk-io-samples</module>
+    <module>jdk-concurrent-samples</module>
+    <module>mq-activemq-samples</module>
+    <module>mq-kafka-samples</module>
+    <module>mq-rabbitmq-samples</module>
+    <module>mq-rocketmq-samples</module>
+  </modules>
+
+</project>
