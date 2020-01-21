@@ -24,7 +24,7 @@ import java.util.concurrent.TimeUnit;
  *
  * @author Sven Augustus
  */
-public class T08_Semaphore {
+public class T08_Semaphore_N {
 
   public static void main(String[] args) {
     // Semaphore semaphore = new Semaphore(3);

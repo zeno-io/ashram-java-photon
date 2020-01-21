@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.github.flysium.io.photon.juc.c200_timer;
+package com.github.flysium.io.photon.juc.c103_timer_scheduledthreadpoolexecutor;
 
 import java.util.Date;
 import java.util.Timer;
@@ -22,16 +22,22 @@ import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Timer简单测试 -- 顺序地执行，注意制定计划时间可能与实际运行时间不一致。
+ * Timer简单测试
  *
  * @author Sven Augustus
  */
-public class T03_schedule {
+public class T02_schedule_period {
+
+  // schedule(TimerTask task, Date firstTime, long period) 或者
+  // 调度一个task，在指定的时间点time上开始调度，每次调度完后，最少等待 period（ms）后才开始调度。
+  // firstTime - 首次执行任务的时间。如果此时间已过去，则安排立即执行该任务。
+
+  // schedule(TimerTask task, long delay, long period)
+  // 调度一个task，在delay（ms）后开始调度，每次调度完后，最少等待period（ms）后才开始调度。
 
   public static void main(String[] args) {
     long start = System.currentTimeMillis();
-    final long future3 = start + TimeUnit.SECONDS.toMillis(3);
-    final long future6 = start + TimeUnit.SECONDS.toMillis(6);
+    long future3 = start + TimeUnit.SECONDS.toMillis(3);
     System.out.println("main线程开始时间：" + new java.util.Date(start).toLocaleString());
 
     final Timer timer = new Timer();
@@ -39,23 +45,14 @@ public class T03_schedule {
 
       @Override
       public void run() {
-        System.out.println("未来3秒任务执行时间为：" + new Date().toLocaleString());
+        System.out.println("任务执行时间为：" + new Date().toLocaleString());
         try {
-          Thread.sleep(5000);
+          Thread.sleep(2000);
         } catch (InterruptedException e) {
           e.printStackTrace();
         }
       }
-    }, new java.util.Date(future3));
-
-    timer.schedule(new TimerTask() {
-
-      @Override
-      public void run() {
-        System.out.println("未来6秒任务计划执行时间为：" + new java.util.Date(future6).toLocaleString());
-        System.out.println("未来6秒任务实际执行时间为：" + new Date().toLocaleString());
-      }
-    }, new java.util.Date(future6));
+    }, new java.util.Date(future3), 1000);
   }
 
 }

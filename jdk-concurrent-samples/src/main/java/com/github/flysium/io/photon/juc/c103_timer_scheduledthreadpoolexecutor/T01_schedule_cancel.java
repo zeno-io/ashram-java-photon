@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.github.flysium.io.photon.juc.c200_timer;
+package com.github.flysium.io.photon.juc.c103_timer_scheduledthreadpoolexecutor;
 
 import java.util.Date;
 import java.util.Timer;
@@ -30,8 +30,7 @@ public class T01_schedule_cancel {
 
   // schedule(TimerTask task, Date time) 在指定的时间点time上调度一次。如果此时间已过去，则安排立即执行该任务。
 
-  // schedule(TimerTask task, long delay) 调度一个task，经过delay(ms)后开始进行调度，仅仅调度一次。
-  // IllegalArgumentException - 如果 delay 是负数，或者 delay + System.currentTimeMillis() 是负数。
+  // schedule(TimerTask task, long delay) 调度一个task，经过delay(ms)后开始进行调度，仅仅调度一次。 如果 delay 是负数，或者 delay + System.currentTimeMillis() 是负数。
 
   public static void main(String[] args) {
     long start = System.currentTimeMillis();
