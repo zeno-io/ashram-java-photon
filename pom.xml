@@ -64,6 +64,8 @@
     <module>mq-kafka-samples</module>
     <module>mq-rabbitmq-samples</module>
     <module>mq-rocketmq-samples</module>
+
+    <module>template-api-sdk</module>
   </modules>
 
 </project>
