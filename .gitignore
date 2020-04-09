@@ -27,6 +27,7 @@ target/
 
 # Package Files #
 *.jar
+!jdk-jvm-object-size.jar
 *.war
 *.nar
 *.ear

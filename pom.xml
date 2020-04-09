@@ -58,13 +58,15 @@
 
   <modules>
     <module>jdk-lang-samples</module>
+    <module>jdk-lambda-samples</module>
+    <module>jdk-collection-samples</module>
     <module>jdk-io-samples</module>
     <module>jdk-concurrent-samples</module>
+    <module>jdk-jvm-samples</module>
     <module>mq-activemq-samples</module>
     <module>mq-kafka-samples</module>
     <module>mq-rabbitmq-samples</module>
     <module>mq-rocketmq-samples</module>
-
     <module>template-api-sdk</module>
   </modules>
 
