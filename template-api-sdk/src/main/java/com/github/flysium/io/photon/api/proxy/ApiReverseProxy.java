@@ -35,6 +35,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
 /**
@@ -52,8 +53,18 @@ public class ApiReverseProxy<I extends ExtendReverseApiRequest, O extends Revers
   private final ApiQueryService apiQueryService;
 
   public ApiReverseProxy(ApiQueryService apiQueryService) {
-    this.restTemplate = new RestTemplate();
+    this.restTemplate = new RestTemplate(getClientHttpRequestFactory());
     this.apiQueryService = apiQueryService;
+  }
+
+  // Override timeouts in request factory
+  private SimpleClientHttpRequestFactory getClientHttpRequestFactory() {
+    SimpleClientHttpRequestFactory clientHttpRequestFactory = new SimpleClientHttpRequestFactory();
+    // Connect timeout
+    clientHttpRequestFactory.setConnectTimeout(5000);
+    // Read timeout
+    clientHttpRequestFactory.setReadTimeout(15000);
+    return clientHttpRequestFactory;
   }
 
   /**
