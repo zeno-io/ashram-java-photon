@@ -1,8 +1,8 @@
 # Photon Bucket
-[![License](https://img.shields.io/badge/license-Apache%202-4EB1BA.svg)](https://www.apache.org/licenses/LICENSE-2.0.html)
+[![Build Status](https://travis-ci.org/flysium-io/yew.svg?branch=master)](https://travis-ci.org/SvenAugustus/photon) [![License](https://img.shields.io/badge/license-Apache%202-4EB1BA.svg)](https://www.apache.org/licenses/LICENSE-2.0.html)
 
 #### Description
-The bucket of java back-end samples.
+**The bucket of java back-end samples.**
 
 -------------------------- 
 #### Guidelines
@@ -28,7 +28,7 @@ The bucket of java back-end samples.
 
 -------------------------- 
 #### Dependency
-* 1、JDK8+
+* 1、JDK11+
 * 2、Maven 3.3+
 
 #### Contract
