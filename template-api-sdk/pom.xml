@@ -11,28 +11,31 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <java.version>1.8</java.version>
+    <spring-web.version>5.1.14.RELEASE</spring-web.version>
+    <spring-boot.version>2.1.13.RELEASE</spring-boot.version>
+    <yew.version>1.0.4</yew.version>
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>com.github.flysium-io</groupId>
       <artifactId>yew-common</artifactId>
-      <version>1.0.3</version>
+      <version>${yew.version}</version>
     </dependency>
     <dependency>
       <groupId>com.github.flysium-io</groupId>
       <artifactId>yew-crypto</artifactId>
-      <version>1.0.3</version>
+      <version>${yew.version}</version>
     </dependency>
     <dependency>
       <groupId>com.github.flysium-io</groupId>
       <artifactId>yew-logger</artifactId>
-      <version>1.0.3</version>
+      <version>${yew.version}</version>
     </dependency>
     <dependency>
       <groupId>com.alibaba</groupId>
       <artifactId>fastjson</artifactId>
-      <version>1.2.61</version>
+      <version>1.2.68</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
@@ -41,11 +44,10 @@
       <version>1.18.10</version>
       <scope>compile</scope>
     </dependency>
-
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-web</artifactId>
-      <version>5.2.3.BUILD-SNAPSHOT</version>
+      <version>${spring-web.version}</version>
       <scope>compile</scope>
     </dependency>
 
@@ -53,7 +55,7 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
-      <version>2.1.10.RELEASE</version>
+      <version>${spring-boot.version}</version>
       <scope>test</scope>
       <exclusions>
         <exclusion>
@@ -65,13 +67,13 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-undertow</artifactId>
-      <version>2.1.10.RELEASE</version>
+      <version>${spring-boot.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
-      <version>2.1.10.RELEASE</version>
+      <version>${spring-boot.version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
