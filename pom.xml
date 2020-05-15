@@ -57,17 +57,17 @@
   </developers>
 
   <modules>
-    <module>jdk-lang-samples</module>
-    <module>jdk-lambda-samples</module>
-    <module>jdk-collection-samples</module>
-    <module>jdk-io-samples</module>
-    <module>jdk-concurrent-samples</module>
-    <module>jdk-jvm-samples</module>
-    <module>mq-activemq-samples</module>
-    <module>mq-kafka-samples</module>
-    <module>mq-rabbitmq-samples</module>
-    <module>mq-rocketmq-samples</module>
-    <module>template-api-sdk</module>
+    <module>java-core-samples/jdk-lang-samples</module>
+    <module>java-core-samples/jdk-lambda-samples</module>
+    <module>java-core-samples/jdk-collection-samples</module>
+    <module>java-core-samples/jdk-io-samples</module>
+    <module>java-core-samples/jdk-concurrent-samples</module>
+    <module>java-core-samples/jdk-jvm-samples</module>
+    <module>mq-samples/mq-activemq-samples</module>
+    <module>mq-samples/mq-kafka-samples</module>
+    <module>mq-samples/mq-rabbitmq-samples</module>
+    <module>mq-samples/mq-rocketmq-samples</module>
+    <module>sdk-samples/template-api-sdk</module>
   </modules>
 
 </project>

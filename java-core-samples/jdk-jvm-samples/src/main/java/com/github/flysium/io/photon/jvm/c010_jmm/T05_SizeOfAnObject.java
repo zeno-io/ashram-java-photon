@@ -5,7 +5,7 @@ import com.github.flysium.io.photon.jvm.agent.ObjectSizeAgent;
 /**
  * <li>
  * -javaagent:/home/svenaugustus/source-repository/flysium-io/photon/jdk-jvm-samples/lib/jdk-jvm-object-size.jar
- * +XX:+PrintCommandLineFlags
+ * -XX:+PrintCommandLineFlags
  * </li>
  * 默认是开启 Class Pointers 和 OOps 压缩的
  * <li>

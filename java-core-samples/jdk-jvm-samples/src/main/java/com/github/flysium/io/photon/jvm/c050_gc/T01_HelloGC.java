@@ -18,7 +18,7 @@ package com.github.flysium.io.photon.jvm.c050_gc;
 
 /**
  * <li>
- * -XX:+PrintGCDetails +XX:+PrintCommandLineFlags
+ * -XX:+PrintGCDetails -XX:+PrintCommandLineFlags
  * </li>
  *
  * @author Sven Augustus
