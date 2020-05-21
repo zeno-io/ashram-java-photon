@@ -26,6 +26,10 @@
 ##### API SDK
 * [x] template-api-sdk: API SDK based on RESTful.
 
+##### RxJava
+* [ ] rxjava2-samples: samples for [`RxJava`](https://github.com/ReactiveX/RxJava) Version 2.x.
+* [ ] rxjava3-samples: samples for [`RxJava`](https://github.com/ReactiveX/RxJava) Version 3.x.
+
 -------------------------- 
 #### Dependency
 * 1、JDK11+
