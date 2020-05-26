@@ -1,0 +1,33 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.github.flysium-io</groupId>
+  <artifactId>zookeeper-samples</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <properties>
+    <!-- 与 zookeeper 服务器版本一致  -->
+    <zookeeper.version>3.5.8</zookeeper.version>
+    <curator.version>4.3.0</curator.version>
+    <!--    <curator.version>5.0.0-SNAPSHOT</curator.version>-->
+  </properties>
+
+  <dependencies>
+
+    <dependency>
+      <groupId>org.apache.zookeeper</groupId>
+      <artifactId>zookeeper</artifactId>
+      <version>${zookeeper.version}</version>
+    </dependency>
+    <!-- https://curator.apache.org/ -->
+    <dependency>
+      <groupId>org.apache.curator</groupId>
+      <artifactId>curator-recipes</artifactId>
+      <version>${curator.version}</version>
+    </dependency>
+  </dependencies>
+
+</project>

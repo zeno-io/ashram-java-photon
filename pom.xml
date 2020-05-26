@@ -70,6 +70,7 @@
     <module>sdk-samples/template-api-sdk</module>
     <module>rxjava-samples/rxjava2-samples</module>
     <module>rxjava-samples/rxjava3-samples</module>
+    <module>ng-big-data-samples/zookeeper-samples</module>
   </modules>
 
   <properties>
