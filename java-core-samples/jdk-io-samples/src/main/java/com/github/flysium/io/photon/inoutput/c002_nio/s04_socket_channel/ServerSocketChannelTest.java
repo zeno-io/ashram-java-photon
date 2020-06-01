@@ -1,11 +1,11 @@
 /*
- * Copyright 2018-2025 the original author or authors.
+ * Copyright 2020 SvenAugustus
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -32,10 +32,8 @@ public class ServerSocketChannelTest {
 
 	public static void main(String[] args)
 			throws IOException, InterruptedException, ClassNotFoundException {
-		java.nio.channels.ServerSocketChannel channel = null;
-		try {
+		try (ServerSocketChannel channel = ServerSocketChannel.open()) {
 			// 打开 ServerSocketChannel
-			channel = ServerSocketChannel.open();
 			// 设置非阻塞模式，read的时候就不再阻塞
 			channel.configureBlocking(false);
 			// 将 ServerSocket 绑定到特定地址（IP 地址和端口号）
@@ -61,11 +59,6 @@ public class ServerSocketChannelTest {
 				System.out.println("准备写：" + serializable);
 				ByteBuffer byteBuffer = ByteBufferUtils.writeObject(serializable);
 				socketChannel.write(byteBuffer);
-			}
-		} finally {
-			// 关闭 ServerSocketChannel
-			if (channel != null) {
-				channel.close();
 			}
 		}
 	}

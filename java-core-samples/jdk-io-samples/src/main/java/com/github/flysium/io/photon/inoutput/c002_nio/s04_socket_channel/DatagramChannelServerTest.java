@@ -1,11 +1,11 @@
 /*
- * Copyright 2018-2025 the original author or authors.
+ * Copyright 2020 SvenAugustus
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -34,10 +34,8 @@ public class DatagramChannelServerTest {
 
 	public static void main(String[] args)
 			throws IOException, ClassNotFoundException, InterruptedException {
-		DatagramChannel channel = null;
-		try {
+		try (DatagramChannel channel = DatagramChannel.open()) {
 			// 打开DatagramChannel
-			channel = DatagramChannel.open();
 			// 非阻塞模式
 			channel.configureBlocking(false);
 			// 将 UDP 绑定到特定地址（IP 地址和端口号），作为服务端监听端口
@@ -61,13 +59,7 @@ public class DatagramChannelServerTest {
 				ByteBuffer byteBuffer = ByteBufferUtils.writeObject(serializable);
 				channel.send(byteBuffer, socketAddress);
 			}
-		} finally {
-			// 关闭DatagramChannel
-			if (channel != null) {
-				channel.close();
-			}
 		}
-
 	}
 
 }

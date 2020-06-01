@@ -1,11 +1,11 @@
 /*
- * Copyright 2018-2025 the original author or authors.
+ * Copyright 2020 SvenAugustus
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -31,51 +31,43 @@ import java.util.concurrent.TimeUnit;
 @SuppressWarnings("unused")
 public class SocketChannelTest {
 
-	public static void main(String[] args)
-			throws IOException, InterruptedException, ClassNotFoundException {
-		java.nio.channels.SocketChannel channel = null;
-		try {
-			// 打开SocketChannel
-			channel = SocketChannel.open();
-			// 设置非阻塞模式，read的时候就不再阻塞
-			channel.configureBlocking(false);
-			// tcp连接网络
-			channel.connect(new InetSocketAddress("127.0.0.1", 9595));
-			if (channel.finishConnect()) {// 连接服务器成功
-				/**
-				 * 往服务端写数据
-				 */
-				String serializable = "您好，ServerSocketChannel。";
-				System.out.println("准备写：" + serializable);
-				ByteBuffer byteBuffer = ByteBufferUtils.writeObject(serializable);
-				channel.write(byteBuffer);
-				System.out.println("准备读：");
-				// 读取服务端发送的数据
-				ByteBuffer buffer = ByteBuffer.allocate(1024);
-				buffer.clear();
-				int numBytesRead = -1;
-				while ((numBytesRead = channel.read(buffer)) != -1) {
-					if (numBytesRead == 0) {// 如果没有数据，则稍微等待一下
-						try {
-							TimeUnit.MILLISECONDS.sleep(1);
-						} catch (InterruptedException e) {
-							e.printStackTrace();
-						}
-						continue;
-					}
-					Object object = ByteBufferUtils.readObject(buffer);
-					System.out.println(object);
-				}
-			} else {
-				System.out.println("连接失败，服务器拒绝服务");
-				return;
-			}
-		} finally {
-			// 关闭SocketChannel
-			if (channel != null) {
-				channel.close();
-			}
-		}
-	}
+  public static void main(String[] args)
+      throws IOException, InterruptedException, ClassNotFoundException {
+    try (SocketChannel channel = SocketChannel.open()) {
+      // 打开SocketChannel
+      // 设置非阻塞模式，read的时候就不再阻塞
+      channel.configureBlocking(false);
+      // tcp连接网络
+      channel.connect(new InetSocketAddress("127.0.0.1", 9595));
+      // 连接服务器成功
+      if (channel.finishConnect()) {
+        // 往服务端写数据
+        String serializable = "您好，ServerSocketChannel。";
+        System.out.println("准备写：" + serializable);
+        ByteBuffer byteBuffer = ByteBufferUtils.writeObject(serializable);
+        channel.write(byteBuffer);
+        System.out.println("准备读：");
+        // 读取服务端发送的数据
+        ByteBuffer buffer = ByteBuffer.allocate(1024);
+        buffer.clear();
+        int numBytesRead = -1;
+        while ((numBytesRead = channel.read(buffer)) != -1) {
+          // 如果没有数据，则稍微等待一下
+          if (numBytesRead == 0) {
+            try {
+              TimeUnit.MILLISECONDS.sleep(1);
+            } catch (InterruptedException e) {
+              e.printStackTrace();
+            }
+            continue;
+          }
+          Object object = ByteBufferUtils.readObject(buffer);
+          System.out.println(object);
+        }
+      } else {
+        System.out.println("连接失败，服务器拒绝服务");
+      }
+    }
+  }
 
 }
