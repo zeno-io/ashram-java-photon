@@ -17,6 +17,9 @@
 * [x] jdk-jvm-object-size : samples for JVM.
 * [x] jdk-jvm-samples: samples for JVM.
 
+##### Network
+* [ ] netty-samples: samples for [`Netty`](https://netty.io/) Version 4.1.x.
+
 ##### Messaging Queue
 * [x] mq-activemq-samples: samples for [`ActiveMQ`](http://activemq.apache.org/) in Java.
 * [x] mq-kafka-samples: samples for [`Kafka`](http://kafka.apache.org/) in Java.
