@@ -115,7 +115,7 @@ public class MessageChatServer {
     protected void channelRead0(ChannelHandlerContext ctx, InstantMessage msg) throws Exception {
       logger("Received: " + msg.toString());
       // write to others
-      if (MessageType.ECHO.equals(msg.getType())) {
+      if (MessageType.ECHO.equals(msg.ofType())) {
         String userId = msg.getUserId();
         channel2UserId.putIfAbsent(getChannelId(ctx), userId);
         writeToOthers(ctx, InstantMessage.serverMessage(userId + " join."));

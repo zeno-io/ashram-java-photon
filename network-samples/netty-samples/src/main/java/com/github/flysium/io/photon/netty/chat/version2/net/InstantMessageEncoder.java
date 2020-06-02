@@ -17,6 +17,7 @@
 package com.github.flysium.io.photon.netty.chat.version2.net;
 
 import com.github.flysium.io.photon.netty.chat.version2.model.InstantMessage;
+import com.github.flysium.io.photon.netty.serializer.SerializerUtils;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;
@@ -32,7 +33,7 @@ public class InstantMessageEncoder extends MessageToByteEncoder<InstantMessage> 
   @Override
   protected void encode(ChannelHandlerContext ctx, InstantMessage msg, ByteBuf out)
       throws Exception {
-    byte[] body = InstantMessage.toBytes(msg);
+    byte[] body = SerializerUtils.toBytes(msg);
     int length = body.length;
     out.writeInt(length);
     out.writeBytes(body);
