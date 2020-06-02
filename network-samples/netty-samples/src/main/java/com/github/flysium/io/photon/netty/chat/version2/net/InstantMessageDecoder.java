@@ -17,6 +17,7 @@
 package com.github.flysium.io.photon.netty.chat.version2.net;
 
 import com.github.flysium.io.photon.netty.chat.version2.model.InstantMessage;
+import com.github.flysium.io.photon.netty.serializer.SerializerUtils;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
@@ -71,6 +72,6 @@ public class InstantMessageDecoder extends LengthFieldBasedFrameDecoder {
     byte[] body = new byte[length];
     in.readBytes(body);
 
-    return InstantMessage.fromBytes(body);
+    return SerializerUtils.fromBytes(body, InstantMessage.class);
   }
 }
