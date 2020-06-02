@@ -35,6 +35,7 @@ public interface Serializer {
    * serialize object to byte array.
    *
    * @param object Object
+   * @return data byte array
    * @throws Exception any exception while in serialize
    */
   <T> byte[] serialize(T object) throws Exception;
