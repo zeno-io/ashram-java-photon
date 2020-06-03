@@ -16,11 +16,14 @@
 
 package com.github.flysium.io.photon.netty.chat.version2;
 
+import com.github.flysium.io.photon.netty.chat.version2.model.InstantMessage;
 import com.github.flysium.io.photon.netty.chat.version2.net.MessageChatServer;
 import java.awt.BorderLayout;
 import java.awt.HeadlessException;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
@@ -42,10 +45,25 @@ public class MessageChatServerFrame extends JFrame {
   private final MessageChatServer server;
   private final Thread readFromConsole;
 
+  private final Map<String, String> channel2UserId = new ConcurrentHashMap<>();
+
   private final JTextArea console = new JTextArea();
 
   public MessageChatServerFrame(final int port) throws HeadlessException {
-    this.server = new MessageChatServer(port);
+    this.server = new MessageChatServer(port, (channelId, userId) -> {
+      if (channel2UserId.get(channelId) == null) {
+        channel2UserId.putIfAbsent(channelId, userId);
+        MessageChatServerFrame.this.server.writeToOthers(channelId,
+            InstantMessage.serverMessage(userId + " join."));
+      }
+    }, (channelId) -> {
+      String userId = channel2UserId.get(channelId);
+      if (userId != null) {
+        MessageChatServerFrame.this.server.writeToOthers(channelId,
+            InstantMessage.serverMessage(userId + " leave."));
+        channel2UserId.remove(channelId);
+      }
+    });
     this.readFromConsole = new Thread(new UpdateConsoleRunnable(), "readFromConsole");
 
     this.console.setEditable(false);

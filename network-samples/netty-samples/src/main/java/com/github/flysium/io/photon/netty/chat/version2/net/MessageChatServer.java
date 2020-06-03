@@ -19,6 +19,7 @@ package com.github.flysium.io.photon.netty.chat.version2.net;
 import com.github.flysium.io.photon.netty.chat.version2.model.InstantMessage;
 import com.github.flysium.io.photon.netty.chat.version2.model.MessageType;
 import io.netty.bootstrap.ServerBootstrap;
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.EventLoopGroup;
@@ -29,11 +30,11 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.util.concurrent.GlobalEventExecutor;
-import java.util.Map;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 /**
  * Chat Server
@@ -45,12 +46,22 @@ public class MessageChatServer {
 
   private final int port;
   private final ChannelGroup channels = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
-  private final Map<String, String> channel2UserId = new ConcurrentHashMap<>();
-
   private final BlockingQueue<String> console = new LinkedBlockingQueue<>(1024);
 
+  // consumer for when echo message arrived
+  private final BiConsumer<String, String> echoChannelConsumer;
+  // consumer for when channel inactive
+  private final Consumer<String> channelInactiveConsumer;
+
   public MessageChatServer(int port) {
+    this(port, null, null);
+  }
+
+  public MessageChatServer(int port, BiConsumer<String, String> echoChannelConsumer,
+      Consumer<String> channelInactiveConsumer) {
     this.port = port;
+    this.echoChannelConsumer = echoChannelConsumer;
+    this.channelInactiveConsumer = channelInactiveConsumer;
   }
 
   /**
@@ -99,56 +110,53 @@ public class MessageChatServer {
   /**
    * write to other channels except this
    */
-  private void writeToOthers(ChannelHandlerContext ctx, InstantMessage message) {
+  public void writeToOthers(String channelId, InstantMessage message) {
     channels.stream()
-        .filter(channel -> !channel.id().equals(ctx.channel().id()))
+        .filter(channel -> channelId != null && !channelId.equals(getChannelId(channel)))
         .forEach(channel -> channel.writeAndFlush(message));
   }
 
-  private String getChannelId(ChannelHandlerContext ctx) {
-    return ctx.channel().id().asLongText();
+  private String getChannelId(Channel channel) {
+    return channel.id().asLongText();
   }
 
   class ServerChildHandler extends SimpleChannelInboundHandler<InstantMessage> {
 
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, InstantMessage msg) throws Exception {
+    protected void channelRead0(ChannelHandlerContext ctx, InstantMessage msg) {
       logger("Received: " + msg.toString());
       // write to others
       if (MessageType.ECHO.equals(msg.ofType())) {
         String userId = msg.getUserId();
-        channel2UserId.putIfAbsent(getChannelId(ctx), userId);
-        writeToOthers(ctx, InstantMessage.serverMessage(userId + " join."));
+        if (echoChannelConsumer != null) {
+          echoChannelConsumer.accept(getChannelId(ctx.channel()), userId);
+        }
       } else {
-        writeToOthers(ctx, msg);
+        writeToOthers(getChannelId(ctx.channel()), msg);
       }
     }
 
     @Override
-    public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-      String channelId = getChannelId(ctx);
-      String userId = channel2UserId.get(channelId);
-      if (userId != null) {
-        writeToOthers(ctx, InstantMessage.serverMessage(userId + " leave."));
-        channel2UserId.remove(channelId);
-        channels.remove(ctx.channel());
+    public void channelInactive(ChannelHandlerContext ctx) {
+      String channelId = getChannelId(ctx.channel());
+      if (channelInactiveConsumer != null) {
+        channelInactiveConsumer.accept(channelId);
       }
+      channels.remove(ctx.channel());
     }
 
     @Override
-    public void channelActive(ChannelHandlerContext ctx) throws Exception {
+    public void channelActive(ChannelHandlerContext ctx) {
       channels.add(ctx.channel());
     }
 
     @Override
-    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause)
-        throws Exception {
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
       channels.remove(ctx.channel());
       logger(cause.getLocalizedMessage());
       cause.printStackTrace();
       ctx.close();
     }
   }
-
 
 }
