@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.github.flysium.io.photon.netty.chat.version1;
+package com.github.flysium.io.photon.netty.samples.chat.version1;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.ByteBuf;

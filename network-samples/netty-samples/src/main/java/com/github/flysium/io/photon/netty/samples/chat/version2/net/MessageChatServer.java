@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.github.flysium.io.photon.netty.chat.version2.net;
+package com.github.flysium.io.photon.netty.samples.chat.version2.net;
 
-import com.github.flysium.io.photon.netty.chat.version2.model.InstantMessage;
-import com.github.flysium.io.photon.netty.chat.version2.model.MessageType;
+import com.github.flysium.io.photon.netty.samples.chat.version2.model.InstantMessage;
+import com.github.flysium.io.photon.netty.samples.chat.version2.model.MessageType;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;

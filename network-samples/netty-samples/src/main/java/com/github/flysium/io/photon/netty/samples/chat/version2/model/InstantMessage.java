@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.github.flysium.io.photon.netty.chat.version2.model;
+package com.github.flysium.io.photon.netty.samples.chat.version2.model;
 
 import java.time.Instant;
 import java.time.LocalDateTime;

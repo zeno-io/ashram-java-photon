@@ -14,29 +14,8 @@
  * limitations under the License.
  */
 
-package com.github.flysium.io.photon.netty.chat.version2.model;
-
 /**
- * The type of message.
- *
  * @author Sven Augustus
  * @version 1.0
  */
-public enum MessageType {
-  /**
-   * Local System messages
-   */
-  SYSTEM,
-  /**
-   * Server messages
-   */
-  SERVER,
-  /**
-   * Echo to server
-   */
-  ECHO,
-  /**
-   * User Chat messages
-   */
-  USER
-}
+package com.github.flysium.io.photon.netty.samples;

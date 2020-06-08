@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.github.flysium.io.photon.netty.chat.version2.net;
+package com.github.flysium.io.photon.netty.samples.chat.version2.net;
 
-import com.github.flysium.io.photon.netty.chat.version2.model.InstantMessage;
+import com.github.flysium.io.photon.netty.samples.chat.version2.model.InstantMessage;
 import com.github.flysium.io.photon.netty.serializer.SerializerUtils;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;

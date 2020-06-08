@@ -14,16 +14,13 @@
  * limitations under the License.
  */
 
-package com.github.flysium.io.photon.netty.chat.version2;
+package com.github.flysium.io.photon.netty.samples.chat.version1;
 
-import com.github.flysium.io.photon.netty.chat.version2.model.InstantMessage;
-import com.github.flysium.io.photon.netty.chat.version2.net.MessageChatServer;
+import com.github.flysium.io.photon.netty.Constant;
 import java.awt.BorderLayout;
 import java.awt.HeadlessException;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
@@ -35,35 +32,20 @@ import javax.swing.JTextArea;
  * @author Sven Augustus
  * @version 1.0
  */
-public class MessageChatServerFrame extends JFrame {
+public class ChatServerFrame extends JFrame {
 
   public static void main(String[] args) throws InterruptedException {
-    MessageChatServerFrame serverFrame = new MessageChatServerFrame(9099);
+    ChatServerFrame serverFrame = new ChatServerFrame(new ChatServer(Constant.PORT));
     serverFrame.start();
   }
 
-  private final MessageChatServer server;
+  private final ChatServer server;
   private final Thread readFromConsole;
-
-  private final Map<String, String> channel2UserId = new ConcurrentHashMap<>();
 
   private final JTextArea console = new JTextArea();
 
-  public MessageChatServerFrame(final int port) throws HeadlessException {
-    this.server = new MessageChatServer(port, (channelId, userId) -> {
-      if (channel2UserId.get(channelId) == null) {
-        channel2UserId.putIfAbsent(channelId, userId);
-        MessageChatServerFrame.this.server.writeToOthers(channelId,
-            InstantMessage.serverMessage(userId + " join."));
-      }
-    }, (channelId) -> {
-      String userId = channel2UserId.get(channelId);
-      if (userId != null) {
-        MessageChatServerFrame.this.server.writeToOthers(channelId,
-            InstantMessage.serverMessage(userId + " leave."));
-        channel2UserId.remove(channelId);
-      }
-    });
+  public ChatServerFrame(final ChatServer server) throws HeadlessException {
+    this.server = server;
     this.readFromConsole = new Thread(new UpdateConsoleRunnable(), "readFromConsole");
 
     this.console.setEditable(false);
@@ -73,7 +55,7 @@ public class MessageChatServerFrame extends JFrame {
     scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
     this.add(scroll, BorderLayout.CENTER);
 
-    this.setTitle("Message Chat Server (" + port + ")");
+    this.setTitle("Chat Server");
     this.setSize(800, 600);
     this.setLocation(500, 150);
     this.addWindowListener(new WindowAdapter() {
@@ -117,7 +99,7 @@ public class MessageChatServerFrame extends JFrame {
           exc.printStackTrace();
         }
         try {
-          String readiedString = MessageChatServerFrame.this.server.readConsole();
+          String readiedString = ChatServerFrame.this.server.readConsole();
           if (readiedString != null) {
             // update Console.
             updateConsole(readiedString);

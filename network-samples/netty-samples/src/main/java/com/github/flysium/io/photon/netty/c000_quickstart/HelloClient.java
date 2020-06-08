@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-package com.github.flysium.io.photon.netty;
+package com.github.flysium.io.photon.netty.c000_quickstart;
 
+import com.github.flysium.io.photon.netty.Constant;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -38,10 +39,10 @@ import java.util.concurrent.TimeUnit;
  * @author Sven Augustus
  * @version 1.0
  */
-public class Client {
+public class HelloClient {
 
   public static void main(String[] args) throws InterruptedException {
-    NettyClient nettyClient = new NettyClient("127.0.0.1", 8090);
+    NettyClient nettyClient = new NettyClient(Constant.HOST, Constant.PORT);
     nettyClient.start();
   }
 

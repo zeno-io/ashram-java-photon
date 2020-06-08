@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-package com.github.flysium.io.photon.netty;
+package com.github.flysium.io.photon.netty.c000_quickstart;
 
+import com.github.flysium.io.photon.netty.Constant;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -35,10 +36,10 @@ import io.netty.util.ReferenceCountUtil;
  * @author Sven Augustus
  * @version 1.0
  */
-public class HelloNetty {
+public class HelloServer {
 
   public static void main(String[] args) throws InterruptedException {
-    NettyServer nettyServer = new NettyServer(8090);
+    NettyServer nettyServer = new NettyServer(Constant.PORT);
     nettyServer.start();
   }
 

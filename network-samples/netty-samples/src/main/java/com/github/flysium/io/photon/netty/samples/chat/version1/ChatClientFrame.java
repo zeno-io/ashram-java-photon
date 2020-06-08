@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-package com.github.flysium.io.photon.netty.chat.version2;
+package com.github.flysium.io.photon.netty.samples.chat.version1;
 
-import com.github.flysium.io.photon.netty.chat.version2.model.InstantMessage;
-import com.github.flysium.io.photon.netty.chat.version2.net.MessageChatClient;
+import com.github.flysium.io.photon.netty.Constant;
 import java.awt.BorderLayout;
 import java.awt.HeadlessException;
 import java.awt.Point;
@@ -44,24 +43,23 @@ import javax.swing.JTextField;
  * @author Sven Augustus
  * @version 1.0
  */
-public class MessageChatClientFrame extends JFrame {
+public class ChatClientFrame extends JFrame {
 
   private static CountDownLatch countDownLatch;
 
   public static void main(String[] args) throws InterruptedException {
-    Thread t1 = newThread(new MessageChatClientFrame(new Point(100, 100),
-        "127.0.0.1", 9099, 10, "C1"));
-    Thread t2 = newThread(new MessageChatClientFrame(new Point(950, 100),
-        "127.0.0.1", 9099, 10, "C2"));
+    Thread t1 = newThread(new ChatClientFrame(new Point(100, 100),
+        new ChatClient(Constant.HOST, Constant.PORT, 10), "C1"));
+    Thread t2 = newThread(new ChatClientFrame(new Point(950, 100),
+        new ChatClient(Constant.HOST, Constant.PORT, 10), "C2"));
     t1.start();
     t2.start();
 
     countDownLatch = new CountDownLatch(2);
     countDownLatch.await();
-    System.exit(0);
   }
 
-  private static Thread newThread(MessageChatClientFrame c) {
+  private static Thread newThread(ChatClientFrame c) {
     return new Thread(() -> {
       try {
         c.start();
@@ -71,19 +69,22 @@ public class MessageChatClientFrame extends JFrame {
     });
   }
 
-  private final MessageChatClient client;
+  private final ChatClient client;
   private final Thread readFromServer;
   private final ThreadPoolExecutor executor = new ThreadPoolExecutor(1, 1,
       60, TimeUnit.SECONDS, new LinkedBlockingQueue<>(1024),
       Executors.defaultThreadFactory(), new CallerRunsPolicy());
 
+  private final String nickName;
+
   private final JTextArea chatBox = new JTextArea();
   private final JTextField input = new JTextField();
 
-  public MessageChatClientFrame(final Point point, String host, int port, int pollTimeout,
-      String userId) throws HeadlessException {
-    this.client = new MessageChatClient(host, port, pollTimeout, userId);
+  public ChatClientFrame(final Point point, final ChatClient client, final String nickName)
+      throws HeadlessException {
+    this.client = client;
     this.readFromServer = new Thread(new UpdateChatBoxRunnable(), "readFromServer");
+    this.nickName = nickName;
 
     this.chatBox.setEditable(false);
     this.chatBox.setLineWrap(true);
@@ -95,11 +96,11 @@ public class MessageChatClientFrame extends JFrame {
         String text = input.getText();
         // write to server
         executor.submit(() -> {
-          MessageChatClientFrame.this.client.sendMessage(text);
+          ChatClientFrame.this.client.sendMessage(ChatClientFrame.this.nickName + ">" + text);
         });
         // update Message box.
         updateChatBox(LocalDateTime.now()
-            .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + " Me> " + text);
+            .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + " Me>" + text);
         input.setText("");
       }
     });
@@ -108,14 +109,14 @@ public class MessageChatClientFrame extends JFrame {
     this.add(scroll, BorderLayout.CENTER);
     this.add(input, BorderLayout.SOUTH);
 
-    this.setTitle("Message Chat Client (" + this.client.getUserId() + ")");
+    this.setTitle("Chat Client (" + this.nickName + ")");
     this.setSize(800, 600);
     this.setLocation(point);
     this.addWindowListener(new WindowAdapter() {
       @Override
       public void windowClosing(WindowEvent e) {
 //        System.exit(0);
-        MessageChatClientFrame.this.client.stop();
+        ChatClientFrame.this.client.stop();
         countDownLatch.countDown();
       }
     });
@@ -156,10 +157,10 @@ public class MessageChatClientFrame extends JFrame {
           exc.printStackTrace();
         }
         try {
-          InstantMessage instantMessage = MessageChatClientFrame.this.client.readMessage();
-          if (instantMessage != null) {
+          String readiedString = ChatClientFrame.this.client.readMessage();
+          if (readiedString != null) {
             // update Message box.
-            updateChatBox(instantMessage.toString());
+            updateChatBox(readiedString);
           }
         } catch (InterruptedException exec) {
           exec.printStackTrace();

@@ -14,23 +14,20 @@
  * limitations under the License.
  */
 
-package com.github.flysium.io.photon.netty.chat.version1;
+package com.github.flysium.io.photon.netty.samples.chat.version2.net;
 
+import com.github.flysium.io.photon.netty.samples.chat.version2.model.InstantMessage;
 import io.netty.bootstrap.Bootstrap;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.EventLoopGroup;
+import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.util.CharsetUtil;
-import io.netty.util.ReferenceCountUtil;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
@@ -41,19 +38,22 @@ import java.util.concurrent.TimeUnit;
  * @author Sven Augustus
  * @version 1.0
  */
-public class ChatClient {
+public class MessageChatClient {
 
   private final String host;
   private final int port;
   private final int pollTimeout;
 
-  private Channel channel = null;
-  private final BlockingQueue<String> readyToReadMessages = new LinkedBlockingQueue<>(1024);
+  private final String userId;
 
-  public ChatClient(String host, int port, int pollTimeout) {
+  private Channel channel = null;
+  private final BlockingQueue<InstantMessage> readyToReadMessages = new LinkedBlockingQueue<>(1024);
+
+  public MessageChatClient(String host, int port, int pollTimeout, String userId) {
     this.host = host;
     this.port = port;
     this.pollTimeout = pollTimeout;
+    this.userId = userId;
   }
 
   /**
@@ -69,20 +69,22 @@ public class ChatClient {
             @Override
             protected void initChannel(SocketChannel ch) throws Exception {
               ch.pipeline()
-                  .addLast(new ClientInBoundHandler());
+                  .addLast(new InstantMessageDecoder())
+                  .addLast(new InstantMessageEncoder())
+                  .addLast(new ClientHandler());
             }
           })
           .connect(host, port)
           .addListener(new ChannelFutureListener() {
             @Override
             public void operationComplete(ChannelFuture future) throws Exception {
-              if (future.isSuccess()) {
-                offerToReadyQueue("Channel is connected !");
+              if (!future.isSuccess()) {
+                // offer to ready message queue
+                offerToReadyQueue(InstantMessage.systemMessage("Channel is not connected !"));
+              } else {
+                offerToReadyQueue(InstantMessage.systemMessage("Channel is connected !"));
                 // initialize the channel
                 channel = future.channel();
-              } else {
-                // offer to ready message queue
-                offerToReadyQueue("Channel is not connected !");
               }
             }
           }).sync()
@@ -95,12 +97,12 @@ public class ChatClient {
               } else {
                 System.out.println("channel close fail");
               }
-              offerToReadyQueue("Channel is closed !");
+              offerToReadyQueue(InstantMessage.systemMessage("Channel is closed !"));
             }
           })
           .sync();
 
-      offerToReadyQueue("Connection closed !");
+      offerToReadyQueue(InstantMessage.systemMessage("Connection closed !"));
     } finally {
       workGroup.shutdownGracefully();
     }
@@ -121,8 +123,7 @@ public class ChatClient {
    * @param buff content
    */
   public void sendMessage(String buff) {
-    ByteBuf buf = Unpooled.copiedBuffer(buff.getBytes());
-    channel.writeAndFlush(buf);
+    channel.writeAndFlush(InstantMessage.userMessage(userId, buff));
   }
 
   /**
@@ -131,7 +132,7 @@ public class ChatClient {
    * @return content
    * @throws InterruptedException if interrupted while waiting
    */
-  public String readMessage() throws InterruptedException {
+  public InstantMessage readMessage() throws InterruptedException {
     return tryPoll(readyToReadMessages);
   }
 
@@ -145,22 +146,26 @@ public class ChatClient {
   /**
    * offer to ready message queue
    */
-  private boolean offerToReadyQueue(String readiedString) {
-    return readyToReadMessages.offer(readiedString);
+  private boolean offerToReadyQueue(InstantMessage message) {
+    return readyToReadMessages.offer(message);
   }
 
-  class ClientInBoundHandler extends ChannelInboundHandlerAdapter {
+  public String getUserId() {
+    return userId;
+  }
+
+  class ClientHandler extends SimpleChannelInboundHandler<InstantMessage> {
 
     @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-      ByteBuf buf = (ByteBuf) msg;
-      try {
-        String readiedString = buf.toString(CharsetUtil.UTF_8);
-        // offer to ready message queue
-        offerToReadyQueue(readiedString);
-      } finally {
-        ReferenceCountUtil.release(buf);
-      }
+    public void channelActive(ChannelHandlerContext ctx) throws Exception {
+      // echo
+      channel.writeAndFlush(InstantMessage.echoMessage(userId));
+    }
+
+    @Override
+    protected void channelRead0(ChannelHandlerContext ctx, InstantMessage msg) throws Exception {
+      // offer to ready message queue
+      offerToReadyQueue(msg);
     }
 
     @Override
