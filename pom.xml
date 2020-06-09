@@ -67,11 +67,12 @@
     <module>mq-samples/mq-kafka-samples</module>
     <module>mq-samples/mq-rabbitmq-samples</module>
     <module>mq-samples/mq-rocketmq-samples</module>
+    <module>network-samples/netty-samples</module>
+    <module>ng-distributed-solutions/distributed-lock</module>
+    <module>ng-big-data-samples/zookeeper-samples</module>
     <module>sdk-samples/template-api-sdk</module>
     <module>rxjava-samples/rxjava2-samples</module>
     <module>rxjava-samples/rxjava3-samples</module>
-    <module>ng-big-data-samples/zookeeper-samples</module>
-    <module>network-samples/netty-samples</module>
   </modules>
 
   <properties>

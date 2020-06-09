@@ -26,6 +26,12 @@
 * [x] mq-rabbitmq-samples: samples for [`Rabbitmq`](https://www.rabbitmq.com/) in Java.
 * [x] mq-rocketmq-samples: samples for [`Rocketmq`](http://rocketmq.apache.org/) in Java.
 
+##### Distributed Solutions
+* [ ] distributed-lock: distributed lock implementation of [`MySQL`](https://www.mysql.com/ ), [`Redis`](https://redis.io), [`Zookeeper`](https://zookeeper.apache.org), [`Etcd`](https://etcd.io/)
+
+##### Big Data samples
+* [ ] zookeeper-samples: samples for [`Zookeeper`](https://zookeeper.apache.org) in Java.
+
 ##### API SDK
 * [x] template-api-sdk: API SDK based on RESTful.
 
