@@ -63,6 +63,8 @@
     <module>java-core-samples/jdk-io-samples</module>
     <module>java-core-samples/jdk-concurrent-samples</module>
     <module>java-core-samples/jdk-jvm-samples</module>
+    <module>jvm-language-samples/disruptor-samples</module>
+    <module>jvm-language-samples/java-groovy-samples</module>
     <module>mq-samples/mq-activemq-samples</module>
     <module>mq-samples/mq-kafka-samples</module>
     <module>mq-samples/mq-rabbitmq-samples</module>

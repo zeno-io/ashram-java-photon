@@ -17,6 +17,10 @@
 * [x] jdk-jvm-object-size : samples for JVM.
 * [x] jdk-jvm-samples: samples for JVM.
 
+##### JVM language 
+* [x] disruptor-samples: samples for High Performance Inter-Thread Messaging Library: [`disruptor`](https://github.com/LMAX-Exchange/disruptor).
+* [x] java-groovy-samples: samples for A multi-faceted language for the Java platform: [`Groovy`](https://groovy-lang.orgr).
+
 ##### Network
 * [ ] netty-samples: samples for [`Netty`](https://netty.io/) Version 4.1.x.
 
@@ -30,7 +34,7 @@
 * [ ] distributed-lock: distributed lock implementation of [`MySQL`](https://www.mysql.com/ ), [`Redis`](https://redis.io), [`Zookeeper`](https://zookeeper.apache.org), [`Etcd`](https://etcd.io/)
 
 ##### Big Data samples
-* [ ] zookeeper-samples: samples for [`Zookeeper`](https://zookeeper.apache.org) in Java.
+* [x] zookeeper-samples: samples for [`Zookeeper`](https://zookeeper.apache.org) in Java.
 
 ##### API SDK
 * [x] template-api-sdk: API SDK based on RESTful.
