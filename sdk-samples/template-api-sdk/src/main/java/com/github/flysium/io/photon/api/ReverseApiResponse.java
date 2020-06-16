@@ -18,20 +18,11 @@
 
 package com.github.flysium.io.photon.api;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 /**
  * 通知返回对象
  *
  * @author Sven Augustus
  */
-@Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
 @SuppressWarnings("PMD.UnusedPrivateField")
 public class ReverseApiResponse implements java.io.Serializable {
 
@@ -41,4 +32,46 @@ public class ReverseApiResponse implements java.io.Serializable {
 
   private String returnMsg;
 
+  public String getReturnCode() {
+    return returnCode;
+  }
+
+  public void setReturnCode(String returnCode) {
+    this.returnCode = returnCode;
+  }
+
+  public String getReturnMsg() {
+    return returnMsg;
+  }
+
+  public void setReturnMsg(String returnMsg) {
+    this.returnMsg = returnMsg;
+  }
+
+  public static Builder builder() {
+    return new Builder();
+  }
+
+  public static final class Builder {
+
+    private final ReverseApiResponse reverseApiResponse;
+
+    private Builder() {
+      reverseApiResponse = new ReverseApiResponse();
+    }
+
+    public Builder returnCode(String returnCode) {
+      reverseApiResponse.setReturnCode(returnCode);
+      return this;
+    }
+
+    public Builder returnMsg(String returnMsg) {
+      reverseApiResponse.setReturnMsg(returnMsg);
+      return this;
+    }
+
+    public ReverseApiResponse build() {
+      return reverseApiResponse;
+    }
+  }
 }

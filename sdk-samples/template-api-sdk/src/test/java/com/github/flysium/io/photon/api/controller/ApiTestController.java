@@ -30,11 +30,6 @@ import com.github.flysium.io.photon.api.service.ApiQueryServiceImpl;
 import com.github.flysium.io.yew.common.logger.Logger;
 import com.github.flysium.io.yew.common.logger.LoggerFactory;
 import java.util.Map;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -48,7 +43,6 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/")
-@AllArgsConstructor
 public class ApiTestController {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(ApiTestController.class);
@@ -80,31 +74,50 @@ public class ApiTestController {
 
       @Override
       public TestApiResponse invoke(TestApiRequest request) {
-        return TestApiResponse.builder().accessToken("xxxxx").build();
+        TestApiResponse resp = new TestApiResponse();
+        resp.setAccessToken("xxxxx");
+        return resp;
       }
     };
     return proxy.invoke("api-test-invoke", invoker, request);
   }
 
-  @Data
-  @EqualsAndHashCode(callSuper = true)
   @SuppressWarnings("PMD.UnusedPrivateField")
   static class TestApiRequest extends ApiRequest {
 
     private String userType;
 
     private String userId;
+
+    public String getUserType() {
+      return userType;
+    }
+
+    public void setUserType(String userType) {
+      this.userType = userType;
+    }
+
+    public String getUserId() {
+      return userId;
+    }
+
+    public void setUserId(String userId) {
+      this.userId = userId;
+    }
   }
 
-  @Data
-  @EqualsAndHashCode(callSuper = true)
-  @Builder
-  @AllArgsConstructor
-  @NoArgsConstructor
   @SuppressWarnings("PMD.UnusedPrivateField")
   static class TestApiResponse extends ExtendApiResponse {
 
     private String accessToken;
+
+    public String getAccessToken() {
+      return accessToken;
+    }
+
+    public void setAccessToken(String accessToken) {
+      this.accessToken = accessToken;
+    }
   }
 
   /*
@@ -114,8 +127,9 @@ public class ApiTestController {
   public ReverseApiResponse testNotify() {
     ApiNotify<TestNotifyApiRequest, ReverseApiResponse> apiNotify = new ApiNotify<>(queryService);
 
-    TestNotifyApiRequest request = TestNotifyApiRequest.builder().staffId("100098").status("online")
-        .build();
+    TestNotifyApiRequest request = new TestNotifyApiRequest();
+    request.setStaffId("100098");
+    request.setStatus("online");
     return apiNotify.reverseInvoke("test", "ctgd678efh567hg6787", "ctg_hn",
         request, ReverseApiResponse.class);
   }
@@ -128,17 +142,28 @@ public class ApiTestController {
         + "}";
   }
 
-  @Data
-  @EqualsAndHashCode(callSuper = true)
-  @Builder
-  @AllArgsConstructor
-  @NoArgsConstructor
   @SuppressWarnings("PMD.UnusedPrivateField")
   static class TestNotifyApiRequest extends ExtendReverseApiRequest {
 
     private String staffId;
 
     private String status;
+
+    public String getStaffId() {
+      return staffId;
+    }
+
+    public void setStaffId(String staffId) {
+      this.staffId = staffId;
+    }
+
+    public String getStatus() {
+      return status;
+    }
+
+    public void setStatus(String status) {
+      this.status = status;
+    }
   }
 
 }

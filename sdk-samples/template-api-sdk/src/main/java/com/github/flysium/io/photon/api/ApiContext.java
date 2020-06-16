@@ -18,20 +18,11 @@
 
 package com.github.flysium.io.photon.api;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 /**
  * APIProperties 协议相关上下文
  *
  * @author Sven Augustus
  */
-@Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
 @SuppressWarnings("PMD.UnusedPrivateField")
 public class ApiContext {
 
@@ -43,7 +34,7 @@ public class ApiContext {
 
   private String url;
 
-  private static ThreadLocal<ApiContext> contextThreadLocal = new ThreadLocal<ApiContext>() {
+  private static final ThreadLocal<ApiContext> contextThreadLocal = new ThreadLocal<ApiContext>() {
     @Override
     protected ApiContext initialValue() {
       return new ApiContext();
@@ -60,5 +51,37 @@ public class ApiContext {
 
   public static void remove() {
     contextThreadLocal.remove();
+  }
+
+  public String getProtocolType() {
+    return protocolType;
+  }
+
+  public void setProtocolType(String protocolType) {
+    this.protocolType = protocolType;
+  }
+
+  public String getClientIp() {
+    return clientIp;
+  }
+
+  public void setClientIp(String clientIp) {
+    this.clientIp = clientIp;
+  }
+
+  public String getServerIp() {
+    return serverIp;
+  }
+
+  public void setServerIp(String serverIp) {
+    this.serverIp = serverIp;
+  }
+
+  public String getUrl() {
+    return url;
+  }
+
+  public void setUrl(String url) {
+    this.url = url;
   }
 }

@@ -17,33 +17,73 @@
 package com.github.flysium.io.photon.api.proxy;
 
 import com.github.flysium.io.photon.api.ApiRequest;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 /**
  * API业务调用请求上下文
  *
  * @author Sven Augustus
  */
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
+
 @SuppressWarnings("PMD.UnusedPrivateField")
 class ApiInvokerContext<I extends ApiRequest> {
 
   /* 请求对象 */
-  @Getter
   private I request;
 
   /* 是否安全认证 */
-  @Getter
   private boolean signatureCheckEnabled;
 
   /* 安全密钥 */
-  @Getter
-  @Setter
   private String apiKey;
+
+  public ApiInvokerContext() {
+  }
+
+  public I getRequest() {
+    return request;
+  }
+
+  public boolean isSignatureCheckEnabled() {
+    return signatureCheckEnabled;
+  }
+
+  public String getApiKey() {
+    return apiKey;
+  }
+
+  public void setApiKey(String apiKey) {
+    this.apiKey = apiKey;
+  }
+
+  public static <I extends ApiRequest> Builder<I> builder() {
+    return new Builder<I>();
+  }
+
+  public static final class Builder<I extends ApiRequest> {
+
+    private final ApiInvokerContext<I> apiInvokerContext;
+
+    private Builder() {
+      apiInvokerContext = new ApiInvokerContext<I>();
+    }
+
+    public Builder<I> request(I request) {
+      apiInvokerContext.request = request;
+      return this;
+    }
+
+    public Builder<I> signatureCheckEnabled(boolean signatureCheckEnabled) {
+      apiInvokerContext.signatureCheckEnabled = signatureCheckEnabled;
+      return this;
+    }
+
+    public Builder<I> apiKey(String apiKey) {
+      apiInvokerContext.setApiKey(apiKey);
+      return this;
+    }
+
+    public ApiInvokerContext<I> build() {
+      return apiInvokerContext;
+    }
+  }
 }

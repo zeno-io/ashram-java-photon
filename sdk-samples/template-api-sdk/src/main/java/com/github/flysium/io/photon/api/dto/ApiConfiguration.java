@@ -16,20 +16,11 @@
 
 package com.github.flysium.io.photon.api.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 /**
  * API配置
  *
  * @author Sven Augustus
  */
-@Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
 @SuppressWarnings("PMD.UnusedPrivateField")
 public class ApiConfiguration implements java.io.Serializable {
 
@@ -48,4 +39,88 @@ public class ApiConfiguration implements java.io.Serializable {
   /* 通知URL */
   private String url;
 
+  public ApiConfiguration() {
+  }
+
+  public String getAppId() {
+    return appId;
+  }
+
+  public void setAppId(String appId) {
+    this.appId = appId;
+  }
+
+  public String getApiId() {
+    return apiId;
+  }
+
+  public void setApiId(String apiId) {
+    this.apiId = apiId;
+  }
+
+  public String getApiSpecId() {
+    return apiSpecId;
+  }
+
+  public void setApiSpecId(String apiSpecId) {
+    this.apiSpecId = apiSpecId;
+  }
+
+  public String getApiInstId() {
+    return apiInstId;
+  }
+
+  public void setApiInstId(String apiInstId) {
+    this.apiInstId = apiInstId;
+  }
+
+  public String getUrl() {
+    return url;
+  }
+
+  public void setUrl(String url) {
+    this.url = url;
+  }
+
+  public static Builder builder() {
+    return new Builder();
+  }
+
+  public static final class Builder {
+
+    private final ApiConfiguration apiConfiguration;
+
+    private Builder() {
+      apiConfiguration = new ApiConfiguration();
+    }
+
+    public Builder appId(String appId) {
+      apiConfiguration.setAppId(appId);
+      return this;
+    }
+
+    public Builder apiId(String apiId) {
+      apiConfiguration.setApiId(apiId);
+      return this;
+    }
+
+    public Builder apiSpecId(String apiSpecId) {
+      apiConfiguration.setApiSpecId(apiSpecId);
+      return this;
+    }
+
+    public Builder apiInstId(String apiInstId) {
+      apiConfiguration.setApiInstId(apiInstId);
+      return this;
+    }
+
+    public Builder url(String url) {
+      apiConfiguration.setUrl(url);
+      return this;
+    }
+
+    public ApiConfiguration build() {
+      return apiConfiguration;
+    }
+  }
 }

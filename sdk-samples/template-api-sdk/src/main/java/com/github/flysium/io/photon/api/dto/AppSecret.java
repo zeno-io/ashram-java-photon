@@ -16,20 +16,11 @@
 
 package com.github.flysium.io.photon.api.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 /**
  * 应用安全
  *
  * @author Sven Augustus
  */
-@Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
 @SuppressWarnings("PMD.UnusedPrivateField")
 public class AppSecret implements java.io.Serializable {
 
@@ -43,5 +34,61 @@ public class AppSecret implements java.io.Serializable {
 
   /* 安全密钥 */
   private String appKey;
+
+  public String getAppId() {
+    return appId;
+  }
+
+  public void setAppId(String appId) {
+    this.appId = appId;
+  }
+
+  public boolean isSignatureCheckEnabled() {
+    return signatureCheckEnabled;
+  }
+
+  public void setSignatureCheckEnabled(boolean signatureCheckEnabled) {
+    this.signatureCheckEnabled = signatureCheckEnabled;
+  }
+
+  public String getAppKey() {
+    return appKey;
+  }
+
+  public void setAppKey(String appKey) {
+    this.appKey = appKey;
+  }
+
+  public static Builder builder() {
+    return new Builder();
+  }
+
+  public static final class Builder {
+
+    private final AppSecret appSecret;
+
+    private Builder() {
+      appSecret = new AppSecret();
+    }
+
+    public Builder appId(String appId) {
+      appSecret.setAppId(appId);
+      return this;
+    }
+
+    public Builder signatureCheckEnabled(boolean signatureCheckEnabled) {
+      appSecret.setSignatureCheckEnabled(signatureCheckEnabled);
+      return this;
+    }
+
+    public Builder appKey(String appKey) {
+      appSecret.setAppKey(appKey);
+      return this;
+    }
+
+    public AppSecret build() {
+      return appSecret;
+    }
+  }
 
 }

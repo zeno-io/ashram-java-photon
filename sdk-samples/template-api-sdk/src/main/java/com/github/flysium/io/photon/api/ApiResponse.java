@@ -18,20 +18,11 @@
 
 package com.github.flysium.io.photon.api;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 /**
  * 响应对象
  *
  * @author Sven Augustus
  */
-@Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
 @SuppressWarnings("PMD.UnusedPrivateField")
 public final class ApiResponse implements java.io.Serializable {
 
@@ -72,4 +63,176 @@ public final class ApiResponse implements java.io.Serializable {
     return response;
   }
 
+  public String getReturnCode() {
+    return returnCode;
+  }
+
+  public void setReturnCode(String returnCode) {
+    this.returnCode = returnCode;
+  }
+
+  public String getReturnMsg() {
+    return returnMsg;
+  }
+
+  public void setReturnMsg(String returnMsg) {
+    this.returnMsg = returnMsg;
+  }
+
+  public String getAppId() {
+    return appId;
+  }
+
+  public void setAppId(String appId) {
+    this.appId = appId;
+  }
+
+  public String getTenantId() {
+    return tenantId;
+  }
+
+  public void setTenantId(String tenantId) {
+    this.tenantId = tenantId;
+  }
+
+  public String getApiTransId() {
+    return apiTransId;
+  }
+
+  public void setApiTransId(String apiTransId) {
+    this.apiTransId = apiTransId;
+  }
+
+  public String getTimestamp() {
+    return timestamp;
+  }
+
+  public void setTimestamp(String timestamp) {
+    this.timestamp = timestamp;
+  }
+
+  public String getNonceStr() {
+    return nonceStr;
+  }
+
+  public void setNonceStr(String nonceStr) {
+    this.nonceStr = nonceStr;
+  }
+
+  public String getSign() {
+    return sign;
+  }
+
+  public void setSign(String sign) {
+    this.sign = sign;
+  }
+
+  public String getSignType() {
+    return signType;
+  }
+
+  public void setSignType(String signType) {
+    this.signType = signType;
+  }
+
+  public String getResultCode() {
+    return resultCode;
+  }
+
+  public void setResultCode(String resultCode) {
+    this.resultCode = resultCode;
+  }
+
+  public String getErrCode() {
+    return errCode;
+  }
+
+  public void setErrCode(String errCode) {
+    this.errCode = errCode;
+  }
+
+  public String getErrCodeDes() {
+    return errCodeDes;
+  }
+
+  public void setErrCodeDes(String errCodeDes) {
+    this.errCodeDes = errCodeDes;
+  }
+
+  public static Builder builder() {
+    return new Builder();
+  }
+
+  public static final class Builder {
+
+    private final ApiResponse apiResponse;
+
+    private Builder() {
+      apiResponse = new ApiResponse();
+    }
+
+    public Builder returnCode(String returnCode) {
+      apiResponse.setReturnCode(returnCode);
+      return this;
+    }
+
+    public Builder returnMsg(String returnMsg) {
+      apiResponse.setReturnMsg(returnMsg);
+      return this;
+    }
+
+    public Builder appId(String appId) {
+      apiResponse.setAppId(appId);
+      return this;
+    }
+
+    public Builder tenantId(String tenantId) {
+      apiResponse.setTenantId(tenantId);
+      return this;
+    }
+
+    public Builder apiTransId(String apiTransId) {
+      apiResponse.setApiTransId(apiTransId);
+      return this;
+    }
+
+    public Builder timestamp(String timestamp) {
+      apiResponse.setTimestamp(timestamp);
+      return this;
+    }
+
+    public Builder nonceStr(String nonceStr) {
+      apiResponse.setNonceStr(nonceStr);
+      return this;
+    }
+
+    public Builder sign(String sign) {
+      apiResponse.setSign(sign);
+      return this;
+    }
+
+    public Builder signType(String signType) {
+      apiResponse.setSignType(signType);
+      return this;
+    }
+
+    public Builder resultCode(String resultCode) {
+      apiResponse.setResultCode(resultCode);
+      return this;
+    }
+
+    public Builder errCode(String errCode) {
+      apiResponse.setErrCode(errCode);
+      return this;
+    }
+
+    public Builder errCodeDes(String errCodeDes) {
+      apiResponse.setErrCodeDes(errCodeDes);
+      return this;
+    }
+
+    public ApiResponse build() {
+      return apiResponse;
+    }
+  }
 }
