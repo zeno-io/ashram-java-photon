@@ -23,10 +23,8 @@ import io.etcd.jetcd.Client;
 import io.etcd.jetcd.lease.LeaseKeepAliveResponse;
 import io.etcd.jetcd.lock.LockResponse;
 import io.grpc.stub.StreamObserver;
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
-import java.util.Comparator;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListSet;
@@ -63,7 +61,7 @@ public class EtcdDistributedLock extends AbstractDistributedLock {
   }
 
   @Override
-  public void lockInterruptibly() throws InterruptedException {
+  public void lockInterruptibly() {
     lockInterruptibly(DEFAULT_TTL, TimeUnit.MILLISECONDS);
   }
 
@@ -73,7 +71,7 @@ public class EtcdDistributedLock extends AbstractDistributedLock {
   }
 
   @Override
-  public boolean tryLock(long time, TimeUnit unit) throws InterruptedException {
+  public boolean tryLock(long time, TimeUnit unit) {
     return lockInterruptibly(time, unit);
   }
 
@@ -135,7 +133,7 @@ public class EtcdDistributedLock extends AbstractDistributedLock {
   }
 
   @Override
-  public void close() throws IOException {
+  public void close() {
     leaseIdThread.keySet().forEach(this::revokeLease);
     client.getLeaseClient().close();
     client.getLockClient().close();
@@ -177,13 +175,8 @@ public class EtcdDistributedLock extends AbstractDistributedLock {
                 }
               });
           ttl2LeaseId.put(ttl, leaseId);
-          leaseIdThread.putIfAbsent(leaseId, new ConcurrentSkipListSet<Thread>(
-              new Comparator<Thread>() {
-                @Override
-                public int compare(Thread o1, Thread o2) {
-                  return o1.getName().compareTo(o2.getName());
-                }
-              }));
+          leaseIdThread.putIfAbsent(leaseId, new ConcurrentSkipListSet<>(
+              (o1, o2) -> o1.getName().compareTo(o2.getName())));
         }
       }
     }
