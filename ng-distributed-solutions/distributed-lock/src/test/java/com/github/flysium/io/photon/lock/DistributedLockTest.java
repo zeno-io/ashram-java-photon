@@ -38,10 +38,9 @@ public class DistributedLockTest {
 
   protected final Logger logger = LoggerFactory.getLogger(DistributedLockTest.class);
 
-  protected ThreadPoolExecutor executor = new ThreadPoolExecutor(4, 12, 60, TimeUnit.SECONDS,
+  protected ThreadPoolExecutor executor = new ThreadPoolExecutor(4, 24, 60, TimeUnit.SECONDS,
       new LinkedBlockingQueue<>(),
       Executors.defaultThreadFactory(), new CallerRunsPolicy());
-
 
   protected void testIncrement(final AbstractDistributedLock lock, final int threads)
       throws InterruptedException {

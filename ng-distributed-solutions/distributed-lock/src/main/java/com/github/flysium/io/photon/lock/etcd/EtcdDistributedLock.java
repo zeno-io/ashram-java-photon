@@ -20,13 +20,20 @@ import com.github.flysium.io.photon.lock.AbstractDistributedLock;
 import com.github.flysium.io.photon.lock.LockInterruptedException;
 import io.etcd.jetcd.ByteSequence;
 import io.etcd.jetcd.Client;
-import io.etcd.jetcd.lease.LeaseRevokeResponse;
+import io.etcd.jetcd.lease.LeaseKeepAliveResponse;
+import io.etcd.jetcd.lock.LockResponse;
+import io.grpc.stub.StreamObserver;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.concurrent.CompletableFuture;
+import java.time.Instant;
+import java.util.Comparator;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Etcd(<a>https://etcd.io/</a>) Distributed Lock
@@ -39,8 +46,11 @@ public class EtcdDistributedLock extends AbstractDistributedLock {
   private final String lockName;
   private final Client client;
   private final long connectionTimeout;
+  public static final int DEFAULT_TTL = 30000;
 
-  private volatile Long leaseId = null;
+  private final Map<Long, Long> ttl2LeaseId = new ConcurrentHashMap<>();
+  private final Map<Long, ConcurrentSkipListSet<Thread>> leaseIdThread = new ConcurrentHashMap<>();
+  private final Map<Thread, LockData> lockDataMap = new ConcurrentHashMap<>();
 
   public EtcdDistributedLock(String lockName, Client client) {
     this(lockName, client, 3000);
@@ -54,12 +64,12 @@ public class EtcdDistributedLock extends AbstractDistributedLock {
 
   @Override
   public void lockInterruptibly() throws InterruptedException {
-    lockInterruptibly(-1, TimeUnit.MILLISECONDS);
+    lockInterruptibly(DEFAULT_TTL, TimeUnit.MILLISECONDS);
   }
 
   @Override
   public boolean tryLock() {
-    return lockInterruptibly(-1, TimeUnit.MILLISECONDS);
+    return lockInterruptibly(DEFAULT_TTL, TimeUnit.MILLISECONDS);
   }
 
   @Override
@@ -68,52 +78,67 @@ public class EtcdDistributedLock extends AbstractDistributedLock {
   }
 
   protected boolean lockInterruptibly(long time, TimeUnit unit) {
-    boolean lock = false;
+    long s = Instant.now().toEpochMilli();
+    LockData lockData = lockDataMap.get(Thread.currentThread());
+    if (lockData != null) {
+      lockData.lockCount.incrementAndGet();
+      return true;
+    }
+    Long leaseId;
     try {
-      if (leaseId == null) {
-        synchronized (this) {
-          if (leaseId == null) {
-            leaseId = futureGet(client.getLeaseClient()
-                    .grant(time < 0 ? -1 : unit.convert(time, TimeUnit.SECONDS)),
-                connectionTimeout, TimeUnit.MILLISECONDS)
-                .getID();
-          }
-        }
-      }
+      leaseId = getLeaseId(unit.convert(time, TimeUnit.SECONDS));
     } catch (InterruptedException | ExecutionException | TimeoutException e) {
       throw new LockInterruptedException("create lease error: " + e.getMessage(), e);
     }
+    // return if lock success
     try {
-      futureGet(client.getLockClient()
+      LockResponse lockResponse = futureGet(client.getLockClient()
               .lock(ByteSequence.from(lockName, StandardCharsets.UTF_8), leaseId),
           time, unit);
-      lock = true;
+      if (lockResponse != null) {
+        String lockPath = lockResponse.getKey().toString(StandardCharsets.UTF_8);
+        logger.info("lock success, the lock path: {}, thread: {}",
+            lockPath, Thread.currentThread());
+      }
     } catch (InterruptedException | ExecutionException | TimeoutException e) {
       logger.error("lock resource [" + lockName + "]" + "failed." + e);
-      logger.error("revoke lease [" + leaseId + "]");
-      revoke();
-      throw new LockInterruptedException("lock error: " + e.getMessage(), e);
+      tryRevokeLease(leaseId);
+      return false;
     }
-    return lock;
+    lockData = new LockData(lockName, leaseId);
+    lockDataMap.putIfAbsent(Thread.currentThread(), lockData);
+    return true;
   }
 
   @Override
   public void unlock() {
+    LockData lockData = lockDataMap.get(Thread.currentThread());
+    if (lockData == null) {
+      throw new LockInterruptedException("you do not own the lock: " + lockName);
+    }
+    int newLockCount = lockData.lockCount.decrementAndGet();
+    if (newLockCount > 0) {
+      return;
+    } else if (newLockCount < 0) {
+      throw new LockInterruptedException("lock count has gone negative for lock: " + lockName);
+    }
     try {
       futureGet(client.getLockClient()
               .unlock(ByteSequence.from(lockName, StandardCharsets.UTF_8)), connectionTimeout,
           TimeUnit.MILLISECONDS);
+      tryRevokeLease(lockData.leaseId);
     } catch (InterruptedException | ExecutionException | TimeoutException e) {
       throw new LockInterruptedException("unlock error: " + e.getMessage(), e);
+    } finally {
+      lockDataMap.remove(Thread.currentThread());
     }
-  }
-
-  protected CompletableFuture<LeaseRevokeResponse> revoke() {
-    return client.getLeaseClient().revoke(leaseId);
   }
 
   @Override
   public void close() throws IOException {
+    leaseIdThread.keySet().forEach(this::revokeLease);
+    client.getLeaseClient().close();
+    client.getLockClient().close();
     client.close();
   }
 
@@ -121,4 +146,77 @@ public class EtcdDistributedLock extends AbstractDistributedLock {
   public boolean isReentrantLock() {
     return true;
   }
+
+  protected Long getLeaseId(long ttl)
+      throws InterruptedException, ExecutionException, TimeoutException {
+    Long leaseId = ttl2LeaseId.get(ttl);
+    if (leaseId == null) {
+      synchronized (this) {
+        leaseId = ttl2LeaseId.get(ttl);
+        if (leaseId == null) {
+          leaseId = futureGet(client.getLeaseClient()
+                  .grant(ttl),
+              connectionTimeout, TimeUnit.MILLISECONDS)
+              .getID();
+          client.getLeaseClient()
+              .keepAlive(leaseId, new StreamObserver<LeaseKeepAliveResponse>() {
+                @Override
+                public void onNext(LeaseKeepAliveResponse leaseKeepAliveResponse) {
+                  logger.info("Keep alive success, ID: {}, ttl: {} ",
+                      leaseKeepAliveResponse.getID(),
+                      leaseKeepAliveResponse.getTTL());
+                }
+
+                @Override
+                public void onError(Throwable throwable) {
+                  logger.warn("Keep alive error ", throwable);
+                }
+
+                @Override
+                public void onCompleted() {
+                }
+              });
+          ttl2LeaseId.put(ttl, leaseId);
+          leaseIdThread.putIfAbsent(leaseId, new ConcurrentSkipListSet<Thread>(
+              new Comparator<Thread>() {
+                @Override
+                public int compare(Thread o1, Thread o2) {
+                  return o1.getName().compareTo(o2.getName());
+                }
+              }));
+        }
+      }
+    }
+    leaseIdThread.get(leaseId).add(Thread.currentThread());
+    return leaseId;
+  }
+
+  protected void tryRevokeLease(Long leaseId) {
+    ConcurrentSkipListSet<Thread> threads = leaseIdThread.get(leaseId);
+    if (threads != null) {
+      threads.remove(Thread.currentThread());
+      if (threads.isEmpty()) {
+        revokeLease(leaseId);
+      }
+    }
+  }
+
+  private void revokeLease(Long leaseId) {
+    logger.info("revoke leaseId [{}]" + ".", leaseId);
+    client.getLeaseClient().revoke(leaseId);
+  }
+
+  private static class LockData {
+
+    final String lockPath;
+    final Long leaseId;
+    final AtomicInteger lockCount;
+
+    private LockData(String lockPath, Long leaseId) {
+      this.lockPath = lockPath;
+      this.leaseId = leaseId;
+      this.lockCount = new AtomicInteger(1);
+    }
+  }
+
 }
