@@ -18,12 +18,11 @@
 
 package com.github.flysium.io.photon.jvm.c010_jmm;
 
+import com.carrotsearch.sizeof.RamUsageEstimator;
 import com.github.flysium.io.photon.jvm.agent.ObjectSizeAgent;
+import org.github.jamm.MemoryMeter;
 
 /**
- * <li>
- * -javaagent:/home/svenaugustus/source-repository/flysium-io/photon/jdk-jvm-samples/lib/jdk-jvm-object-size.jar
- * -XX:+PrintCommandLineFlags
  * </li>
  * 默认是开启 Class Pointers 和 OOps 压缩的
  * <li>
@@ -35,14 +34,41 @@ import com.github.flysium.io.photon.jvm.agent.ObjectSizeAgent;
 public class T05_SizeOfAnObject {
 
   public static void main(String[] args) {
-    System.out.println(ObjectSizeAgent.sizeOf(new Object()));
-    System.out.println(ObjectSizeAgent.sizeOf(new int[]{}));
-    System.out.println(ObjectSizeAgent.sizeOf(new P()));
-
+    int case0 = 2;
+    switch (case0) {
+      case 0:
+        // -javaagent:/home/svenaugustus/source-repository/flysium-io/photon/jdk-jvm-samples/lib/jdk-jvm-object-size.jar -XX:+PrintCommandLineFlags
+        System.out.println(measureByJavaagent0(new Object()));
+        System.out.println(measureByJavaagent0(new int[]{}));
+        System.out.println(measureByJavaagent0(new P()));
+        break;
+      case 1:
+        // -javaagent:/var/lib/maven/defaults/com/github/jbellis/jamm/0.3.3/jamm-0.3.3.jar
+        System.out.println(measureByJavaagent1(new Object()));
+        System.out.println(measureByJavaagent1(new int[]{}));
+        System.out.println(measureByJavaagent1(new P()));
+        break;
+      case 2:
+      default:
+        System.out.println(RamUsageEstimator.humanSizeOf(new Object()));
+        System.out.println(RamUsageEstimator.humanSizeOf(new int[]{}));
+        System.out.println(RamUsageEstimator.humanSizeOf(new P()));
+        break;
+    }
     // 启用、禁用指针压缩： 16 16
     // 启用、禁用指针压缩： 16 24
     // 启用、禁用指针压缩： 32 48
   }
+
+  public static long measureByJavaagent0(Object o) {
+    return ObjectSizeAgent.sizeOf(o);
+  }
+
+  public static long measureByJavaagent1(Object o) {
+    MemoryMeter memoryMeter = new MemoryMeter();
+    return memoryMeter.measure(o);
+  }
+
 
   // 一个Object占多少个字节
   // -XX:+UseCompressedClassPointers -XX:+UseCompressedOops
