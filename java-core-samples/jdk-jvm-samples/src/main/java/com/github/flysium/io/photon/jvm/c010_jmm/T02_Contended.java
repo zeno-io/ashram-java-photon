@@ -16,40 +16,52 @@
 
 package com.github.flysium.io.photon.jvm.c010_jmm;
 
+import jdk.internal.vm.annotation.Contended;
+
 /**
  * 使用缓存行的对齐能够提高效率
+ *
+ * <li>
+ * JDK8 需要缓存行保证的数据，可以增加注解： @Contended
+ * </li>
+ * <li>
+ * 并 VM Option 增加： <pre>-XX:-RestrictContended</pre>
+ * </li>
+ * 注意比较 加不加 VM Option的两种情况
+ *
+ * <li>
+ * 对于 Java 9 以上的版本，编译和运行时需要增加参数：
+ * <pre>
+ *     --add-exports=java.base/jdk.internal.vm.annotation=ALL-UNNAMED
+ *    </pre>
+ * <p>
+ * 如果你是用 IntelliJ IDEA，由于IDEA 编译的时候会自动在 javac 后面添加 --release 这个参数，<br/> 这个参数不允许 --add-export等所有打破
+ * Java 模块化的参数，所以需要关闭 IDEA 传递这个参数
+ * </p>
+ * </li>
  */
-public class T02_CacheLinePadding {
+public class T02_Contended {
 
-  private static class Padding {
+  private static class T {
 
-    public long p1, p2, p3, p4, p5, p6, p7;
-  }
-
-  private static class T extends Padding {
-
+    @Contended("group1")
     public volatile long x = 0L;
-
-    public long p8, p9, p10, p11, p12, p13, p14;
+    @Contended("group2")
+    public volatile long y = 0L;
   }
 
-  public static T[] arr = new T[2];
-
-  static {
-    arr[0] = new T();
-    arr[1] = new T();
-  }
+  public static T t = new T();
 
   public static void main(String[] args) throws Exception {
     Thread t1 = new Thread(() -> {
       for (long i = 0; i < 1000_0000L; i++) {
-        arr[0].x = i;
+        t.x = i;
       }
     });
 
     Thread t2 = new Thread(() -> {
       for (long i = 0; i < 1000_0000L; i++) {
-        arr[1].x = i;
+        t.y = i;
       }
     });
 
