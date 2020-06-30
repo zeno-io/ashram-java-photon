@@ -23,6 +23,7 @@ import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -64,6 +65,8 @@ public class MessageChatClient {
     try {
       new Bootstrap()
           .group(workGroup)
+          .option(ChannelOption.TCP_NODELAY, true)
+          .option(ChannelOption.SO_LINGER, 100)
           .channel(NioSocketChannel.class)
           .handler(new ChannelInitializer<SocketChannel>() {
             @Override
