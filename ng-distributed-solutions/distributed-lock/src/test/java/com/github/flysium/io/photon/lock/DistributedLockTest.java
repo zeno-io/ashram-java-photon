@@ -66,7 +66,7 @@ public class DistributedLockTest {
         lock.lock();
       }
       supplier.accept(null);
-    } catch (Exception e) {
+    } catch (Throwable e) {
       logger.error(e.getMessage(), e);
     } finally {
       lock.unlock();

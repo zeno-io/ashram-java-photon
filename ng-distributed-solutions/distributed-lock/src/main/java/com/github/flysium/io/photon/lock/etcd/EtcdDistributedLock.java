@@ -45,9 +45,21 @@ public class EtcdDistributedLock extends AbstractDistributedLock {
   private final Client client;
   private final long connectionTimeout;
   public static final int DEFAULT_TTL = 30000;
-
+  /**
+   * key: ttl
+   * <p>
+   * value: leaseId for hold the lock exists.
+   */
   private final Map<Long, Long> ttl2LeaseId = new ConcurrentHashMap<>();
+  /**
+   * key: leaseId
+   * <p>
+   * value: the threads which hold the leaseId (lock)
+   */
   private final Map<Long, ConcurrentSkipListSet<Thread>> leaseIdThread = new ConcurrentHashMap<>();
+  /**
+   * re-entrant mutex lock
+   */
   private final Map<Thread, LockData> lockDataMap = new ConcurrentHashMap<>();
 
   public EtcdDistributedLock(String lockName, Client client) {
@@ -197,6 +209,11 @@ public class EtcdDistributedLock extends AbstractDistributedLock {
   private void revokeLease(Long leaseId) {
     logger.info("revoke leaseId [{}]" + ".", leaseId);
     client.getLeaseClient().revoke(leaseId);
+    ttl2LeaseId.forEach((ttl, l) -> {
+      if (l != null && l.equals(leaseId)) {
+        ttl2LeaseId.remove(ttl);
+      }
+    });
   }
 
   private static class LockData {
