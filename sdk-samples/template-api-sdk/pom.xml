@@ -30,7 +30,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <java.version>1.8</java.version>
     <spring-web.version>5.1.14.RELEASE</spring-web.version>
-    <spring-boot.version>2.1.13.RELEASE</spring-boot.version>
+    <spring-boot.version>2.1.15.RELEASE</spring-boot.version>
     <yew.version>1.0.4</yew.version>
   </properties>
 
