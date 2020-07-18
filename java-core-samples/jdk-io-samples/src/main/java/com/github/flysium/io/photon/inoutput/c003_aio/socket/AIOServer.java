@@ -19,6 +19,7 @@ package com.github.flysium.io.photon.inoutput.c003_aio.socket;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
+import java.net.StandardSocketOptions;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousChannelGroup;
 import java.nio.channels.AsynchronousServerSocketChannel;
@@ -41,47 +42,79 @@ import org.slf4j.LoggerFactory;
 public class AIOServer {
 
   public static void main(String[] args) throws Exception {
-    AIOServer aioServer = new AIOServer(8010);
-    aioServer.initServer();
-    aioServer.listen();
+    AIOServer aioServer = new AIOServer(9090);
+    aioServer.start();
   }
 
   private static final Logger logger = LoggerFactory.getLogger(AIOServer.class);
 
   private static final ThreadPoolExecutor EXECUTOR = new ThreadPoolExecutor(4, 8, 60,
       TimeUnit.SECONDS,
-      new ArrayBlockingQueue<>(100),
+      new ArrayBlockingQueue<>(1000),
       Executors.defaultThreadFactory(), new CallerRunsPolicy());
 
   private final int port;
-  private volatile AsynchronousServerSocketChannel acceptChannel;
+  private final int backlog;
+
+  private AsynchronousServerSocketChannel server;
 
   public AIOServer(int port) {
-    this.port = port;
+    this(port, 50);
   }
 
-  public void initServer() throws IOException {
+  public AIOServer(int port, int backlog) {
+    this.port = port;
+    this.backlog = backlog;
+  }
+
+  public void start() {
+    try {
+      initServer();
+      accept();
+    } catch (IOException e) {
+      logger.error(e.getMessage(), e);
+    }
+  }
+
+  private void initServer() throws IOException {
     // 1. 创建异步通道群组
     AsynchronousChannelGroup tg = AsynchronousChannelGroup.withCachedThreadPool(EXECUTOR, 1);
     // 2. 创建服务端异步通道
-    acceptChannel = AsynchronousServerSocketChannel.open(tg);
+    server = AsynchronousServerSocketChannel.open(tg);
+    setServerSocketOptions(server);
     // 3. 绑定监听端口
-    acceptChannel.bind(new InetSocketAddress(port));
+    server.bind(new InetSocketAddress(port), backlog);
   }
 
-  public void listen() throws IOException {
+  private void accept() {
     // 监听连接，传入回调类处理连接请求
-    acceptChannel.accept(this, new AcceptHandler());
+    server.accept(this, new AcceptHandler());
+  }
+
+  protected void setServerSocketOptions(AsynchronousServerSocketChannel server) throws IOException {
+    server.setOption(StandardSocketOptions.SO_REUSEADDR, true);
+  }
+
+  protected void setClientSocketOptions(AsynchronousSocketChannel client) throws IOException {
+    client.setOption(StandardSocketOptions.SO_KEEPALIVE, true);
+    client.setOption(StandardSocketOptions.TCP_NODELAY, true);
+    client.setOption(StandardSocketOptions.SO_LINGER, 100);
   }
 
   // AcceptHandler 类实现了 CompletionHandler 接口的 completed 方法。它还有两个模板参数，第一个是异步通道，第二个就是 Nio2Server 本身
-  static class AcceptHandler implements CompletionHandler<AsynchronousSocketChannel, AIOServer> {
+  class AcceptHandler implements CompletionHandler<AsynchronousSocketChannel, AIOServer> {
 
     // 具体处理连接请求的就是 completed 方法，它有两个参数：第一个是异步通道，第二个就是上面传入的 NioServer 对象
     @Override
-    public void completed(AsynchronousSocketChannel channel, AIOServer attachment) {
+    public void completed(AsynchronousSocketChannel client, AIOServer thatServer) {
       // 调用 accept 方法继续接收其他客户端的请求
-      attachment.acceptChannel.accept(attachment, this);
+      thatServer.server.accept(thatServer, this);
+
+      try {
+        setClientSocketOptions(client);
+      } catch (IOException e) {
+        logger.error(e.getMessage(), e);
+      }
 
       // 1. 先分配好 Buffer，告诉内核，数据拷贝到哪里去
       ByteBuffer buf = ByteBuffer.allocate(1024);
@@ -90,56 +123,54 @@ public class AIOServer {
       // 异步读操作，参数的定义：第一个参数：接收缓冲区，用于异步从channel读取数据包；
       // 第二个参数：异步channel携带的附件，通知回调的时候作为入参参数，这里是作为 ReadCompletionHandler 的入参
       // 通知回调的业务handler，也就是数据从channel读到ByteBuffer完成后的回调handler，这里是ReadCompletionHandler
-      channel.read(buf, buf, new RequestCompletionHandler(channel));
+      client.read(buf, buf, new ReadHandler(client));
     }
 
     @Override
     public void failed(Throwable exc, AIOServer attachment) {
       logger.error(exc.getMessage(), exc);
+      close();
     }
   }
 
-  static class RequestCompletionHandler implements CompletionHandler<Integer, ByteBuffer> {
+  static class ReadHandler implements CompletionHandler<Integer, ByteBuffer> {
 
-    private final AsynchronousSocketChannel channel;
+    private final AsynchronousSocketChannel client;
 
-    RequestCompletionHandler(AsynchronousSocketChannel channel) {
-      this.channel = channel;
+    ReadHandler(AsynchronousSocketChannel client) {
+      this.client = client;
     }
 
     // 读取到消息后的处理
     @Override
-    public void completed(Integer result, ByteBuffer attachment) {
-      // attachment 就是数据，调用 flip 操作，其实就是把读的位置移动最前面
-      attachment.flip();
+    public void completed(Integer readCount, ByteBuffer buffer) {
+      if (readCount > 0) {
+        // attachment 就是数据，调用 flip 操作，其实就是把读的位置移动最前面
+        buffer.flip();
 
-      // 读取数据
-      byte[] request = new byte[attachment.remaining()];
-      attachment.get(request);
+        // 读取数据
+        byte[] request = new byte[buffer.remaining()];
+        buffer.get(request);
+        String requestString = new String(request, StandardCharsets.UTF_8);
 
-      // compute
-      String requestString = new String(request, StandardCharsets.UTF_8);
-      if (requestString.length() > 0) {
-        byte[] response;
-        try {
-          int integer = Integer.parseInt(requestString);
-          response = String.valueOf(integer * 2).getBytes();
-        } catch (NumberFormatException e) {
-          response = ("Error Request" + requestString).getBytes();
-        }
+        logger.info("readied something from " + getRemoteAddress(client) + ", count: " + readCount
+            + " data: " + requestString);
 
-        doWrite(response);
+        // 返回响应内容
+        channelWrite(("recv->" + requestString).getBytes());
 
-        logger.info("客户端" + getRemoteAddress(channel)
-            + "，请求：" + new String(request)
-            + "，响应：" + new String(response));
+      } else if (readCount == 0) {
+        logger.warn("readied nothing from " + getRemoteAddress(client) + "! ");
+      } else {
+        logger.warn("readied -1 from " + getRemoteAddress(client) + "...");
+        closeClient(client);
       }
     }
 
     /**
      * 往客户端的写操作
      */
-    public void doWrite(byte[] response) {
+    public void channelWrite(byte[] response) {
       if (response == null) {
         return;
       }
@@ -149,42 +180,64 @@ public class AIOServer {
       write.put(response);
       write.flip();
       // 将缓存写进channel
-      channel.write(write, write, new CompletionHandler<Integer, ByteBuffer>() {
-
-        @Override
-        public void completed(Integer result, ByteBuffer buffer) {
-          // 如果发现还有数据没写完，继续写
-          if (buffer.hasRemaining()) {
-            channel.write(buffer, buffer, this);
-          }
-        }
-
-        @Override
-        public void failed(Throwable exc, ByteBuffer attachment) {
-          try {
-            // 写失败，关闭channel，并释放与channel相关联的一切资源
-            channel.close();
-          } catch (IOException e) {
-            logger.error(e.getMessage(), e);
-          }
-        }
-      });
+      client.write(write, write, new WriteHandler(client));
     }
 
     @Override
     public void failed(Throwable exc, ByteBuffer attachment) {
-      try {
-        // 读，关闭channel，并释放与channel相关联的一切资源
-        channel.close();
-      } catch (IOException e) {
-        logger.error(e.getMessage(), e);
+      logger.error(exc.getMessage(), exc);
+      closeClient(client);
+    }
+
+  }
+
+  static class WriteHandler implements CompletionHandler<Integer, ByteBuffer> {
+
+    private final AsynchronousSocketChannel client;
+
+    WriteHandler(AsynchronousSocketChannel client) {
+      this.client = client;
+    }
+
+    @Override
+    public void completed(Integer readCount, ByteBuffer buffer) {
+      // 如果发现还有数据没写完，继续写
+      if (buffer.hasRemaining()) {
+        client.write(buffer, buffer, this);
       }
+    }
+
+    @Override
+    public void failed(Throwable exc, ByteBuffer attachment) {
+      logger.error(exc.getMessage(), exc);
+      closeClient(client);
     }
   }
 
-  private static SocketAddress getRemoteAddress(AsynchronousSocketChannel channel) {
+  protected void close() {
+    logger.warn("close server.....");
     try {
-      return channel.getRemoteAddress();
+      if (server != null) {
+        server.close();
+      }
+    } catch (IOException e) {
+      logger.error(e.getMessage(), e);
+    }
+  }
+
+  private static void closeClient(AsynchronousSocketChannel client) {
+    logger.warn("close client：" + getRemoteAddress(client));
+    try {
+      // 读，关闭channel，并释放与channel相关联的一切资源
+      client.close();
+    } catch (IOException e) {
+      logger.error(e.getMessage(), e);
+    }
+  }
+
+  protected static SocketAddress getRemoteAddress(AsynchronousSocketChannel client) {
+    try {
+      return client.getRemoteAddress();
     } catch (IOException e) {
       e.printStackTrace();
     }

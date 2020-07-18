@@ -21,6 +21,8 @@
     </encoder>
   </appender>
 
+<!--  <logger name="com.github.flysium.io.photon.inoutput.c002_nio.s07_selector_group" level="ERROR"/> -->
+
   <root level="DEBUG">
     <appender-ref ref="STDOUT"/>
   </root>

@@ -17,102 +17,113 @@
 package com.github.flysium.io.photon.inoutput.c000_bio.s08_socket;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.net.Socket;
-import java.net.UnknownHostException;
-import java.nio.CharBuffer;
+import java.net.SocketException;
+import java.util.function.Supplier;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- * web客户端模拟
+ * Client
  *
  * @author Sven Augustus
- * @version 2017年1月12日
  */
-public class SocketClient {
+public class SocketClient implements Runnable {
 
-	private static final int PORT = 9090;
+  public static void main(String[] args) throws Exception {
+    new Thread(new SocketClient("127.0.0.1", 9090, () -> "测试1"), "BIOClient-001").start();
+    new Thread(new SocketClient("127.0.0.1", 9090, () -> "测试2"), "BIOClient-002").start();
+    new Thread(new SocketClient("127.0.0.1", 9090, () -> "测试3"), "BIOClient-003").start();
+    new Thread(new SocketClient("127.0.0.1", 9090, () -> "测试4"), "BIOClient-004").start();
 
-	public static void main(String[] args) throws Exception {
-		long start = System.currentTimeMillis();
-		// client("赵客缦胡缨，吴钩霜雪明。银鞍照白马，飒沓如流星。十步杀一人，千里不留行。
-		// 事了拂衣去，深藏身与名。闲过信陵饮，脱剑膝前横。将炙啖朱亥，持觞劝侯嬴。
-		// 三杯吐然诺，五岳倒为轻。眼花耳热后，意气素霓生。救赵挥金锤，邯郸先震惊。千秋二壮士，烜赫大梁城。纵死侠骨香，不惭世上英。谁能书阁下，白首太玄经。" );
-		for (int i = 0; i < 20; i++) {
-			client("测试" + (i + 1));
-		}
-		while (Thread.activeCount() > 1) {
-			Thread.sleep(10);
-		}
-		long end = System.currentTimeMillis();
-		System.out.println("耗时：" + (end - start) + "ms");
-	}
+    System.in.read();
+  }
 
-	public static void client(final String msg) {
-		new Thread(new Runnable() {
+  private static final Logger logger = LoggerFactory.getLogger(SocketClient.class);
+  private final String host;
+  private final int port;
 
-			@Override
-			public void run() {
-				java.net.Socket socket = null;
-				try {
-					socket = new Socket("127.0.0.1", PORT);
+  // for test
+  private final Supplier<String> supplier;
 
-					PrintWriter pw = null;
-					BufferedReader br = null;
-					pw = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
-					br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-					/**
-					 * Socket客户端发送数据到服务器
-					 */
-					pw.print(msg);
-					pw.flush();
-					try {
-						socket.shutdownOutput();
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-					/**
-					 * Socket客户端接收服务器的返回结果
-					 */
-					// String msg = br.readLine();
-					StringBuffer stringBuffer = new StringBuffer();
-					CharBuffer charBuffer = CharBuffer.allocate(1024);
-					int numBytesRead = -1;
-					while ((numBytesRead = br.read(charBuffer)) != -1) {
-						if (numBytesRead == 0) {// 如果没有数据，则稍微等待一下
-							try {
-								Thread.sleep(1);
-							} catch (InterruptedException e) {
-								e.printStackTrace();
-							}
-							continue;
-						}
-						charBuffer.flip();
-						stringBuffer.append(charBuffer.toString());
-					}
-					String msg = stringBuffer.toString();
-					System.out.println("返回结果：" + msg);
-					try {
-						socket.shutdownInput();
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				} catch (UnknownHostException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
-				} finally {
-					try {
-						if (socket != null) {
-							socket.close();
-						}
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				}
-			}
-		}).start();
-	}
+  private Socket client;
+
+  public SocketClient(String host, int port, Supplier<String> supplier) {
+    this.host = host;
+    this.port = port;
+    this.supplier = supplier;
+  }
+
+  @Override
+  public void run() {
+    try {
+      init();
+
+      setSocketOptions(client);
+
+      readyWrite();
+
+      readyRead();
+
+    } catch (IOException e) {
+      logger.error(e.getMessage(), e);
+    } finally {
+      close();
+    }
+  }
+
+  private void init() throws IOException {
+    client = new Socket(host, port);
+  }
+
+  protected void setSocketOptions(Socket client) throws SocketException {
+    client.setTcpNoDelay(true);
+    client.setSoLinger(true, 100);
+//    client.setSoTimeout(5000);
+  }
+
+  protected void readyWrite() throws IOException {
+    if (supplier == null) {
+      return;
+    }
+    String buf = supplier.get();
+
+    logger.info("write...");
+
+    BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(client.getOutputStream()));
+    bw.write(buf);
+    bw.flush();
+  }
+
+  protected void readyRead() throws IOException {
+    BufferedReader br = new BufferedReader(new InputStreamReader(client.getInputStream()));
+    char[] cbuf = new char[8092];
+    while (true) {
+      int readCount = br.read(cbuf);
+      if (readCount > 0) {
+        String response = new String(cbuf, 0, readCount);
+        logger.info("readied something, count: " + readCount + " data: " + response);
+      } else if (readCount == 0) {
+        logger.warn("readied nothing ! ");
+      } else {
+        logger.warn("readied -1...");
+        close();
+        break;
+      }
+    }
+  }
+
+  protected void close() {
+    logger.warn("close.....");
+    try {
+      client.close();
+    } catch (IOException e) {
+      logger.error(e.getMessage(), e);
+    }
+  }
+
 }
