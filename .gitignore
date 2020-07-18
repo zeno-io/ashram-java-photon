@@ -50,3 +50,7 @@ hs_err_pid*
 out
 test-output
 .gradletasknamecache
+
+# Custom Configuration
+/x-language-samples/javacc-samples/src/*.java
+
