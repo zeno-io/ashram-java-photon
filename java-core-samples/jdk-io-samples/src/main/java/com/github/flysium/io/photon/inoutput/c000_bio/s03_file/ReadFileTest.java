@@ -32,115 +32,125 @@ import java.io.IOException;
  */
 public class ReadFileTest {
 
-	public static void main(String[] args) throws IOException {
-		readFileAsByte();
+  public static void main(String[] args) throws IOException {
+    readFileAsByte();
 
-		System.out.println();
+    System.out.println();
 
-		readFileAsByteArray();
+    readFileAsByteArray();
 
-		System.out.println();
+    System.out.println();
 
-		readFileAsChar();
+    readFileAsChar();
 
-		System.out.println();
+    System.out.println();
 
-		readFileAsCharArray();
-	}
+    readFileAsCharArray();
+  }
 
-	/**
-	 * 单字节读取文件示例
-	 */
-	public static void readFileAsByte() throws IOException {
-		String filepath = "file.bin";
+  /**
+   * 单字节读取文件示例
+   */
+  public static void readFileAsByte() throws IOException {
+    String filepath = "file.bin";
 
-		java.io.InputStream is = null;
-		try {
-			is = new FileInputStream(filepath);
+    java.io.InputStream is = null;
+    try {
+      is = new FileInputStream(filepath);
 
-			int data = -1;
-			while ((data = is.read()) != -1) {// -1 表示读取到达文件结尾
-				// 操作数据
-				System.out.print((byte) data + " ");
-			}
-		} finally {
-			if (is != null) {
-				is.close();// 关闭流
-			}
-		}
-	}
+      int data = -1;
+      while ((data = is.read()) != -1) {// -1 表示读取到达文件结尾
+        // 操作数据
+        System.out.print((byte) data + " ");
+      }
+    } finally {
+      if (is != null) {
+        is.close();// 关闭流
+      }
+    }
+  }
 
-	/**
-	 * 字节数组读取文件示例
-	 */
-	public static void readFileAsByteArray() throws IOException {
-		String filepath = "file.bin";
+  /**
+   * 字节数组读取文件示例
+   * <p>
+   * 涉及的系统调用：
+   * <pre>
+   *  openat(AT_FDCWD, "file.bin", O_RDONLY) = 4
+   *  fstat(4, {st_mode=S_IFREG|0644, st_size=256, ...}) = 0
+   *  read(4, "xx\234\34\313\234\233\236Uo\265\260\rW\247\"'\"m\0\364\330\206\227\362\373\206\10uZ<\""..., 8192) = 256
+   *  read(4, "", 8192)                 = 0
+   *  ...
+   *  close(4)                          = 0
+   *  </pre>
+   */
+  public static void readFileAsByteArray() throws IOException {
+    String filepath = "file.bin";
 
-		java.io.InputStream is = null;
-		try {
-			is = new BufferedInputStream(
-					new FileInputStream(filepath));// 组装BufferedInputStream流，加入缓冲能力
+    java.io.InputStream is = null;
+    try {
+      is = new BufferedInputStream(
+          new FileInputStream(filepath));// 组装BufferedInputStream流，加入缓冲能力
 
-			byte[] data = new byte[256];
-			int len = -1;
-			while ((len = is.read(data)) != -1) {// -1 表示读取到达文件结尾
-				// 操作数据
-				for (int i = 0; i < len; i++) {
-					System.out.print(data[i] + " ");
-				}
-			}
-		} finally {
-			if (is != null) {
-				is.close();// 关闭流
-			}
-		}
-	}
+      byte[] data = new byte[256];
+      int len = -1;
+      while ((len = is.read(data)) != -1) {// -1 表示读取到达文件结尾
+        // 操作数据
+        for (int i = 0; i < len; i++) {
+          System.out.print(data[i] + " ");
+        }
+      }
+    } finally {
+      if (is != null) {
+        is.close();// 关闭流
+      }
+    }
+  }
 
-	/**
-	 * 单字符读取文件示例
-	 */
-	public static void readFileAsChar() throws IOException {
-		String filepath = "file.txt";
+  /**
+   * 单字符读取文件示例
+   */
+  public static void readFileAsChar() throws IOException {
+    String filepath = "file.txt";
 
-		java.io.Reader r = null;
-		try {
-			r = new FileReader(filepath);
+    java.io.Reader r = null;
+    try {
+      r = new FileReader(filepath);
 
-			int data = -1;
-			while ((data = r.read()) != -1) {// -1 表示读取到达文件结尾
-				// 操作数据
-				System.out.print((char) data);
-			}
-		} finally {
-			if (r != null) {
-				r.close();// 关闭流
-			}
-		}
-	}
+      int data = -1;
+      while ((data = r.read()) != -1) {// -1 表示读取到达文件结尾
+        // 操作数据
+        System.out.print((char) data);
+      }
+    } finally {
+      if (r != null) {
+        r.close();// 关闭流
+      }
+    }
+  }
 
-	/**
-	 * 字符数组读取文件示例
-	 */
-	public static void readFileAsCharArray() throws IOException {
-		String filepath = "file.txt";
+  /**
+   * 字符数组读取文件示例
+   */
+  public static void readFileAsCharArray() throws IOException {
+    String filepath = "file.txt";
 
-		java.io.Reader r = null;
-		try {
-			r = new BufferedReader(new FileReader(filepath));// 组装BufferedReader流，加入缓冲能力
+    java.io.Reader r = null;
+    try {
+      r = new BufferedReader(new FileReader(filepath));// 组装BufferedReader流，加入缓冲能力
 
-			char[] data = new char[256];
-			int len = -1;
-			while ((len = r.read(data)) != -1) {// -1 表示读取到达文件结尾
-				// 操作数据
-				for (int i = 0; i < len; i++) {
-					System.out.print(data[i]);
-				}
-			}
-		} finally {
-			if (r != null) {
-				r.close();// 关闭流
-			}
-		}
-	}
+      char[] data = new char[256];
+      int len = -1;
+      while ((len = r.read(data)) != -1) {// -1 表示读取到达文件结尾
+        // 操作数据
+        for (int i = 0; i < len; i++) {
+          System.out.print(data[i]);
+        }
+      }
+    } finally {
+      if (r != null) {
+        r.close();// 关闭流
+      }
+    }
+  }
 
 }

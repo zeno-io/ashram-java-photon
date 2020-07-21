@@ -33,119 +33,138 @@ import java.util.Random;
  */
 public class WriteFileTest {
 
-	public static void main(String[] args) throws IOException {
-		writeFileAsByte();
+  public static void main(String[] args) throws IOException {
+    writeFileAsByte();
 
-		System.out.println();
+    System.out.println();
 
-		writeFileAsByteArray();
+    writeFileAsByteArray();
 
-		System.out.println();
+    System.out.println();
 
-		writeFileAsChar();
+    writeFileAsChar();
 
-		System.out.println();
+    System.out.println();
 
-		writeFileAsCharArray();
-	}
+    writeFileAsCharArray();
+  }
 
-	/**
-	 * 单字节写入文件示例
-	 */
-	public static void writeFileAsByte() throws IOException {
-		String filepath = "file.bin";
+  /**
+   * 单字节写入文件示例
+   * <p>
+   * 涉及的系统调用：
+   * <pre>
+   * openat(AT_FDCWD, "file.bin", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 4
+   * fstat(4, {st_mode=S_IFREG|0644, st_size=0, ...}) = 0
+   * write(4, "1", 1)                        = 1
+   * write(4, "2", 1)                        = 1
+   * write(4, "3", 1)                        = 1
+   * write(4, "4", 1)                        = 1
+   * close(4)
+   * </pre>
+   */
+  public static void writeFileAsByte() throws IOException {
+    String filepath = "file.bin";
 
-		java.io.OutputStream os = null;
-		try {
-			os = new FileOutputStream(filepath);
+    java.io.OutputStream os = null;
+    try {
+      os = new FileOutputStream(filepath);
 
-			os.write('1');
-			os.write('2');
-			os.write('3');
-			os.write('4');
-			os.flush();// 把缓冲区内的数据刷新到磁盘
+      os.write('1');
+      os.write('2');
+      os.write('3');
+      os.write('4');
+      os.flush();// 把缓冲区内的数据刷新到磁盘
 
-		} finally {
-			if (os != null) {
-				os.close();// 关闭流
-			}
-		}
-	}
+    } finally {
+      if (os != null) {
+        os.close();// 关闭流
+      }
+    }
+  }
 
-	/**
-	 * 字节数组写入文件示例
-	 */
-	public static void writeFileAsByteArray() throws IOException {
-		String filepath = "file.bin";
+  /**
+   * 字节数组写入文件示例
+   * <p>
+   * 涉及的系统调用：
+   * <pre>
+   * openat(AT_FDCWD, "file.bin", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 4
+   * fstat(4, {st_mode=S_IFREG|0644, st_size=0, ...}) = 0
+   * write(4, "\224\210v\262\331P\276U\37\236\206\207\307\325A\321/mE\344\344\363\27\344\276\vk4=Xm\343"..., 256 <unfinished ...>
+   * close(4 <unfinished ...>
+   * </pre>
+   */
+  public static void writeFileAsByteArray() throws IOException {
+    String filepath = "file.bin";
 
-		java.io.OutputStream os = null;
-		try {
-			os = new BufferedOutputStream(
-					new FileOutputStream(filepath));// 组装BufferedOutputStream流，加入缓冲能力
+    java.io.OutputStream os = null;
+    try {
+      os = new BufferedOutputStream(
+          new FileOutputStream(filepath));// 组装BufferedOutputStream流，加入缓冲能力
 
-			// 模拟
-			byte[] data = new byte[256];
-			new Random().nextBytes(data);
+      // 模拟
+      byte[] data = new byte[256];
+      new Random().nextBytes(data);
 
-			os.write(data);
-			os.flush();// 把缓冲区内的数据刷新到磁盘
+      os.write(data);
+      os.flush();// 把缓冲区内的数据刷新到磁盘
 
-		} finally {
-			if (os != null) {
-				os.close();// 关闭流
-			}
-		}
-	}
+    } finally {
+      if (os != null) {
+        os.close();// 关闭流
+      }
+    }
+  }
 
-	/**
-	 * 单字符写入文件示例
-	 */
-	public static void writeFileAsChar() throws IOException {
-		String filepath = "file.txt";
+  /**
+   * 单字符写入文件示例
+   */
+  public static void writeFileAsChar() throws IOException {
+    String filepath = "file.txt";
 
-		java.io.Writer w = null;
-		try {
-			w = new FileWriter(filepath);
+    java.io.Writer w = null;
+    try {
+      w = new FileWriter(filepath);
 
-			w.write('1');
-			w.write('2');
-			w.write('3');
-			w.write('4');
-			w.flush();// 把缓冲区内的数据刷新到磁盘
+      w.write('1');
+      w.write('2');
+      w.write('3');
+      w.write('4');
+      w.flush();// 把缓冲区内的数据刷新到磁盘
 
-		} finally {
-			if (w != null) {
-				w.close();// 关闭流
-			}
-		}
-	}
+    } finally {
+      if (w != null) {
+        w.close();// 关闭流
+      }
+    }
+  }
 
-	/**
-	 * 字符数组写入文件示例
-	 */
-	public static void writeFileAsCharArray() throws IOException {
-		String filepath = "file.txt";
+  /**
+   * 字符数组写入文件示例
+   */
+  public static void writeFileAsCharArray() throws IOException {
+    String filepath = "file.txt";
 
-		java.io.Writer w = null;
-		try {
-			w = new BufferedWriter(new FileWriter(filepath));// 组装BufferedWriter流，加入缓冲能力
+    java.io.Writer w = null;
+    try {
+      w = new BufferedWriter(new FileWriter(filepath));// 组装BufferedWriter流，加入缓冲能力
 
-			// 模拟
-			char[] data = new char[256];
-			String f = "0123456789abcdefghijklmnopqrstuvwxyz";
-			Random rd = new Random();
-			for (int i = 0; i < data.length; i++) {
-				data[i] = f.charAt(rd.nextInt(f.length()));
-			}
+      // 模拟
+      char[] data = new char[256];
+      String f = "0123456789abcdefghijklmnopqrstuvwxyz";
+      Random rd = new Random();
+      for (int i = 0; i < data.length; i++) {
+        data[i] = f.charAt(rd.nextInt(f.length()));
+      }
 
-			w.write(data);
-			w.flush();// 把缓冲区内的数据刷新到磁盘
+      w.write(data);
+      w.flush();// 把缓冲区内的数据刷新到磁盘
 
-		} finally {
-			if (w != null) {
-				w.close();// 关闭流
-			}
-		}
-	}
+    } finally {
+      if (w != null) {
+        w.close();// 关闭流
+      }
+    }
+  }
 
 }
