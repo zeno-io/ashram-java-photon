@@ -87,6 +87,11 @@ public class T10_36_TomcatServer {
 //      ((AbstractProtocol) handler).setConnectionTimeout(T10_0_C10KClient.SERVER_READ_TIMEOUT);
     }
     Tomcat tomcat = new Tomcat();
+    tomcat.setBaseDir("/var/tmp");
+    //    work
+    //    └── Tomcat
+    //        └── localhost
+    //            └── ROOT
     tomcat.getService().addConnector(connector);
     tomcat.setConnector(connector);
 
