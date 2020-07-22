@@ -43,6 +43,11 @@
 * [ ] rxjava2-samples: samples for [`RxJava`](https://github.com/ReactiveX/RxJava) Version 2.x.
 * [ ] rxjava3-samples: samples for [`RxJava`](https://github.com/ReactiveX/RxJava) Version 3.x.
 
+##### Scripts
+* [x] javacc-samples: samples for [`JavaCC`](https://javacc.github.io/javacc/)
+* [x] lua-samples: samples for [`Lua`](https://www.lua.org)
+* [x] nginx-samples: samples for [`NGINX`](https://www.nginx.com/) using [`Lua`](https://www.lua.org) , such as [`OpenResty`](https://openresty.org/en/), a dynamic web platform based on [`NGINX`](https://www.nginx.com/)  and [`LuaJIT`](https://luajit.org) .
+
 -------------------------- 
 #### Dependency
 * 1、JDK11+
