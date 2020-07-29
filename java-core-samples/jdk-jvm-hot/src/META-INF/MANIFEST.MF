@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+Created-By: Sven Augustus
+Premain-Class: com.github.flysium.io.photon.jvm.agent.HotAgent
+Can-Redefine-Classes: true

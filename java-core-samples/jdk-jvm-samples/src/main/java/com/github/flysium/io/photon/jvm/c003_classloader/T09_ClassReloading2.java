@@ -1,7 +1,5 @@
 /*
- * Apache License 2.0
- *
- * Copyright 2018-2025 the original author or authors.
+ * Copyright 2020 SvenAugustus
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,6 +27,7 @@ public class T09_ClassReloading2 {
 
   private static class MyReloadingClassLoader extends MyClassLoader {
 
+    // 这个并不能真正做到 hot reload, 只是表明 如何绕开 双亲委派，也可以参考 Tomcat 的 JasperLoader，每次加载也是 new 一个 新的 JasperLoader 重新加载class
     @Override
     public Class<?> loadClass(String name) throws ClassNotFoundException {
       File f = new File(PATH, name.replace(".", "/").concat(".class"));

@@ -1,7 +1,5 @@
 /*
- * Apache License 2.0
- *
- * Copyright 2018-2025 the original author or authors.
+ * Copyright 2020 SvenAugustus
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,15 +37,16 @@ public class T02_ClassLoaderLevelAndScope {
     System.out.println(T02_ClassLoaderLevelAndScope.class.getClassLoader().getParent().getParent());
     //System.out.println(T02_ClassLoaderLevelAndScope.class.getClassLoader().getParent().getParent().getParent());
 
+    System.out.println("--------------------");
     String pathBoot = System.getProperty("sun.boot.class.path");
-    System.out.println(pathBoot.replaceAll(";", System.lineSeparator()));
+    System.out.println("sun.boot.class.path: " + pathBoot);
 
     System.out.println("--------------------");
     String pathExt = System.getProperty("java.ext.dirs");
-    System.out.println(pathExt.replaceAll(";", System.lineSeparator()));
+    System.out.println("java.ext.dirs: " + pathExt);
 
     System.out.println("--------------------");
     String pathApp = System.getProperty("java.class.path");
-    System.out.println(pathApp.replaceAll(";", System.lineSeparator()));
+    System.out.println("java.class.path: " + pathApp);
   }
 }

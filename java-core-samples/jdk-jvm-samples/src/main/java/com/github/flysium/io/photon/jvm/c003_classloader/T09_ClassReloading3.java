@@ -17,36 +17,23 @@
 package com.github.flysium.io.photon.jvm.c003_classloader;
 
 /**
- * 严格讲应该叫 lazy Initializing ，因为java虚拟机规范并没有严格规定什么时候必须 loading ,但严格规定了什么时候 Initializing
+ * 类的热加载，使用 java.lang.instrument 来实现, 代码参考模块 java-jvm-hot
+ * <p>
+ * 测试VM Option：
+ * <pre>
+ *   -javaagent:/home/svenaugustus/source/local/photon/java-core-samples/jdk-jvm-samples/lib/jdk_jvm_hot.jar
+ * </pre>
  */
-public class T06_LazyLoading {
+public class T09_ClassReloading3 {
 
-  public static void main(String[] args) throws Exception {
-    P p;
+  public static void main(String[] args) throws InterruptedException {
 
-    //X x = new X();
-
-    //System.out.println(P.i);
-
-    //  System.out.println(P.j);
-
-    // Class.forName("com.github.flysium.io.photon.jvm.c003_classloader.T06_LazyLoading$P");
-  }
-
-  public static class P {
-
-    final static int i = 8;
-    static int j = 9;
-
-    static {
-      System.out.println("P");
-    }
-  }
-
-  public static class X extends P {
-
-    static {
-      System.out.println("X");
+    Bean1 c1 = new Bean1();
+    while (true) {
+      c1.test1();
+      Thread.sleep(5000);
     }
   }
 }
+
+
