@@ -1,11 +1,11 @@
 /*
- * Copyright 2018-2025 the original author or authors.
+ * Copyright 2020 SvenAugustus
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -68,8 +68,7 @@ public class SocketMultiThreadingServer extends SocketServer {
   /**
    * 涉及系统调用（创建线程）：
    * <pre>
-   *   clone(child_stack=0x7fb1d0415fb0, flags=CLONE_VM|CLONE_FS|CLONE_FILES|CLONE_SIGHAND|CLONE_THREAD|CLONE_SYSVSEM|CLONE_SETTLS|CLONE_PARENT_SETTID|CLONE_CHILD_CLEARTID,
-   *    * parent_tid=[14809], tls=0x7fb1d0416700, child_tidptr=0x7fb1d04169d0) = 14809
+   *   clone(child_stack=0x7fb1d0415fb0, flags=CLONE_VM|CLONE_FS|CLONE_FILES|CLONE_SIGHAND|CLONE_THREAD|CLONE_SYSVSEM|CLONE_SETTLS|CLONE_PARENT_SETTID|CLONE_CHILD_CLEARTID, parent_tid=[14809], tls=0x7fb1d0416700, child_tidptr=0x7fb1d04169d0) = 14809
    * </pre>
    */
   @Override

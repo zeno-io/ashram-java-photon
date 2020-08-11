@@ -1,11 +1,11 @@
 /*
- * Copyright 2018-2025 the original author or authors.
+ * Copyright 2020 SvenAugustus
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -30,11 +30,12 @@ public class Test_interrupt_vs_interrupted {
   //            换句话说，如果连续两次调用该方法，则第二次调用将返回 false（在第一次调用已清除了其中断状态之后， 且第二次调用检验完中断状态前，当前线程再次中断的情况除外）。
   //  isInterrupted() = isInterrupted(ClearInterrupted:false) 测试线程是否已经中断状态。线程的中断状态 不受该方法的影响。
 
-  public static void main(String[] args) {
+  public static void main(String[] args) throws InterruptedException {
     System.out.println("----------------- Test Interrupt Running Thread -----------------");
     Thread t11 = getRunningThread("T11");
     t11.start();
     //  interrupt()仅告诉线程中断标记，并不能真正的中断线程的运行
+    TimeUnit.MILLISECONDS.sleep(50);
     t11.interrupt();
     System.out.println("T11 是否处于中断状态？=" + t11.isInterrupted());
     waitForEnd(t11);
@@ -60,10 +61,19 @@ public class Test_interrupt_vs_interrupted {
   private static Thread getRunningThread(String name) {
     return new Thread(() -> {
       int sum = 0;
+      int k = 0;
       for (int i = 0; i < LEN; i++) {
+        k = i;
         sum += i;
+        try {
+          TimeUnit.MILLISECONDS.sleep(1);
+        } catch (InterruptedException e) {
+          e.printStackTrace();
+          break;
+        }
       }
-      System.out.println(Thread.currentThread().getName() + " finished !, sum = " + sum);
+      System.out.println(Thread.currentThread().getName()
+          + " finished !, sum = " + sum + ", k = " + k);
     }, name);
   }
 
