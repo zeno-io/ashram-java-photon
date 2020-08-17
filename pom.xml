@@ -28,7 +28,7 @@
   <inceptionYear>2019</inceptionYear>
   <licenses>
     <license>
-      <name>The Apache Software License, Version 2.0</name>
+      <name>The MIT License</name>
       <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
       <distribution>repo</distribution>
     </license>
@@ -70,6 +70,7 @@
     <module>mq-samples/mq-rabbitmq-samples</module>
     <module>mq-samples/mq-rocketmq-samples</module>
     <module>network-samples/netty-samples</module>
+    <module>network-samples/rpc-samples</module>
     <module>ng-distributed-solutions/distributed-lock</module>
     <module>ng-big-data-samples/zookeeper-samples</module>
     <module>sdk-samples/template-api-sdk</module>

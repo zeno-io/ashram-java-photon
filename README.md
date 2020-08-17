@@ -22,7 +22,8 @@
 * [x] java-groovy-samples: samples for A multi-faceted language for the Java platform: [`Groovy`](https://groovy-lang.orgr).
 
 ##### Network
-* [ ] netty-samples: samples for [`Netty`](https://netty.io/) Version 4.1.x.
+* [x] netty-samples: samples for [`Netty`](https://netty.io/) Version 4.1.x.
+* [x] rpc-samples: samples for RPC, as [`Duubo`](https://dubbo.apache.org/zh-cn/).
 
 ##### Messaging Queue
 * [x] mq-activemq-samples: samples for [`ActiveMQ`](http://activemq.apache.org/) in Java.

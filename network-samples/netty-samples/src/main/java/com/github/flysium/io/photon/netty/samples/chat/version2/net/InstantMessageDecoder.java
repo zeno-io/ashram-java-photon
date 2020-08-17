@@ -62,10 +62,10 @@ public class InstantMessageDecoder extends LengthFieldBasedFrameDecoder {
     if (in.readableBytes() <= BASE_LENGTH) {
       return null;
     }
-    int length = in.readInt();
     in.markReaderIndex();
+    int length = in.readInt();
 
-    if (length <= BASE_LENGTH) {
+    if (in.readableBytes() < length) {
       in.resetReaderIndex();
       return null;
     }
