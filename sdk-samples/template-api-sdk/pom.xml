@@ -1,7 +1,5 @@
 <!--
-  ~ Apache License 2.0
-  ~
-  ~ Copyright 2018-2025 the original author or authors.
+  ~ Copyright 2020 SvenAugustus
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -29,8 +27,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <java.version>1.8</java.version>
-    <spring-web.version>5.1.14.RELEASE</spring-web.version>
-    <spring-boot.version>2.1.15.RELEASE</spring-boot.version>
+    <spring-boot.version>2.3.3.RELEASE</spring-boot.version>
     <yew.version>1.0.4</yew.version>
   </properties>
 
@@ -56,19 +53,11 @@
       <version>1.2.68</version>
       <scope>compile</scope>
     </dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-web</artifactId>
-      <version>${spring-web.version}</version>
-      <scope>compile</scope>
-    </dependency>
 
-    <!-- Test as Spring Boot -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
       <version>${spring-boot.version}</version>
-      <scope>test</scope>
       <exclusions>
         <exclusion>
           <groupId>org.springframework.boot</groupId>
@@ -82,6 +71,7 @@
       <version>${spring-boot.version}</version>
       <scope>test</scope>
     </dependency>
+    <!-- Test as Spring Boot -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>

@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: dubbo-consumer-sample
+
+server:
+  port: -1
+
+dubbo:
+  registry:
+    address: zookeeper://localhost:2181
+#    address: nacos://localhost:8848
+
