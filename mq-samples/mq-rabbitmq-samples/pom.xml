@@ -1,7 +1,5 @@
 <!--
-  ~ Apache License 2.0
-  ~
-  ~ Copyright 2018-2025 the original author or authors.
+  ~ Copyright 2020 SvenAugustus
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -21,7 +19,7 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.github.flysium-io</groupId>
+  <groupId>xyz.flysium.photon</groupId>
   <artifactId>mq-rabbitmq-samples</artifactId>
   <version>1.0.0-SNAPSHOT</version>
   <packaging>jar</packaging>

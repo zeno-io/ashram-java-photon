@@ -20,7 +20,7 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <artifactId>dubbo-samples</artifactId>
-    <groupId>com.github.flysium-io</groupId>
+    <groupId>xyz.flysium.photon</groupId>
     <relativePath>../pom.xml</relativePath>
     <version>1.0.0-SNAPSHOT</version>
   </parent>
