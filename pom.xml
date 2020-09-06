@@ -57,6 +57,8 @@
   </developers>
 
   <modules>
+    <module>algorithm-samples/data-structure-samples</module>
+    <module>algorithm-samples/n-algorithm-basics</module>
     <module>java-core-samples/jdk-lang-samples</module>
     <module>java-core-samples/jdk-lambda-samples</module>
     <module>java-core-samples/jdk-collection-samples</module>

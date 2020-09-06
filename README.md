@@ -6,6 +6,10 @@
 
 -------------------------- 
 #### Guidelines
+##### Data structure and algorithm
+* [ ] data-structure-samples: data-structure
+* [ ] n-algorithm-basics : basic of algorithm, such as sort, search algorithms.
+
 ##### Java 
 * [x] jdk-lang-samples : samples for Java SE Beginner (`java.lang.*`)
 * [x] jdk-io-samples: samples for Java IO (`java.io.*`, `java.nio.*`)
@@ -51,7 +55,7 @@
 * 2、Maven 3.3+
 
 #### Contract
-* Email: SvenAugustus@outlook.com
+* Email: SvenAugustus@outlook.com (Or zeno531@outlook.com)
 * GitHub: https://github.com/SvenAugustus
 * GitLab: https://gitlab.com/SvenAugustus
 
