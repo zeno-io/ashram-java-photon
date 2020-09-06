@@ -63,16 +63,24 @@
 
 
   <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>3.3</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
     <plugins>
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
-          <encoding>UTF-8</encoding>
+          <encoding>${project.build.sourceEncoding}</encoding>
           <source>${java.version}</source>
           <target>${java.version}</target>
         </configuration>
-        <groupId>org.apache.maven.plugins</groupId>
-        <version>3.3</version>
       </plugin>
     </plugins>
   </build>
