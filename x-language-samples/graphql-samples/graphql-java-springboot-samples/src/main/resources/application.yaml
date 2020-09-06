@@ -1,0 +1,11 @@
+server:
+  port: 9091
+
+application:
+  graphql:
+    schema: classpath:schema.graphqls
+
+logging:
+  level:
+    root: info
+    xyz.flysium.photon.controller: debug

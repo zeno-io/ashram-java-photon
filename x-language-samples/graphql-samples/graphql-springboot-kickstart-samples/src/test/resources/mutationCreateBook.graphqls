@@ -1,0 +1,7 @@
+mutation  {
+    createBook ( name: "Thinking in Java", pageCount: 108 ) {
+        id
+        name
+        pageCount
+    }
+}

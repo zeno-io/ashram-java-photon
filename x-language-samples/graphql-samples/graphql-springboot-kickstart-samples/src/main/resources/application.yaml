@@ -1,0 +1,17 @@
+spring:
+  profiles:
+    #    active: datasource, graphql-datetime
+    #    active: datasource, graphql, graphql-datetime
+    active: datasource, graphql, graphiql, graphql-datetime
+
+server:
+  port: 9093
+
+logging:
+  level:
+    root: info
+    xyz.flysium.photon: debug
+
+application:
+  hello:
+    exception: false

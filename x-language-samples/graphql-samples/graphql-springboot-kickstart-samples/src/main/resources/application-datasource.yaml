@@ -1,0 +1,13 @@
+spring:
+  datasource:
+    platform: h2
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:test
+    username: sa
+    password: sa
+    schema: classpath*:database/schema-h2.sql
+    data: classpath*:database/data-h2.sql
+
+mybatis:
+  type-aliases-package: xyz.flysium.photon.dao.entity
+  mapper-locations: classpath:mybatis/mapper/*.xml

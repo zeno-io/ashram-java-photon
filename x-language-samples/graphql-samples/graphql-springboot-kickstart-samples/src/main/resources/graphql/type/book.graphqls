@@ -1,0 +1,28 @@
+# 定义入参对象
+input BookInput {
+    id: ID
+    name: String
+}
+# 定义出参对象
+type BookConnection {
+    edges: [BookEdge]
+    pageInfo: PageInfo
+}
+type BookEdge {
+    cursor: String
+    node: Book
+}
+# 定义普通对象
+type Book {
+    id: ID
+    name: String
+    pageCount: Int
+    createdAt: LocalDateTime
+    author: Author
+}
+type Author {
+    id: ID
+    firstName: String
+    lastName: String
+}
+

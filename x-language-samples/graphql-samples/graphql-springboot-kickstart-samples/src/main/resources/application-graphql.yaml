@@ -1,0 +1,38 @@
+spring:
+  servlet:
+    multipart:
+      enabled: true
+
+graphql:
+  # GraphQL Java Tools
+  tools:
+    schema-location-pattern: "graphql/**/*.graphqls"
+    # Enable or disable the introspection query. Disabling it puts your server in contravention of the GraphQL
+    # specification and expectations of most clients, so use this option with caution
+    schema-parser-options:
+      introspection-enabled: true
+  # GraphQL Java Servlet
+  servlet:
+    mapping: /graphql
+    enabled: true
+    #    corsEnabled: true
+    #    cors:
+    #        allowed-origins: http://some.domain.com
+    # if you want to @ExceptionHandler annotation for custom GraphQLErrors
+    subscriptions:
+      websocket:
+        path: /graphql
+    exception-handlers-enabled: true
+    contextSetting: PER_REQUEST_WITH_INSTRUMENTATION
+    tracing-enabled: false
+    actuator-metrics: true
+
+  # graphql-java-datetime
+  datetime:
+    scalars:
+      localDate:
+        format: yyyy/MM/dd
+      localDateTime:
+        format: yyyy-MM-dd'T'HH:mm:ss
+      zone-conversion-enabled: true
+

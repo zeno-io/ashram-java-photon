@@ -57,8 +57,6 @@
   </developers>
 
   <modules>
-    <module>algorithm-samples/data-structure-samples</module>
-    <module>algorithm-samples/n-algorithm-basics</module>
     <module>java-core-samples/jdk-lang-samples</module>
     <module>java-core-samples/jdk-lambda-samples</module>
     <module>java-core-samples/jdk-collection-samples</module>
@@ -78,6 +76,10 @@
     <module>sdk-samples/rate-limit-samples</module>
     <module>rxjava-samples/rxjava2-samples</module>
     <module>rxjava-samples/rxjava3-samples</module>
+    <module>x-language-samples/graphql-samples/graphql-java-samples</module>
+    <module>x-language-samples/graphql-samples/graphql-java-springboot-samples</module>
+    <module>x-language-samples/graphql-samples/graphql-springboot-classic-samples</module>
+    <module>x-language-samples/graphql-samples/graphql-springboot-kickstart-samples</module>
   </modules>
 
   <properties>

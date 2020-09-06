@@ -1,0 +1,11 @@
+{
+    bookById(id : 1){
+        id
+        name
+        createdAt
+        author{
+            firstName
+            lastName
+        }
+    }
+}

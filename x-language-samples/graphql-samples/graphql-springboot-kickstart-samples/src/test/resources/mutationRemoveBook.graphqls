@@ -1,0 +1,3 @@
+mutation  {
+    removeBook ( id: 4)
+}

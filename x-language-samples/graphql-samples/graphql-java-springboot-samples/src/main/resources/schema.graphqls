@@ -1,0 +1,31 @@
+# 定义查询接口, 一个schema文件中只能定义一个Query对象
+type Query {
+    # 无参, 返回字符串
+    hello: String
+    # 字段参数且不能为空, 返回普通对象
+    bookById(id: ID!): Book
+    # 对象参数, 返回列表
+    booksByInput(book: BookInput): [Book]
+}
+# 定义修改接口
+type Mutation {
+    hello: String
+}
+# 定义入参对象
+input BookInput {
+    id: ID
+    name: String
+}
+# 定义普通对象
+type Book {
+    id: ID
+    name: String
+    pageCount: Int
+    author: Author
+}
+type Author {
+    id: ID
+    firstName: String
+    lastName: String
+}
+

@@ -1,0 +1,21 @@
+{
+    books(offset: 0, first: 5){
+        edges {
+            cursor
+            node{
+                id
+                name
+                pageCount
+                author{
+                    id
+                    firstName
+                    lastName
+                }
+            }
+        }
+        pageInfo{
+            hasPreviousPage
+            hasNextPage
+        }
+    }
+}

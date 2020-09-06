@@ -1,0 +1,7 @@
+{
+    booksByInput(book: {id : "", name: "Harry"}){
+        id
+        name
+        pageCount
+    }
+}

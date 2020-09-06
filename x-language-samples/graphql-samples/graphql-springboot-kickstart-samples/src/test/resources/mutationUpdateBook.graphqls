@@ -1,0 +1,7 @@
+mutation  {
+    updateBook ( id: 4, name: "Thinking in Java Edition 4") {
+        id
+        name
+        pageCount
+    }
+}

@@ -1,0 +1,16 @@
+spring:
+  jackson:
+    deserialization:
+      adjust-dates-to-context-time-zone: false
+
+graphql:
+  # graphql-java-datetime
+  datetime:
+    scalars:
+      localDate:
+        format: yyyy/MM/dd
+      localDateTime:
+        #        format: yyyy-MM-dd'T'HH:mm:ss
+        format: yyyy-MM-dd HH:mm:ss
+      zone-conversion-enabled: false
+
