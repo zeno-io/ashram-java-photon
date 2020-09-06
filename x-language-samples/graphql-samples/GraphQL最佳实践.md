@@ -11,10 +11,22 @@
 * 我们可以像这样 friends(first:2 after:$friendCursor), 从最后一项中获取一个游标并使用它来分页。
 
 ### 参考
--> `Relay`
-
-
+- `Relay` : https://www.graphql-java-kickstart.com/tools/
 
 # 服务器端的批处理与缓存 
+- `DataLoader`： https://github.com/graphql-java/java-dataloader
 
--> `DataLoader`
+
+# 标量类型扩展
+
+- graphql-java-extended-scalars : https://github.com/graphql-java/graphql-java-extended-scalars
+
+
+- graphql-java-datetime : https://github.com/donbeave/graphql-java-datetime
+
+# 参数校验
+- https://github.com/graphql-java/graphql-java-extended-validation
+
+# Directives
+- https://www.graphql-java-kickstart.com/tools/directives/
+

@@ -58,7 +58,14 @@ public class BookQueryResolver implements GraphQLResolver<Book> {
     //    }
     public CompletableFuture<Author> author(Book book, DataFetchingEnvironment environment) {
         DataLoader<Integer, Author> dataLoader = environment.getDataLoader(AuthorDataLoader.class.getSimpleName());
-        return dataLoader.load(book.getAuthorId());
+        final int key = book.getAuthorId();
+        return dataLoader.load(key).whenComplete((r, e) -> {
+            // TODO https://github.com/graphql-java/java-dataloader#caching-errors
+            if (e != null) {
+                dataLoader.clear(key);
+                e.printStackTrace();
+            }
+        });
     }
 
 }

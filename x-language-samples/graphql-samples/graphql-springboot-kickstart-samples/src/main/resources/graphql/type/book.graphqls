@@ -17,6 +17,7 @@ type Book {
     id: ID
     name: String
     pageCount: Int
+#    createdAt: DateTime
     createdAt: LocalDateTime
     author: Author
 }

@@ -1,5 +1,8 @@
-## for graphql-java-datetime
+## for graphql-java-extended-scalars  https://github.com/graphql-java/graphql-java-extended-scalars
+# java.util.Date OffsetDateTime
+#scalar DateTime
 
+## for graphql-java-datetime https://github.com/donbeave/graphql-java-datetime
 # java.util.Date implementation
 scalar Date
 

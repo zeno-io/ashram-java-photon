@@ -76,6 +76,7 @@ public class BookService {
     }
 
     public Book createBook(String name, int pageCount) {
+//        Book book = BookBuilder.aBook().name(name).pageCount(pageCount).createdAt(OffsetDateTime.now()).build();
         Book book = BookBuilder.aBook().name(name).pageCount(pageCount).createdAt(LocalDateTime.now()).build();
         int r = bookRepository.insert(book);
         if (r > 0) {

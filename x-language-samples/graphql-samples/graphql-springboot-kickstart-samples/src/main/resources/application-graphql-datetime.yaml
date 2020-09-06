@@ -1,3 +1,5 @@
+## for graphql-java-datetime https://github.com/donbeave/graphql-java-datetime
+
 spring:
   jackson:
     deserialization:

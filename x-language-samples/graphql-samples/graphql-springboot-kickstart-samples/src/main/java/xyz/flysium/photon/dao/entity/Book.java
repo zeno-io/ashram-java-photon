@@ -40,7 +40,8 @@ public class Book {
 
   private int pageCount;
 
-  private LocalDateTime createdAt;
+//  private OffsetDateTime createdAt;
+private LocalDateTime createdAt;
 
   private int authorId;
 
@@ -68,6 +69,13 @@ public class Book {
     this.pageCount = pageCount;
   }
 
+  //  public OffsetDateTime getCreatedAt() {
+  //    return createdAt;
+  //  }
+  //
+  //  public void setCreatedAt(OffsetDateTime createdAt) {
+  //    this.createdAt = createdAt;
+  //  }
   public LocalDateTime getCreatedAt() {
     return createdAt;
   }
@@ -110,6 +118,10 @@ public class Book {
       return this;
     }
 
+    //    public BookBuilder createdAt(OffsetDateTime createdAt) {
+    //      book.setCreatedAt(createdAt);
+    //      return this;
+    //    }
     public BookBuilder createdAt(LocalDateTime createdAt) {
       book.setCreatedAt(createdAt);
       return this;

@@ -31,4 +31,4 @@ body 选择 `GraphQL`:
 
 ### 方式三：单元测试
 
-参考 `GraphQLControllerTest`
+参考 `src/test/main`

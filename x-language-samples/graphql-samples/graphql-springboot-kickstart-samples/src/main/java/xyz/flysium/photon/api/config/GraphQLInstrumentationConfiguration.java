@@ -23,8 +23,8 @@ import org.springframework.context.annotation.Configuration;
  * @author zeno (Sven Augustus)
  * @version 1.0
  */
-@AutoConfigureBefore(GraphQLWebAutoConfiguration.class)
 @Configuration
+@AutoConfigureBefore(GraphQLWebAutoConfiguration.class)
 public class GraphQLInstrumentationConfiguration {
 
     @Bean

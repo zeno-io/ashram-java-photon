@@ -27,6 +27,7 @@ package xyz.flysium.photon;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 /**
  * @author zeno (Sven Augustus)
@@ -34,6 +35,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
  */
 @SpringBootApplication
 @MapperScan("xyz.flysium.photon.dao.repository")
+@EnableScheduling
 public class GraphQLKickStartBootApplication {
 
     public static void main(String[] args) {

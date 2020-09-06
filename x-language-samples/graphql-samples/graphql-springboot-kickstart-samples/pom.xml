@@ -35,7 +35,10 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <!-- graphql-kickstart -->
     <graphql-kickstart-starter.version>7.1.0</graphql-kickstart-starter.version>
+    <graphql-java-extended-scalars.version>1.1.0</graphql-java-extended-scalars.version>
+
     <graphql-datetime-autoconfigure.version>2.3.1</graphql-datetime-autoconfigure.version>
+
     <!-- mybatis -->
     <!--  <mybatis-spring-boot-starter.version>2.1.3</mybatis-spring-boot-starter.version>
       <pagehelper-spring-boot-starter.version>1.3.0</pagehelper-spring-boot-starter.version> -->
@@ -56,7 +59,19 @@
       <version>${graphql-kickstart-starter.version}</version>
     </dependency>
     <!-- GraphQL Custom Type Support -->
-    <dependency> <!-- https://github.com/donbeave/graphql-java-datetime -->
+    <dependency>
+      <groupId>com.graphql-java</groupId>
+      <artifactId>graphql-java-extended-scalars</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId>com.graphql-java</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+      </exclusions>
+      <version>${graphql-java-extended-scalars.version}</version>
+    </dependency>
+    <!-- https://github.com/donbeave/graphql-java-datetime -->
+    <dependency>
       <groupId>com.zhokhov.graphql</groupId>
       <artifactId>graphql-datetime-autoconfigure</artifactId>
       <version>${graphql-datetime-autoconfigure.version}</version>
@@ -147,26 +162,21 @@
     <pluginManagement>
       <plugins>
         <plugin>
-          <artifactId>maven-compiler-plugin</artifactId>
-          <configuration>
-            <encoding>UTF-8</encoding>
-            <source>${java.version}</source>
-            <target>${java.version}</target>
-          </configuration>
           <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
           <version>3.3</version>
         </plugin>
       </plugins>
     </pluginManagement>
     <plugins>
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
           <encoding>${project.build.sourceEncoding}</encoding>
           <source>${java.version}</source>
           <target>${java.version}</target>
         </configuration>
-        <groupId>org.apache.maven.plugins</groupId>
       </plugin>
     </plugins>
   </build>
