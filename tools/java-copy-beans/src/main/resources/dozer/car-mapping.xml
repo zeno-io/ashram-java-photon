@@ -1,0 +1,33 @@
+<mappings xmlns="http://dozermapper.github.io/schema/bean-mapping"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://dozermapper.github.io/schema/bean-mapping http://dozermapper.github.io/schema/bean-mapping.xsd">
+
+  <configuration>
+    <stop-on-errors>true</stop-on-errors>
+    <date-format>yyyy-MM-dd HH:mm:ss</date-format>
+    <wildcard>true</wildcard>
+  </configuration>
+
+  <mapping>
+    <class-a>xyz.flysium.photon.dao.entity.Car</class-a>
+    <class-b>xyz.flysium.photon.dto.CarDTO</class-b>
+    <field>
+      <a>numberOfSeats</a>
+      <b>seatCount</b>
+    </field>
+    <field>
+      <a>createdAt</a>
+      <b>createTime</b>
+    </field>
+    <field>
+      <a>createdAt</a>
+      <b>createTime</b>
+    </field>
+    <field-exclude>
+      <a>email</a>
+      <b>email</b>
+    </field-exclude>
+  </mapping>
+
+
+</mappings>

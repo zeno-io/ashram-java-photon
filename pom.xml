@@ -74,14 +74,15 @@
     <module>network-samples/netty-samples</module>
     <module>network-samples/rpc-samples</module>
     <module>network-samples/dubbo-samples</module>
-    <module>sdk-samples/template-api-sdk</module>
-    <module>sdk-samples/rate-limit-samples</module>
-    <module>rxjava-samples/rxjava2-samples</module>
-    <module>rxjava-samples/rxjava3-samples</module>
     <module>x-language-samples/graphql-samples/graphql-java-samples</module>
     <module>x-language-samples/graphql-samples/graphql-java-springboot-samples</module>
     <module>x-language-samples/graphql-samples/graphql-springboot-classic-samples</module>
     <module>x-language-samples/graphql-samples/graphql-springboot-kickstart-samples</module>
+    <module>x-language-samples/rxjava-samples/rxjava2-samples</module>
+    <module>x-language-samples/rxjava-samples/rxjava3-samples</module>
+    <module>tools/template-api-sdk</module>
+    <module>tools/rate-limit-samples</module>
+    <module>tools/java-copy-beans</module>
   </modules>
 
   <properties>
