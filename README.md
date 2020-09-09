@@ -19,6 +19,7 @@
 
 ##### Network
 * [x] netty-samples: samples for [`Netty`](https://netty.io/) Version 4.1.x.
+* [x] rmi-samples: samples for RMI.
 * [x] rpc-samples: samples for RPC, as [`Dubbo`](https://dubbo.apache.org/zh-cn/).
 * [x] dubbo-samples: samples for [`Dubbo`](https://dubbo.apache.org/zh-cn/).
 

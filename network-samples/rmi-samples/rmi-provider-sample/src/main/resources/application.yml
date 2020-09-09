@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: rmi-provider-sample
+
+server:
+  port: 9090
+
+application:
+  rmi:
+    port: 19090
+

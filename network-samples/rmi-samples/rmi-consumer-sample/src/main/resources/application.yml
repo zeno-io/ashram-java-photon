@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: rmi-consumer-sample
+
+server:
+  port: -1
+
+application:
+  rmi:
+    demoService:
+      url: rmi://localhost:19090/DemoService

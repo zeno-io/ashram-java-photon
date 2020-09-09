@@ -72,8 +72,9 @@
     <module>mq-samples/mq-rabbitmq-samples</module>
     <module>mq-samples/mq-rocketmq-samples</module>
     <module>network-samples/netty-samples</module>
-    <module>network-samples/rpc-samples</module>
     <module>network-samples/dubbo-samples</module>
+    <module>network-samples/rpc-samples</module>
+    <module>network-samples/rmi-samples</module>
     <module>x-language-samples/graphql-samples/graphql-java-samples</module>
     <module>x-language-samples/graphql-samples/graphql-java-springboot-samples</module>
     <module>x-language-samples/graphql-samples/graphql-springboot-classic-samples</module>
