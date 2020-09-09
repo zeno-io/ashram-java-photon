@@ -29,6 +29,10 @@
 * [x] mq-rabbitmq-samples: samples for [`Rabbitmq`](https://www.rabbitmq.com/) in Java.
 * [x] mq-rocketmq-samples: samples for [`Rocketmq`](http://rocketmq.apache.org/) in Java.
 
+##### Data structure and algorithm
+* [ ] data-structure-samples: data-structure
+* [ ] n-algorithm-basics : basic of algorithm, such as sort, search algorithms.
+
 ##### JVM language 
 * [x] disruptor-samples: samples for High Performance Inter-Thread Messaging Library: [`disruptor`](https://github.com/LMAX-Exchange/disruptor).
 * [x] java-groovy-samples: samples for A multi-faceted language for the Java platform: [`Groovy`](https://groovy-lang.orgr).
@@ -40,10 +44,6 @@
 * [x] graphql-samples: samples for [`GraphQL`](https://graphql.cn), including sample for [`graphql-java`] (https://github.com/graphql-java/graphql-java)
 * [ ] rxjava2-samples: samples for [`RxJava`](https://github.com/ReactiveX/RxJava) Version 2.x.
 * [ ] rxjava3-samples: samples for [`RxJava`](https://github.com/ReactiveX/RxJava) Version 3.x.
-
-##### Data structure and algorithm
-* [ ] data-structure-samples: data-structure
-* [ ] n-algorithm-basics : basic of algorithm, such as sort, search algorithms.
 
 ##### Tools
 * [x] template-api-sdk: API SDK based on RESTful.
