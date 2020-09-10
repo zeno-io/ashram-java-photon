@@ -26,6 +26,7 @@ package xyz.flysium.photon.c050_gc;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * 常量池内存溢出
@@ -34,12 +35,26 @@ import java.util.List;
  */
 public class ConstantPoolOOM {
 
-  static long i = 0;
+    static long i = 0;
 
-  public static void main(String[] args) {
-    List<String> strings = new LinkedList<>();
-    for (; ; ) {
-      strings.add("" + i++);
+    public static void main(String[] args) {
+        List<String> strings = new LinkedList<>();
+        for (; ; ) {
+            strings.add(generateString(1024 * 1024));
+        }
     }
-  }
+
+    private static final char[] RANDOM_STRING_ARRAY = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+        .toCharArray();
+
+    private static final ThreadLocalRandom RANDOM = ThreadLocalRandom.current();
+
+    public static String generateString(int length) {
+        StringBuilder stringBuilder = new StringBuilder(length);
+        for (int i = 0; i < length; i++) {
+            final int index = RANDOM.nextInt(RANDOM_STRING_ARRAY.length);
+            stringBuilder.append(RANDOM_STRING_ARRAY[index]);
+        }
+        return stringBuilder.toString();
+    }
 }
