@@ -24,6 +24,8 @@
 
 package xyz.flysium.photon.c101_future;
 
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -36,46 +38,55 @@ import java.util.concurrent.TimeoutException;
  */
 public class T03_CompletableFuture {
 
-  // 像 Future 一样通过阻塞或者轮询的方式获得结果，尽管这种方式不推荐使用。
+    // 像 Future 一样通过阻塞或者轮询的方式获得结果，尽管这种方式不推荐使用。
 
-  public static void main(String[] args)
-      throws ExecutionException, InterruptedException, TimeoutException {
-    long start = System.currentTimeMillis();
+    public static void main(String[] args) throws ExecutionException, InterruptedException, TimeoutException {
+        long start = System.currentTimeMillis();
 
-    CompletableFuture<Integer> f1 = CompletableFuture.supplyAsync(() -> {
-      millSleep(1000);
-      System.out.println("f1");
-      return 100;
-    });
-    CompletableFuture<Integer> f2 = CompletableFuture.supplyAsync(() -> {
-      millSleep(500);
-      System.out.println("f2");
-      return 50;
-    });
-    CompletableFuture<Integer> f3 = CompletableFuture.supplyAsync(() -> {
-      millSleep(1500);
-      System.out.println("f3");
-      return 80;
-    });
+        BlockingQueue<Integer> res = new ArrayBlockingQueue<>(3);
 
-    // 所有任务完成
-    CompletableFuture.allOf(f1, f2, f3).join();
+        CompletableFuture<Integer> f1 = CompletableFuture.supplyAsync(() -> {
+            millSleep(1000);
+            System.out.println("f1");
+            return 100;
+        }).whenComplete((v, e) -> {
+            res.add(v);
+        });
+        CompletableFuture<Integer> f2 = CompletableFuture.supplyAsync(() -> {
+            millSleep(500);
+            System.out.println("f2");
+            return 50;
+        }).whenComplete((v, e) -> {
+            res.add(v);
+        });
+        CompletableFuture<Integer> f3 = CompletableFuture.supplyAsync(() -> {
+            millSleep(1500);
+            System.out.println("f3");
+            return 80;
+        }).whenComplete((v, e) -> {
+            res.add(v);
+        });
 
-    // 获得最早完成的任务结果
-//    System.out.println( CompletableFuture.anyOf(f1, f2, f3).join());
+        // 所有任务完成
+        CompletableFuture.allOf(f1, f2, f3).join();
 
-    // 以下可以把多个 future 链接起来, 并且可以轻松组合计算
-//    System.out.println(f1.thenCombine(f2, (x, y) -> x + y).thenCombine(f3, (t, z) -> t + z).get());
+        // 获得最早完成的任务结果
+        //    System.out.println( CompletableFuture.anyOf(f1, f2, f3).join());
 
-    System.out.println((System.currentTimeMillis() - start) + "ms");
-  }
+        // 以下可以把多个 future 链接起来, 并且可以轻松组合计算
+        //    System.out.println(f1.thenCombine(f2, (x, y) -> x + y).thenCombine(f3, (t, z) -> t + z).get());
 
-  private static void millSleep(long timeout) {
-    try {
-      TimeUnit.MILLISECONDS.sleep(timeout);
-    } catch (InterruptedException e) {
-      e.printStackTrace();
+        System.out.println(res);
+        System.out.println((System.currentTimeMillis() - start) + "ms");
     }
-  }
+
+    private static void millSleep(long timeout) {
+        try {
+            TimeUnit.MILLISECONDS.sleep(timeout);
+        }
+        catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 
 }
