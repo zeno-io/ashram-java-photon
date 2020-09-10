@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package xyz.flysium.photon;
+package xyz.flysium.photon.c002_map;
 
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.VarHandle;
@@ -32,8 +32,8 @@ import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.WeakHashMap;
 import java.util.concurrent.TimeUnit;
-import xyz.flysium.photon.T03_WeakHashMap.MyNotCorrectWeakHashMap.MyEntry0;
-import xyz.flysium.photon.T03_WeakHashMap.MySampleWeakHashMap.MyEntry;
+import xyz.flysium.photon.c002_map.T03_MyWeakHashMap.MyNotCorrectWeakHashMap.MyEntry0;
+import xyz.flysium.photon.c002_map.T03_MyWeakHashMap.MySampleWeakHashMap.MyEntry;
 
 /**
  * sample implementations for WeakHashMap
@@ -42,7 +42,7 @@ import xyz.flysium.photon.T03_WeakHashMap.MySampleWeakHashMap.MyEntry;
  * @version 1.0
  */
 @SuppressWarnings("unchecked")
-public class T03_WeakHashMap {
+public class T03_MyWeakHashMap {
 
     public static void main(String[] args) throws Throwable {
         Object o = new Object();

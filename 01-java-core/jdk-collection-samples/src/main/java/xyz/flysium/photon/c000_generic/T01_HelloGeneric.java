@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package xyz.flysium.photon.generic;
+package xyz.flysium.photon.c000_generic;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +30,7 @@ import java.util.List;
 /**
  * @author Sven Augustus
  */
-public class Test {
+public class T01_HelloGeneric {
 
 	static class Species {
 

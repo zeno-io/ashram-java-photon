@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package xyz.flysium.photon;
+package xyz.flysium.photon.c002_map;
 
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
