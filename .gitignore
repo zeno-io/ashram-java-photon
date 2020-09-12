@@ -27,7 +27,6 @@ target/
 
 # Package Files #
 *.jar
-!jdk-jvm-object-size.jar
 *.war
 *.nar
 *.ear
@@ -52,5 +51,10 @@ test-output
 .gradletasknamecache
 
 # Custom Configuration
+!jdk-jvm-object-size.jar
+!jdk_jvm_hot.jar
+!jmxremote.jar
+!jmxri.jar
+!jmxtools.jar
 /x-language-samples/javacc-samples/src/*.java
 
