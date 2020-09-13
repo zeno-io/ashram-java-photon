@@ -16,6 +16,9 @@
 
 package xyz.flysium.photon.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -42,44 +45,53 @@ public class GraphQLControllerTest {
   private MockMvc mockMvc;
 
   public static final String URL_TEMPLATE = "/graphql";
+  public static final String APPLICATION_GRAPHQL = "application/graphql";
 
   @Before
   public void setUp() {
     this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
   }
 
+  public Map<?, ?> readMap(String json) throws JsonProcessingException {
+    ObjectMapper objectMapper = new ObjectMapper();
+    return objectMapper.readValue(json, Map.class);
+  }
+
   @Test
   public void graphql1() throws Exception {
-    this.mockMvc.perform(MockMvcRequestBuilders.get(URL_TEMPLATE)
+    this.mockMvc.perform(MockMvcRequestBuilders.post(URL_TEMPLATE)
+        .contentType(APPLICATION_GRAPHQL)
         // 请求body
         .content("mutation{hello}")
     )
         .andExpect(MockMvcResultMatchers.status()
             .isOk())
-        .andExpect(MockMvcResultMatchers.content()
-            // 响应body
-            .string("{\"data\":{\"hello\":\"Mutation hello world\"}}")
+        .andExpect(MockMvcResultMatchers.request()
+            // 响应
+            .asyncResult(readMap("{\"data\":{\"hello\":\"Mutation hello world\"}}"))
         );
   }
 
 
   @Test
   public void graphql2() throws Exception {
-    this.mockMvc.perform(MockMvcRequestBuilders.get(URL_TEMPLATE)
+    this.mockMvc.perform(MockMvcRequestBuilders.post(URL_TEMPLATE)
+        .contentType(APPLICATION_GRAPHQL)
         // 请求body
         .content("{hello}")
     )
         .andExpect(MockMvcResultMatchers.status()
             .isOk())
-        .andExpect(MockMvcResultMatchers.content()
-            // 响应body
-            .string("{\"data\":{\"hello\":\"Query hello world\"}}")
+        .andExpect(MockMvcResultMatchers.request()
+            // 响应
+            .asyncResult(readMap("{\"data\":{\"hello\":\"Query hello world\"}}"))
         );
   }
 
   @Test
   public void graphql3() throws Exception {
-    this.mockMvc.perform(MockMvcRequestBuilders.get(URL_TEMPLATE)
+    this.mockMvc.perform(MockMvcRequestBuilders.post(URL_TEMPLATE)
+        .contentType(APPLICATION_GRAPHQL)
         // 请求body
         .content("{\n"
             + "  bookById(id : \"book-1\"){\n"
@@ -94,20 +106,22 @@ public class GraphQLControllerTest {
     )
         .andExpect(MockMvcResultMatchers.status()
             .isOk()
-        ).andExpect(MockMvcResultMatchers.content()
-        // 响应body
-        .string(
-            "{\"data\":{\"bookById\":{\"id\":\"book-1\",\"name\":\"Harry Potter and the Philosopher's Stone\",\"author\":{\"firstName\":\"Joanne\",\"lastName\":\"Rowling\"}}}}")
+        ).andExpect(MockMvcResultMatchers.request()
+        // 响应
+        .asyncResult(
+            readMap(
+                "{\"data\":{\"bookById\":{\"id\":\"book-1\",\"name\":\"Harry Potter and the Philosopher's Stone\",\"author\":{\"firstName\":\"Joanne\",\"lastName\":\"Rowling\"}}}}"))
     );
 
   }
 
   @Test
   public void graphql4() throws Exception {
-    this.mockMvc.perform(MockMvcRequestBuilders.get(URL_TEMPLATE)
+    this.mockMvc.perform(MockMvcRequestBuilders.post(URL_TEMPLATE)
+        .contentType(APPLICATION_GRAPHQL)
         // 请求body
         .content("{\n"
-            + "  booksByInput(book: {id : \"\", name: \"Harry\"}){"
+            + "  booksByInput(book: {name: \"Harry\"}){"
             + "    id"
             + "    name"
             + "    pageCount"
@@ -116,10 +130,11 @@ public class GraphQLControllerTest {
     )
         .andExpect(MockMvcResultMatchers.status()
             .isOk()
-        ).andExpect(MockMvcResultMatchers.content()
-        // 响应body
-        .string(
-            "{\"data\":{\"booksByInput\":[{\"id\":\"book-1\",\"name\":\"Harry Potter and the Philosopher's Stone\",\"pageCount\":223}]}}")
+        ).andExpect(MockMvcResultMatchers.request()
+        // 响应
+        .asyncResult(
+            readMap(
+                "{\"data\":{\"booksByInput\":[{\"id\":\"book-1\",\"name\":\"Harry Potter and the Philosopher's Stone\",\"pageCount\":223}]}}"))
     );
   }
 }

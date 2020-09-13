@@ -107,7 +107,7 @@ public class GraphQLControllerTest {
     this.mockMvc.perform(MockMvcRequestBuilders.get(URL_TEMPLATE)
         // 请求body
         .content("{\n"
-            + "  booksByInput(book: {id : \"\", name: \"Harry\"}){"
+            + "  booksByInput(book: {name: \"Harry\"}){"
             + "    id"
             + "    name"
             + "    pageCount"

@@ -59,7 +59,7 @@
       <version>${graphql-kickstart-starter.version}</version>
     </dependency>
     <!-- GraphQL Custom Type Support -->
-    <dependency>
+ <!--   <dependency>
       <groupId>com.graphql-java</groupId>
       <artifactId>graphql-java-extended-scalars</artifactId>
       <exclusions>
@@ -69,7 +69,7 @@
         </exclusion>
       </exclusions>
       <version>${graphql-java-extended-scalars.version}</version>
-    </dependency>
+    </dependency>-->
     <!-- https://github.com/donbeave/graphql-java-datetime -->
     <dependency>
       <groupId>com.zhokhov.graphql</groupId>
