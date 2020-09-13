@@ -46,9 +46,10 @@
 * [ ] rxjava3-samples: samples for [`RxJava`](https://github.com/ReactiveX/RxJava) Version 3.x.
 
 ##### Tools
-* [x] java-compiler-samples: sample for `JavaCompiler` API.
+* [x] jmh-samples: sample for [`JMH`](http://openjdk.java.net/projects/code-tools/jmh/), a Java Micro-Benchmark framework supported by OpenJDK.
 * [x] jmx-samples: sample for `JMX` (`Java Management Extensions`) API.
 * [x] spi-samples: sample for `SPI` (`Service Provider Interface`) API.
+* [x] java-compiler-samples: sample for `JavaCompiler` API.
 * [x] java-copy-beans: How to Copy Java Beans ? `Apache BeanUtils` , `Apache PropertyUtils`, `Spring BeanUtils`, `Cglib BeanCopier`, or `Dozer`, [`MapStruct`](https://github.com/mapstruct/mapstruct.org ) ?
 * [x] template-api-sdk: API SDK based on RESTful.
 

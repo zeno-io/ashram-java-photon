@@ -85,6 +85,7 @@
     <module>tools/rate-limit-samples</module>
     <module>tools/java-copy-beans</module>
     <module>tools/java-compiler-samples</module>
+    <module>tools/jmh-samples</module>
     <module>tools/jmx-samples</module>
     <module>tools/jmx-spring-samples</module>
     <module>tools/spi-samples</module>
