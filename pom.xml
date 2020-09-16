@@ -81,7 +81,6 @@
     <module>x-language-samples/graphql-samples/graphql-springboot-kickstart-samples</module>
     <module>x-language-samples/rxjava-samples/rxjava2-samples</module>
     <module>x-language-samples/rxjava-samples/rxjava3-samples</module>
-    <module>tools/template-api-sdk</module>
     <module>tools/rate-limit-samples</module>
     <module>tools/java-copy-beans</module>
     <module>tools/java-compiler-samples</module>

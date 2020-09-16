@@ -4,7 +4,7 @@
 #### Description
 **The bucket of java back-end samples.**
 
--------------------------- 
+--------------------------
 #### Guidelines
 ##### Java Core
 * [x] jdk-lang-samples : samples for Java SE Beginner (`java.lang.*`)
@@ -13,7 +13,7 @@
 * [ ] jdk-collection-samples: samples for Java Collections.
 * [ ] jdk-lambda-samples: samples for Java Lambda ( JDK8+ ).
 
-##### JVM 
+##### JVM
 * [x] jdk-jvm-object-size : samples for JVM.
 * [x] jdk-jvm-samples: samples for JVM.
 
@@ -33,7 +33,7 @@
 * [ ] data-structure-samples: data-structure
 * [ ] n-algorithm-basics : basic of algorithm, such as sort, search algorithms.
 
-##### JVM language 
+##### JVM language
 * [x] disruptor-samples: samples for High Performance Inter-Thread Messaging Library: [`disruptor`](https://github.com/LMAX-Exchange/disruptor).
 * [x] java-groovy-samples: samples for A multi-faceted language for the Java platform: [`Groovy`](https://groovy-lang.orgr).
 
@@ -51,15 +51,14 @@
 * [x] spi-samples: sample for `SPI` (`Service Provider Interface`) API.
 * [x] java-compiler-samples: sample for `JavaCompiler` API.
 * [x] java-copy-beans: How to Copy Java Beans ? `Apache BeanUtils` , `Apache PropertyUtils`, `Spring BeanUtils`, `Cglib BeanCopier`, or `Dozer`, [`MapStruct`](https://github.com/mapstruct/mapstruct.org ) ?
-* [x] template-api-sdk: API SDK based on RESTful.
 
--------------------------- 
+--------------------------
 #### Dependency
 * 1、JDK11+
 * 2、Maven 3.3+
 
 #### Contract
-* Email: SvenAugustus@outlook.com (Or zeno531@outlook.com)
+* Email: zeno531@outlook.com (Or SvenAugustus@outlook.com)
 * GitHub: https://github.com/SvenAugustus
 * GitLab: https://gitlab.com/SvenAugustus
 
