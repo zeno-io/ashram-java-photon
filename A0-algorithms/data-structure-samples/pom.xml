@@ -29,6 +29,12 @@
   </properties>
 
   <dependencies>
+    <dependency>
+      <groupId>xyz.flysium.photon</groupId>
+      <artifactId>algorithm-support</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
     <!-- Unit Tests -->
     <dependency>
       <artifactId>junit</artifactId>

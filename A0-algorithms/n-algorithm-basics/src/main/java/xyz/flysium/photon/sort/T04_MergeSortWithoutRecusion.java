@@ -24,6 +24,8 @@
 
 package xyz.flysium.photon.sort;
 
+import xyz.flysium.photon.SortSupport;
+
 /**
  * 归并排序（Merge Sort）, 非递归方式
  *
@@ -32,7 +34,7 @@ package xyz.flysium.photon.sort;
  */
 public class T04_MergeSortWithoutRecusion extends T04_MergeSortWithinRecusion {
 
-    public static void main(String[] args) {
+  public static void main(String[] args) {
         SortSupport.testToEnd(100000, 10, 100, 0, 1000, new T04_MergeSortWithoutRecusion()::sort);
         System.out.println("Finish !");
     }

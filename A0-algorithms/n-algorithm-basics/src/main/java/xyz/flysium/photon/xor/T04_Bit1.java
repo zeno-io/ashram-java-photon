@@ -49,7 +49,7 @@ public class T04_Bit1 {
 
         System.out.println(that.getRightMostBitOne(10));
         System.out.println(that.getRightMostBitOne(8));
-        System.out.println(that.getRightMostBitOne(7));
+      System.out.println(that.getRightMostBitOne(5));
     }
 
     public int getRightMostBitOne(int m) {

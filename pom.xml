@@ -71,8 +71,10 @@
     <module>03-messaging/mq-rabbitmq-samples</module>
     <module>03-messaging/mq-rocketmq-samples</module>
     <module>03-messaging/mq-kafka-samples</module>
+    <module>A0-algorithms/algorithm-support</module>
     <module>A0-algorithms/data-structure-samples</module>
     <module>A0-algorithms/n-algorithm-basics</module>
+    <module>A0-algorithms/x-leetcode-com</module>
     <module>jvm-language-samples/disruptor-samples</module>
     <module>jvm-language-samples/java-groovy-samples</module>
     <module>x-language-samples/graphql-samples/graphql-java-samples</module>

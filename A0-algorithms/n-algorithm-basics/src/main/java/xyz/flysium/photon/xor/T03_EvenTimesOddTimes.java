@@ -36,55 +36,55 @@ import xyz.flysium.photon.ArraySupport;
  */
 public class T03_EvenTimesOddTimes {
 
-    public static void main(String[] args) {
-        T03_EvenTimesOddTimes that = new T03_EvenTimesOddTimes();
-        int times = 100000;
-        boolean succeed = true;
-        for (int i = 0; i < times; i++) {
-            int[] arr = ArraySupport.generateRandomArray();
-            int[] spec = new int[arr.length * 2 + 1];
-            System.arraycopy(arr, 0, spec, 0, arr.length);
-            System.arraycopy(arr, 0, spec, arr.length, arr.length);
-            spec[spec.length - 1] = arr[0];
-            ArrayList<Integer> list = new ArrayList<>(spec.length);
-            for (int k : spec) {
-                list.add(k);
-            }
-            Collections.shuffle(list);
-            int[] rs = new int[list.size()];
-            for (int j = 0; j < rs.length; j++) {
-                rs[j] = list.get(j);
-            }
+  public static void main(String[] args) {
+    T03_EvenTimesOddTimes that = new T03_EvenTimesOddTimes();
+    int times = 100000;
+    boolean succeed = true;
+    for (int i = 0; i < times; i++) {
+      int[] arr = ArraySupport.generateRandomArray(10, 100, 0, 1000);
+      int[] spec = new int[arr.length * 2 + 1];
+      System.arraycopy(arr, 0, spec, 0, arr.length);
+      System.arraycopy(arr, 0, spec, arr.length, arr.length);
+      spec[spec.length - 1] = arr[0];
+      ArrayList<Integer> list = new ArrayList<>(spec.length);
+      for (int k : spec) {
+        list.add(k);
+      }
+      Collections.shuffle(list);
+      int[] rs = new int[list.size()];
+      for (int j = 0; j < rs.length; j++) {
+        rs[j] = list.get(j);
+      }
 
-            int eor = that.getOddTimesNum(rs);
-            int p = 0;
-            for (int r : rs) {
-                if (r == eor) {
-                    p++;
-                }
-            }
-            if (p % 2 == 0) {
-                succeed = false;
-                break;
-            }
+      int eor = that.getOddTimesNum(rs);
+      int p = 0;
+      for (int r : rs) {
+        if (r == eor) {
+          p++;
         }
-        System.out.println(succeed ? "Correct ~" : "Wrong !!!");
-
-        int[] a = { 1, 4, 3, 2, 3, 2, 1, 4, 3 };
-        int eor = that.getOddTimesNum(a);
-        System.out.println(eor);
+      }
+      if (p % 2 == 0) {
+        succeed = false;
+        break;
+      }
     }
+    System.out.println(succeed ? "Correct ~" : "Wrong !!!");
 
-    public int getOddTimesNum(int[] a) {
-        assert (a != null);
-        if (a.length == 1) {
-            return a[0];
-        }
-        int eor = 0;
-        for (int j : a) {
-            eor = eor ^ j;
-        }
-        return eor;
+    int[] a = {1, 4, 3, 2, 3, 2, 1, 4, 3};
+    int eor = that.getOddTimesNum(a);
+    System.out.println(eor);
+  }
+
+  public int getOddTimesNum(int[] a) {
+    assert (a != null);
+    if (a.length == 1) {
+      return a[0];
     }
+    int eor = 0;
+    for (int j : a) {
+      eor = eor ^ j;
+    }
+    return eor;
+  }
 
 }

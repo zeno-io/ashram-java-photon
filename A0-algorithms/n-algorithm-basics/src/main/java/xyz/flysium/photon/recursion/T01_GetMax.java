@@ -35,40 +35,40 @@ import xyz.flysium.photon.ArraySupport;
  */
 public class T01_GetMax {
 
-    public static void main(String[] args) {
-        int times = 100000;
-        for (int i = 0; i < times; i++) {
-            int[] ints = ArraySupport.generateRandomArray();
-            int max = getMax(ints);
-            if (jdkMax(ints) != max) {
-                System.out.println("-> Wrong algorithm !!!");
-            }
-        }
-        System.out.println("Finish !");
+  public static void main(String[] args) {
+    int times = 100000;
+    for (int i = 0; i < times; i++) {
+      int[] ints = ArraySupport.generateRandomArray(10, 100, 10, 100);
+      int max = getMax(ints);
+      if (jdkMax(ints) != max) {
+        System.out.println("-> Wrong algorithm !!!");
+      }
     }
+    System.out.println("Finish !");
+  }
 
-    /**
-     * 求数组arr[L..R]中的最大值，怎么用递归方法实现。
-     *
-     * @param arr 数组
-     * @return 数组中的最大值
-     */
-    public static int getMax(int[] arr) {
-        return getMax(arr, 0, arr.length - 1);
-    }
+  /**
+   * 求数组arr[L..R]中的最大值，怎么用递归方法实现。
+   *
+   * @param arr 数组
+   * @return 数组中的最大值
+   */
+  public static int getMax(int[] arr) {
+    return getMax(arr, 0, arr.length - 1);
+  }
 
-    public static int getMax(int[] arr, int l, int r) {
-        if (l == r) {
-            return arr[l];
-        }
-        int mid = l + ((r - l) >> 1);
-        int maxInLeft = getMax(arr, l, mid);
-        int maxInRight = getMax(arr, mid + 1, r);
-        return Math.max(maxInLeft, maxInRight);
+  public static int getMax(int[] arr, int l, int r) {
+    if (l == r) {
+      return arr[l];
     }
+    int mid = l + ((r - l) >> 1);
+    int maxInLeft = getMax(arr, l, mid);
+    int maxInRight = getMax(arr, mid + 1, r);
+    return Math.max(maxInLeft, maxInRight);
+  }
 
-    public static int jdkMax(int[] arr) {
-        return Arrays.stream(arr).max().getAsInt();
-    }
+  public static int jdkMax(int[] arr) {
+    return Arrays.stream(arr).max().getAsInt();
+  }
 
 }

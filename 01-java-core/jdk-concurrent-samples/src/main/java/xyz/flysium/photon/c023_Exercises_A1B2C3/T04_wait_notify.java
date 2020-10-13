@@ -24,6 +24,8 @@
 
 package xyz.flysium.photon.c023_Exercises_A1B2C3;
 
+import java.util.concurrent.CountDownLatch;
+
 /**
  * synchronized + notify / wait
  *
@@ -31,36 +33,39 @@ package xyz.flysium.photon.c023_Exercises_A1B2C3;
  */
 public class T04_wait_notify {
 
-  static final Object lockObject = new Object();
+  static final CountDownLatch latch = new CountDownLatch(1);
+  static final Object LOCK_OBJECT = new Object();
 
   public static void main(String[] args) {
     new Thread(() -> {
-      synchronized (lockObject) {
-        for (int i = 0; i < 26; i++) {
-          try {
-            lockObject.wait();
-          } catch (InterruptedException e) {
-            e.printStackTrace();
+      try {
+        latch.await();
+        synchronized (LOCK_OBJECT) {
+          for (int i = 0; i < 26; i++) {
+            System.out.print((i + 1));
+            LOCK_OBJECT.notify();
+            LOCK_OBJECT.wait();
           }
-          System.out.print((i + 1));
-          lockObject.notify();
+          LOCK_OBJECT.notify();
         }
-        lockObject.notify();
+      } catch (InterruptedException e) {
+        e.printStackTrace();
       }
     }, "INTS").start();
 
     new Thread(() -> {
-      synchronized (lockObject) {
-        for (int i = 0; i < 26; i++) {
-          System.out.print((char) ('A' + i));
-          lockObject.notify();
-          try {
-            lockObject.wait();
-          } catch (InterruptedException e) {
-            e.printStackTrace();
+      try {
+        latch.countDown();
+        synchronized (LOCK_OBJECT) {
+          for (int i = 0; i < 26; i++) {
+            System.out.print((char) ('A' + i));
+            LOCK_OBJECT.notify();
+            LOCK_OBJECT.wait();
           }
+          LOCK_OBJECT.notify();
         }
-        lockObject.notify();
+      } catch (InterruptedException e) {
+        e.printStackTrace();
       }
     }, "CHARS").start();
   }

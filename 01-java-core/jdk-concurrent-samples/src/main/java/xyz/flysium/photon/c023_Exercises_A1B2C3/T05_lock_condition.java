@@ -24,6 +24,7 @@
 
 package xyz.flysium.photon.c023_Exercises_A1B2C3;
 
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -35,44 +36,47 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public class T05_lock_condition {
 
-  static Lock lock = new ReentrantLock();
-  static Condition charPrint = lock.newCondition();
-  static Condition intPrint = lock.newCondition();
+  static final CountDownLatch latch = new CountDownLatch(1);
+  static final Lock lock = new ReentrantLock();
+  static final Condition charPrint = lock.newCondition();
+  static final Condition intPrint = lock.newCondition();
 
   public static void main(String[] args) {
     new Thread(() -> {
-      lock.lock();
       try {
-        for (int i = 0; i < 26; i++) {
-          try {
+        latch.await();
+        lock.lock();
+        try {
+          for (int i = 0; i < 26; i++) {
+            System.out.print((i + 1));
+            charPrint.signal();
             intPrint.await();
-          } catch (InterruptedException e) {
-            e.printStackTrace();
           }
-          System.out.print((i + 1));
           charPrint.signal();
+        } finally {
+          lock.unlock();
         }
-        charPrint.signal();
-      } finally {
-        lock.unlock();
+      } catch (InterruptedException e) {
+        e.printStackTrace();
       }
     }, "INTS").start();
 
     new Thread(() -> {
-      lock.lock();
       try {
-        for (int i = 0; i < 26; i++) {
-          System.out.print((char) ('A' + i));
-          intPrint.signal();
-          try {
+        latch.countDown();
+        lock.lock();
+        try {
+          for (int i = 0; i < 26; i++) {
+            System.out.print((char) ('A' + i));
+            intPrint.signal();
             charPrint.await();
-          } catch (InterruptedException e) {
-            e.printStackTrace();
           }
+          intPrint.signal();
+        } finally {
+          lock.unlock();
         }
-        intPrint.signal();
-      } finally {
-        lock.unlock();
+      } catch (InterruptedException e) {
+        e.printStackTrace();
       }
     }, "CHARS").start();
 

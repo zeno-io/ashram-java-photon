@@ -25,6 +25,7 @@
 package xyz.flysium.photon.sort;
 
 import xyz.flysium.photon.CommonSort;
+import xyz.flysium.photon.SortSupport;
 
 /**
  * 选择排序（Selection Sort）

@@ -41,9 +41,9 @@ public class T02_lock_condition {
     /*volatile*/ LinkedList list = new LinkedList();
     private final int max;
 
-    static Lock lock = new ReentrantLock();
-    static Condition notFull = lock.newCondition();
-    static Condition notEmpty = lock.newCondition();
+    final Lock lock = new ReentrantLock();
+    final Condition notFull = lock.newCondition();
+    final Condition notEmpty = lock.newCondition();
 
     public MyContainer(int max) {
       this.max = max;
