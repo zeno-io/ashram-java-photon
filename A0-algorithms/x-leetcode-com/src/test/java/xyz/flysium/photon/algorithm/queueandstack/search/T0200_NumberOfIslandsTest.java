@@ -3,6 +3,7 @@ package xyz.flysium.photon.algorithm.queueandstack.search;
 import org.junit.Assert;
 import org.junit.Test;
 import xyz.flysium.photon.ArraySupport;
+import xyz.flysium.photon.algorithm.queueandstack.search.basic.T0200_NumberOfIslands;
 
 /**
  * TODO description

@@ -69,40 +69,40 @@ public class T01_QueueUsingTwoStacks {
         }
       }
     }
-        System.out.println("Finish !");
+    System.out.println("Finish !");
+  }
+
+  static class MyQueueUsingStacks<E> {
+
+    private final Stack<E> stackPush = new Stack<>();
+
+    private final Stack<E> stackPop = new Stack<>();
+
+    public void offer(E value) {
+      stackPush.push(value);
+      pushToPop();
     }
 
-    static class MyQueueUsingStacks<E> {
-
-        private final Stack<E> stackPush = new Stack<>();
-
-        private final Stack<E> stackPop = new Stack<>();
-
-        public void offer(E value) {
-            stackPush.push(value);
-            pushToPop();
+    private void pushToPop() {
+      if (stackPop.isEmpty()) {
+        while (stackPush.size() > 0) {
+          stackPop.push(stackPush.pop());
         }
-
-        private void pushToPop() {
-            if (stackPop.isEmpty()) {
-                while (stackPush.size() > 0) {
-                    stackPop.push(stackPush.pop());
-                }
-            }
-        }
-
-        public E poll() {
-            if (isEmpty()) {
-                throw new IllegalStateException("empty !");
-            }
-            pushToPop();
-            return stackPop.pop();
-        }
-
-        public boolean isEmpty() {
-            return stackPush.isEmpty() && stackPop.isEmpty();
-        }
-
+      }
     }
+
+    public E poll() {
+      if (isEmpty()) {
+        throw new IllegalStateException("empty !");
+      }
+      pushToPop();
+      return stackPop.pop();
+    }
+
+    public boolean isEmpty() {
+      return stackPush.isEmpty() && stackPop.isEmpty();
+    }
+
+  }
 
 }

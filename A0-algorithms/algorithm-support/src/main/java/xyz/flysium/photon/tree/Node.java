@@ -15,6 +15,7 @@ public class Node implements ITreeNode {
   public Node right;
   // 可选
   public Node next;
+  public Node parent;
 
   public Node() {
   }
@@ -64,14 +65,22 @@ public class Node implements ITreeNode {
   public String toString() {
     StringBuilder buf = new StringBuilder("[");
     String pre = "";
+    Node head = this;
+    int cnt = 0;
     Node node = null;
     Node currEnd = this;
     Node nextEnd = null;
 
     Deque<Node> queue = new LinkedList<>();
-    queue.offerLast(this);
+    queue.offerLast(head);
     while (!queue.isEmpty()) {
       node = queue.pollFirst();
+      if (node == head) {
+        if (cnt == 1) {
+          break;
+        }
+        cnt++;
+      }
       buf.append(pre).append(node.val);
       pre = ",";
       if (node.left != null) {

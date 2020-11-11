@@ -3,6 +3,9 @@ package xyz.flysium.photon.algorithm.tree.binary;
 import org.junit.Assert;
 import org.junit.Test;
 import xyz.flysium.photon.TreeSupport;
+import xyz.flysium.photon.algorithm.tree.binary.basic.U0101_SymmetricTree;
+import xyz.flysium.photon.algorithm.tree.binary.basic.U0101_SymmetricTree_1;
+import xyz.flysium.photon.algorithm.tree.binary.basic.U0101_SymmetricTree_2;
 import xyz.flysium.photon.tree.TreeNode;
 
 /**

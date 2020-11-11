@@ -74,56 +74,56 @@ public class T01_StackUsingTwoQueues {
           }
         }
       }
-        }
-        System.out.println("Finish !");
+    }
+    System.out.println("Finish !");
+  }
+
+  static class MyStackUsingQueue<E> {
+
+    private Queue<E> data = new LinkedList<>();
+
+    private Queue<E> help = new LinkedList<>();
+
+    public void push(E value) {
+      data.offer(value);
     }
 
-    static class MyStackUsingQueue<E> {
-
-        private Queue<E> data = new LinkedList<>();
-
-        private Queue<E> help = new LinkedList<>();
-
-        public void push(E value) {
-            data.offer(value);
-        }
-
-        public E pop() {
-            if (isEmpty()) {
-                throw new IllegalStateException("empty !");
-            }
-            while (data.size() > 1) {
-                help.offer(data.poll());
-            }
-            E e = data.poll();
-            //      while (help.size() > 0) {
-            //        data.offer(help.poll());
-            //      }
-            Queue<E> tmp = data;
-            data = help;
-            help = tmp;
-            return e;
-        }
-
-        public E peek() {
-            if (isEmpty()) {
-                throw new IllegalStateException("empty !");
-            }
-            while (data.size() > 1) {
-                help.offer(data.poll());
-            }
-            E e = data.poll();
-            Queue<E> tmp = data;
-            data = help;
-            help = tmp;
-            data.offer(e);
-            return e;
-        }
-
-        public boolean isEmpty() {
-            return data.isEmpty();
-        }
-
+    public E pop() {
+      if (isEmpty()) {
+        throw new IllegalStateException("empty !");
+      }
+      while (data.size() > 1) {
+        help.offer(data.poll());
+      }
+      E e = data.poll();
+      //      while (help.size() > 0) {
+      //        data.offer(help.poll());
+      //      }
+      Queue<E> tmp = data;
+      data = help;
+      help = tmp;
+      return e;
     }
+
+    public E peek() {
+      if (isEmpty()) {
+        throw new IllegalStateException("empty !");
+      }
+      while (data.size() > 1) {
+        help.offer(data.poll());
+      }
+      E e = data.poll();
+      Queue<E> tmp = data;
+      data = help;
+      help = tmp;
+      data.offer(e);
+      return e;
+    }
+
+    public boolean isEmpty() {
+      return data.isEmpty();
+    }
+
+  }
 
 }

@@ -14,36 +14,19 @@ public interface T0026_RemoveDuplicatesFromSortedArray {
   class Solution {
 
     public int removeDuplicates(int[] nums) {
-      if (nums.length == 0) {
-        return 0;
-      }
-      if (nums.length == 1) {
-        return 1;
-      }
-      int len = 0;
+      int last = 0;
       int i = 0;
-      int e = nums[1];
       while (i < nums.length) {
-        e = nums[len];
-        while (i < nums.length && nums[i] == e) {
+        while (i < nums.length && nums[i] == nums[last]) {
           i++;
         }
-        swap(nums, len, i - 1);
-        len++;
+        if (i < nums.length) {
+          last++;
+          nums[last] = nums[i];
+        }
       }
-
-      return len;
+      return last + 1;
     }
-
-    public void swap(int[] array, int i, int j) {
-      if (i == j) {
-        return;
-      }
-      array[i] = array[i] ^ array[j];
-      array[j] = array[i] ^ array[j];
-      array[i] = array[i] ^ array[j];
-    }
-
   }
 
 }

@@ -2,6 +2,7 @@ package xyz.flysium.photon.algorithm.hash.basic;
 
 import org.junit.Assert;
 import org.junit.Test;
+import xyz.flysium.photon.algorithm.hash.basic.beginner.T0359_LoggerRateLimiter;
 
 /**
  * TODO description

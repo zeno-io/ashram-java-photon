@@ -52,6 +52,16 @@ public final class ArraySupport {
   }
 
   /**
+   * 依据JOSN格式生成一个Integer数组 (可以包含 null)
+   *
+   * @param json JOSN格式
+   * @return 数组
+   */
+  public static Integer[] newIntegerArray(String json) {
+    return CODEC.deserialize(json, Integer[].class);
+  }
+
+  /**
    * 依据JOSN格式生成一个字符串数组
    *
    * @param arrayString JOSN格式
@@ -59,6 +69,16 @@ public final class ArraySupport {
    */
   public static String[] newStringArray(String arrayString) {
     return CODEC.deserialize(arrayString, String[].class);
+  }
+
+  /**
+   * 依据JOSN格式生成一个Object数组
+   *
+   * @param json JOSN格式
+   * @return Object数组
+   */
+  public static Object[] newObjectArray(String json) {
+    return CODEC.deserialize(json, Object[].class);
   }
 
   /**
@@ -87,7 +107,7 @@ public final class ArraySupport {
    * @param json JOSN格式
    * @return 二维嵌套字符串列表
    */
-  public static List<List<String>> toStringListList(String json) {
+  public static <T> List<List<T>> toStringListList(String json) {
     return CODEC.deserialize(json, List.class);
   }
 
@@ -133,6 +153,20 @@ public final class ArraySupport {
       ans[i] = l.get(i);
     }
     return ans;
+  }
+
+  /**
+   * 数组转换为一个列表
+   *
+   * @param arr 数组
+   * @return 列表
+   */
+  public static List<Integer> asList(int[] arr) {
+    List<Integer> l = new ArrayList<>(arr.length);
+    for (int i = 0; i < arr.length; i++) {
+      l.add(arr[i]);
+    }
+    return l;
   }
 
   /**
@@ -216,19 +250,19 @@ public final class ArraySupport {
    * @param b 二维嵌套字符串列表2
    * @return 是否相等
    */
-  public static boolean equalsNotSequentialStringListList(List<List<String>> a,
-    List<List<String>> b) {
+  public static <T> boolean equalsNotSequentialStringListList(List<List<T>> a,
+    List<List<T>> b) {
     if (a.size() != b.size()) {
       return false;
     }
     final int len = a.size();
-    List<List<String>> al = new ArrayList<>(a);
-    List<List<String>> bl = new ArrayList<>(b);
+    List<List<T>> al = new ArrayList(a);
+    List<List<T>> bl = new ArrayList(b);
 
     for (int i = 0; i < len; i++) {
-      Iterator<List<String>> it = bl.iterator();
+      Iterator<List<T>> it = bl.iterator();
       while (it.hasNext()) {
-        List<String> l = it.next();
+        List<T> l = it.next();
         if (equalsNotSequentialStringList(al.get(i), l)) {
           it.remove();
         }
@@ -244,13 +278,13 @@ public final class ArraySupport {
    * @param b 字符串列表2
    * @return 是否相等
    */
-  public static boolean equalsNotSequentialStringList(List<String> a, List<String> b) {
+  public static <T> boolean equalsNotSequentialStringList(List<T> a, List<T> b) {
     if (a.size() != b.size()) {
       return false;
     }
     final int len = a.size();
-    String[] as = a.toArray(new String[0]);
-    String[] bs = b.toArray(new String[0]);
+    Object[] as = a.toArray(new Object[0]);
+    Object[] bs = b.toArray(new Object[0]);
     Arrays.sort(as);
     Arrays.sort(bs);
     return Arrays.equals(as, bs);

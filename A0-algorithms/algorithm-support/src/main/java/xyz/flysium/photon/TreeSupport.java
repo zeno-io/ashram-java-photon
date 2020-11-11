@@ -106,6 +106,70 @@ public final class TreeSupport {
     return ans;
   }
 
+  /**
+   * 前序遍历首先访问根节点，然后遍历左子树，最后遍历右子树。
+   *
+   * @param root 二叉树的根结点
+   * @return 遍历
+   */
+  public static List<Integer> preorderTraversal(TreeNode root) {
+    List<Integer> ans = new LinkedList<>();
+    preorderTraversal(root, ans);
+    return ans;
+  }
+
+  private static void preorderTraversal(TreeNode root, List<Integer> ans) {
+    if (root == null) {
+      return;
+    }
+    ans.add(root.val);
+    preorderTraversal(root.left, ans);
+    preorderTraversal(root.right, ans);
+  }
+
+  /**
+   * 中序遍历是先遍历左子树，然后访问根节点，然后遍历右子树。
+   *
+   * @param root 二叉树的根结点
+   * @return 遍历
+   */
+  public static List<Integer> inorderTraversal(TreeNode root) {
+    List<Integer> ans = new LinkedList<>();
+    inorderTraversal(root, ans);
+    return ans;
+  }
+
+  private static void inorderTraversal(TreeNode root, List<Integer> ans) {
+    if (root == null) {
+      return;
+    }
+    inorderTraversal(root.left, ans);
+    ans.add(root.val);
+    inorderTraversal(root.right, ans);
+  }
+
+  /**
+   * 后序遍历是先遍历左子树，然后遍历右子树，最后访问树的根节点。
+   *
+   * @param root 二叉树的根结点
+   * @return 遍历
+   */
+  public static List<Integer> postorderTraversal(TreeNode root) {
+    List<Integer> ans = new LinkedList<>();
+    postorderTraversal(root, ans);
+    return ans;
+  }
+
+  private static void postorderTraversal(TreeNode root, List<Integer> ans) {
+    if (root == null) {
+      return;
+    }
+    postorderTraversal(root.left, ans);
+    postorderTraversal(root.right, ans);
+    ans.add(root.val);
+  }
+
+
   private static final BinaryTreeCodec BINARY_TREE_CODEC = new BinaryTreeCodec();
 
   private static class BinaryTreeCodec {

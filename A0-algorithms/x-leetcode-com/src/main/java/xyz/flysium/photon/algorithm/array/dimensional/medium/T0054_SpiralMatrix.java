@@ -29,77 +29,76 @@ public class T0054_SpiralMatrix {
 
     // 顺时针螺旋
     private void clockwiseSpiral(int[][] matrix, BiConsumer<Integer, Integer> action) {
-      final int m = matrix.length;
-      final int n = matrix[0].length;
-      final int size = m * n;
-      // position
-      int x = 0, y = 0;
-      // size of elements
-      int i = 0;
+      final int rows = matrix.length;
+      final int cols = matrix[0].length;
+      final int sz = rows * cols;
+      int right = cols - 1;
+      int left = 0;
+      int up = 1; // 开始时候消耗了第一行
+      int down = rows - 1;
       // right = 1, down = 2, left = 3, up = 4
       int direction = 1;
-      int left = -1, right = n, up = 0, down = m + 1;
-      // turn direction
-      boolean turn = true;
-      int turnTime = 0;
-      // end while reach size
-      while (i < size) {
-        action.accept(x, y);
-        // turn direction if available
-        turn = true;
-        turnTime = 0;
-        while (turn && turnTime < 2) {
+      int i = 0;
+      int j = 0;
+      int cnt = 0;
+      while (cnt < sz) {
+        action.accept(i, j);
+        cnt++;
+        boolean f = true;
+        while (f) {
           switch (direction) {
             // right
             case 1:
-              turn = y + 1 >= right;
-              if (turn) {
+              if (j == right) {
                 // turn to down
                 direction = 2;
-                down--;
-              } else {
-                y++;
+                right--;
+                f = true;
+                continue;
               }
+              j++;
+              f = false;
               break;
             // down
             case 2:
-              turn = x + 1 >= down;
-              if (turn) {
+              if (i == down) {
                 // turn to left
+                down--;
                 direction = 3;
-                left++;
-              } else {
-                x++;
+                f = true;
+                continue;
               }
+              i++;
+              f = false;
               break;
             // left
             case 3:
-              turn = y <= left;
-              if (turn) {
+              if (j == left) {
                 // turn to up
                 direction = 4;
-                up++;
-              } else {
-                y--;
+                left++;
+                f = true;
+                continue;
               }
+              j--;
+              f = false;
               break;
             // up
             case 4:
-              turn = x <= up;
-              if (turn) {
+              if (i == up) {
                 // turn to right
                 direction = 1;
-                right--;
-              } else {
-                x--;
+                up++;
+                f = true;
+                continue;
               }
+              i--;
+              f = false;
               break;
             default:
               break;
           }
-          turnTime++;
         }
-        i++;
       }
     }
 

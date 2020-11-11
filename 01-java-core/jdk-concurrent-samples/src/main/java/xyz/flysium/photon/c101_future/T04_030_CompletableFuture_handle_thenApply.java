@@ -29,13 +29,13 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
 /**
- * CompletableFuture 计算结果完成时的转换 (执行，并返回新的计算)
+ * CompletableFuture 计算结果完成时的转换(执行，并返回新的计算)
  *
  * @author Sven Augustus
  */
 public class T04_030_CompletableFuture_handle_thenApply {
 
-  // 计算结果完成时的转换 (执行，并返回新的计算)：
+  // 计算结果完成时的转换(执行，并返回新的计算)：
   //  <U> CompletableFuture<U> 	thenApply(Function<? super T,? extends U> fn)
   //  <U> CompletableFuture<U> 	thenApplyAsync(Function<? super T,? extends U> fn)
   //  <U> CompletableFuture<U> 	thenApplyAsync(Function<? super T,? extends U> fn, Executor executor)

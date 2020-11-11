@@ -2,6 +2,8 @@ package xyz.flysium.photon.algorithm.queueandstack.stack;
 
 import org.junit.Assert;
 import org.junit.Test;
+import xyz.flysium.photon.algorithm.queueandstack.stack.basic.U0394_DecodeString;
+import xyz.flysium.photon.algorithm.queueandstack.stack.basic.U0394_DecodeString_1;
 
 /**
  * TODO description

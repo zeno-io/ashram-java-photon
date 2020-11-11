@@ -167,7 +167,7 @@ public final class LinkedListSupport {
   }
 
   /**
-   * 从开始到结尾遍历链表
+   * 从开始到结尾遍历链表, 要求无环
    *
    * @param head 链表头结点
    * @return 遍历结果
@@ -185,7 +185,7 @@ public final class LinkedListSupport {
   }
 
   /**
-   * 从开始到结尾遍历双向链表
+   * 从开始到结尾遍历双向链表, 要求无环
    *
    * @param head 双向链表头结点
    * @return 遍历结果
@@ -304,6 +304,40 @@ public final class LinkedListSupport {
       p2 = p2.prev;
     }
     return p1 == null && p2 == null;
+  }
+
+  /**
+   * 单向链表中找到环的第一个节点，如果没有返回 null
+   *
+   * @param head 链表头结点
+   * @return 环的第一个节点，如果没有返回 null
+   */
+  public static ListNode getFirstLoopNode(ListNode head) {
+    boolean hasLoop = false;
+    ListNode curr = head;
+    ListNode fast = head;
+    while (curr != null && fast.next != null && fast.next.next != null) {
+      curr = curr.next;
+      fast = fast.next.next;
+      // find loop
+      if (curr == fast) {
+        hasLoop = true;
+        break;
+      }
+    }
+    ListNode firstLoopNode = null;
+    if (hasLoop) {
+      curr = head;
+      while (curr != null) {
+        curr = curr.next;
+        fast = fast.next;
+        if (curr == fast) {
+          firstLoopNode = curr;
+          break;
+        }
+      }
+    }
+    return firstLoopNode;
   }
 
 }

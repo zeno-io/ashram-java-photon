@@ -12,20 +12,20 @@ public class T0485_MaxConsecutiveOnes_1 {
   static class Solution {
 
     public int findMaxConsecutiveOnes(int[] nums) {
-      int count = 0;
       int left = 0;
       int right = 0;
+      int ans = 0;
       // 滑动窗口
       while (right < nums.length) {
         if (nums[right] == 1) {
           right++;
         } else {
-          count = Math.max(right - left, count);
+          ans = Math.max(right - left, ans);
           right++;
           left = right;
         }
       }
-      return Math.max(right - left, count);
+      return Math.max(right - left, ans);
     }
 
 //    public int findMaxConsecutiveOnes(int[] nums) {

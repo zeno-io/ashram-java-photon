@@ -2,6 +2,9 @@ package xyz.flysium.photon.algorithm.queueandstack.queue;
 
 import org.junit.Assert;
 import org.junit.Test;
+import xyz.flysium.photon.algorithm.queueandstack.queue.basic.T0346_MovingAverageFromDataStream;
+import xyz.flysium.photon.algorithm.queueandstack.queue.basic.T0346_MovingAverageFromDataStream_1;
+import xyz.flysium.photon.algorithm.queueandstack.queue.basic.T0346_MovingAverageFromDataStream_2;
 
 /**
  * TODO description

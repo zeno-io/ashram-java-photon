@@ -3,6 +3,7 @@ package xyz.flysium.photon.algorithm.tree.bst;
 import org.junit.Assert;
 import org.junit.Test;
 import xyz.flysium.photon.TreeSupport;
+import xyz.flysium.photon.algorithm.tree.bst.basic.T0450_DeleteNodeInABinarySearchTree;
 import xyz.flysium.photon.tree.TreeNode;
 
 /**

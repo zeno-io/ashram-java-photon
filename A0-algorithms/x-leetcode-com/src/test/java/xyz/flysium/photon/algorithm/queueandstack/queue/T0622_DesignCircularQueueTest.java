@@ -5,6 +5,8 @@ import java.util.Deque;
 import java.util.concurrent.ThreadLocalRandom;
 import org.junit.Assert;
 import org.junit.Test;
+import xyz.flysium.photon.algorithm.queueandstack.queue.basic.T0622_DesignCircularQueue;
+import xyz.flysium.photon.algorithm.queueandstack.queue.basic.T0622_DesignCircularQueue_1;
 
 /**
  * TODO description

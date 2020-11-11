@@ -3,6 +3,8 @@ package xyz.flysium.photon.algorithm.hash.basic;
 import org.junit.Assert;
 import org.junit.Test;
 import xyz.flysium.photon.ArraySupport;
+import xyz.flysium.photon.algorithm.hash.basic.beginner.T0349_IntersectionOfTwoArrays;
+import xyz.flysium.photon.algorithm.hash.basic.beginner.T0349_IntersectionOfTwoArrays_1;
 
 /**
  * TODO description
@@ -36,6 +38,6 @@ public class T0349_IntersectionOfTwoArraysTest {
 
     actuals = solution
       .intersection(ArraySupport.newArray("[4,9,5]"), ArraySupport.newArray("[9,4,9,8,4]"));
-    Assert.assertArrayEquals(ArraySupport.newArray("[9,4]"), actuals);
+    Assert.assertArrayEquals(ArraySupport.newArray("[4,9]"), actuals);
   }
 }

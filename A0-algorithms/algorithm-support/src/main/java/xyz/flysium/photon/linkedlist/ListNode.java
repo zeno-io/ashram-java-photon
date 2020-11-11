@@ -1,5 +1,7 @@
 package xyz.flysium.photon.linkedlist;
 
+import xyz.flysium.photon.LinkedListSupport;
+
 /**
  * TODO description
  *
@@ -21,6 +23,10 @@ public class ListNode {
 
   @Override
   public String toString() {
+    ListNode firstLoopNode = LinkedListSupport.getFirstLoopNode(this);
+    if (firstLoopNode != null) {
+      return "[" + this.val + "] is loop at[" + firstLoopNode.val + "]";
+    }
     ListNode c = this;
     StringBuilder buf = new StringBuilder("[");
     String pre = "";

@@ -3,6 +3,9 @@ package xyz.flysium.photon.algorithm.queueandstack.search;
 import org.junit.Assert;
 import org.junit.Test;
 import xyz.flysium.photon.ArraySupport;
+import xyz.flysium.photon.algorithm.queueandstack.search.basic.T0286_WallsAndGates;
+import xyz.flysium.photon.algorithm.queueandstack.search.basic.T0286_WallsAndGates_1;
+import xyz.flysium.photon.algorithm.queueandstack.search.basic.T0286_WallsAndGates_2;
 
 /**
  * TODO description

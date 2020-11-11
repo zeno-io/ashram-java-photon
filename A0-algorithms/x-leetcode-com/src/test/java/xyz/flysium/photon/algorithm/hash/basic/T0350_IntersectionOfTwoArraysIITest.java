@@ -3,6 +3,8 @@ package xyz.flysium.photon.algorithm.hash.basic;
 import org.junit.Assert;
 import org.junit.Test;
 import xyz.flysium.photon.ArraySupport;
+import xyz.flysium.photon.algorithm.hash.basic.beginner.T0350_IntersectionOfTwoArraysII;
+import xyz.flysium.photon.algorithm.hash.basic.beginner.T0350_IntersectionOfTwoArraysII_1;
 
 /**
  * TODO description

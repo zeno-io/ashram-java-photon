@@ -7,4 +7,28 @@ package xyz.flysium.photon.tree;
  */
 public class T14_PredecessorAndSuccessor {
 
+  // One step left and then always right
+  private TreeNode predecessor(TreeNode root) {
+    TreeNode node = root.left;
+    if (node == null) {
+      return null;
+    }
+    while (node.right != null) {
+      node = node.right;
+    }
+    return node;
+  }
+
+  // One step right and then always left
+  private TreeNode successor(TreeNode root) {
+    TreeNode node = root.right;
+    if (node == null) {
+      return null;
+    }
+    while (node.left != null) {
+      node = node.left;
+    }
+    return node;
+  }
+
 }
