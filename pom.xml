@@ -78,6 +78,7 @@
     <module>A0-algorithms/x-leetcode-com</module>
     <module>jvm-language-samples/disruptor-samples</module>
     <module>jvm-language-samples/java-groovy-samples</module>
+    <module>jvm-language-samples/java-python-samples</module>
     <module>x-language-samples/graphql-samples/graphql-java-samples</module>
     <module>x-language-samples/graphql-samples/graphql-java-springboot-samples</module>
     <module>x-language-samples/graphql-samples/graphql-springboot-classic-samples</module>
