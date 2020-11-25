@@ -93,6 +93,7 @@
     <module>tools/jmx-spring-samples</module>
     <module>tools/spi-samples</module>
     <module>tools/crypto-samples</module>
+    <module>tools/guava-samples</module>
   </modules>
 
   <properties>
