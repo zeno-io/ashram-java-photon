@@ -45,16 +45,19 @@ import xyz.flysium.photon.util.GroovyShellUtil;
 public class Java2GroovyTest {
 
   public static void main(String[] args)
-      throws ScriptException, NoSuchMethodException, InstantiationException,
-      IllegalAccessException, IOException, ResourceException, groovy.util.ScriptException {
+    throws ScriptException, NoSuchMethodException, InstantiationException,
+    IllegalAccessException, IOException, ResourceException, groovy.util.ScriptException {
     testGroovyEval();
+    System.out.println("-----------------");
     testGroovyEval2();
+    System.out.println("-----------------");
     testGroovyClass();
+    System.out.println("-----------------");
     testGroovyFile();
   }
 
   public static void testGroovyEval()
-      throws IllegalAccessException, InstantiationException, IOException, ScriptException {
+    throws IllegalAccessException, InstantiationException, IOException, ScriptException {
     String scriptText = "3*5";
 
     // GroovyShell
@@ -71,7 +74,7 @@ public class Java2GroovyTest {
   }
 
   public static void testGroovyEval2()
-      throws IllegalAccessException, InstantiationException, IOException, ScriptException, NoSuchMethodException {
+    throws IllegalAccessException, InstantiationException, IOException, ScriptException, NoSuchMethodException {
     String scriptText = "def getTime(){return date.getTime();}\ndef sayHello(name,age){return 'Hello, I am ' + name + ' , age is ' + age;}";
 
     Bindings binding = new SimpleBindings();
@@ -90,17 +93,17 @@ public class Java2GroovyTest {
     System.out.println("sayHello=" + result);
 
     // ScriptEngine JSR 223 javax.script API.
-    result = GroovyScriptEngineJsr223Util.invoke(scriptText, binding, "getTime");
-    System.out.println("getTime=" + result);
-    result = GroovyScriptEngineJsr223Util
-        .invoke(scriptText, binding, "sayHello", "SvenAugustus", 29);
-    System.out.println("sayHello=" + result);
+//    result = GroovyScriptEngineJsr223Util.invoke(scriptText, binding, "getTime");
+//    System.out.println("getTime=" + result);
+//    result = GroovyScriptEngineJsr223Util
+//      .invoke(scriptText, binding, "sayHello", "SvenAugustus", 29);
+//    System.out.println("sayHello=" + result);
   }
 
   public static void testGroovyClass()
-      throws IllegalAccessException, InstantiationException, IOException, ScriptException, NoSuchMethodException {
+    throws IllegalAccessException, InstantiationException, IOException, ScriptException, NoSuchMethodException {
     String scriptText = "class A {\n" + "\n" + "    def sayHello(name, age) {\n"
-        + "        return \"Hello, I'm \" + name + \" , age is \" + age;\n" + "    }\n" + "}";
+      + "        return \"Hello, I'm \" + name + \" , age is \" + age;\n" + "    }\n" + "}";
 
     // GroovyClassLoader
     Object result = GroovyClassLoaderUtil.invoke(scriptText, null, "sayHello", "SvenAugustus", 29);
@@ -112,17 +115,17 @@ public class Java2GroovyTest {
   }
 
   public static void testGroovyFile()
-      throws IllegalAccessException, InstantiationException, IOException,
-      ScriptException, NoSuchMethodException, ResourceException, groovy.util.ScriptException {
+    throws IllegalAccessException, InstantiationException, IOException,
+    ScriptException, NoSuchMethodException, ResourceException, groovy.util.ScriptException {
     String groovyPath = Java2GroovyTest.class.getResource("/groovy")
-        .getPath();
+      .getPath();
     String scriptFile = "cls.groovy";
     String scriptFile2 = "cls2.groovy";
 
     // GroovyClassLoader
     Object result = GroovyClassLoaderUtil
-        .invoke(new FileReader(new File(groovyPath, scriptFile)), null, "sayHello",
-            "SvenAugustus", 29);
+      .invoke(new FileReader(new File(groovyPath, scriptFile)), null, "sayHello",
+        "SvenAugustus", 29);
     System.out.println("A.sayHello=" + result);
 
     // GroovyScriptEngine
@@ -131,14 +134,14 @@ public class Java2GroovyTest {
 
     // ScriptEngine JSR 223 javax.script API.
     result = GroovyScriptEngineJsr223Util
-        .invoke(new FileReader(new File(groovyPath, scriptFile)), null, "sayHello",
-            "SvenAugustus", 29);
+      .invoke(new FileReader(new File(groovyPath, scriptFile)), null, "sayHello",
+        "SvenAugustus", 29);
     System.out.println("A.sayHello=" + result);
 
     // Person
     Person person = new Person("SvenAugustus", 29);
     result = GroovyClassLoaderUtil
-        .invoke(new FileReader(new File(groovyPath, scriptFile2)), null, "sayHello", person);
+      .invoke(new FileReader(new File(groovyPath, scriptFile2)), null, "sayHello", person);
     System.out.println("E.sayHello=" + result);
 
   }

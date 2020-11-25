@@ -45,7 +45,7 @@ import org.codehaus.groovy.runtime.IOGroovyMethods;
 public class GroovyClassLoaderUtil {
 
   /**
-   * <link>https://yq.aliyun.com/articles/2357?spm=5176.100239.yqblog1.6</link>
+   * <a>https://yq.aliyun.com/articles/2357?spm=5176.100239.yqblog1.6</a>
    * <p>
    * 通常在使用 Groovy 装载和执行脚本时，推荐方法：
    * <p>

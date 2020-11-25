@@ -91,6 +91,7 @@
     <module>tools/jmx-samples</module>
     <module>tools/jmx-spring-samples</module>
     <module>tools/spi-samples</module>
+    <module>tools/crypto-samples</module>
   </modules>
 
   <properties>
