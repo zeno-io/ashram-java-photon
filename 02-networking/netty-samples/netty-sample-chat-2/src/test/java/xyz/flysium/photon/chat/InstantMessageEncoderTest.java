@@ -22,7 +22,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import xyz.flysium.photon.chat.model.InstantMessage;
 import xyz.flysium.photon.chat.net.InstantMessageEncoder;
-import xyz.flysium.photon.serializer.SerializerUtils;
+import xyz.flysium.photon.serialization.SerializerUtils;
 
 /**
  * @author Sven Augustus

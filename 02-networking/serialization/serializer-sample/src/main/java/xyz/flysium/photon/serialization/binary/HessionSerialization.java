@@ -22,34 +22,36 @@
  * SOFTWARE.
  */
 
-package xyz.flysium.photon.serializer.json;
+package xyz.flysium.photon.serialization.binary;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import xyz.flysium.photon.serializer.Serializer;
+import com.caucho.hessian.io.Hessian2Input;
+import com.caucho.hessian.io.Hessian2Output;
+import xyz.flysium.photon.serialization.SerializationDelegate;
 
 /**
- * Jackson Serializer.
+ * Hession Serializer.
  *
  * @author Sven Augustus
  * @version 1.0
  */
-public class JacksonSerializer implements Serializer {
+@SuppressWarnings("rawtypes")
+public class HessionSerialization extends SerializationDelegate {
 
-  private final ObjectMapper mapper = new ObjectMapper();
+  public HessionSerialization() {
+    super((t, os) -> {
+      Hessian2Output output = new Hessian2Output(os);
+      output.writeObject(t);
+      output.flush();
+      output.close(); // flush to avoid EOF error
+    }, (is, type) -> {
+      Hessian2Input input = new Hessian2Input(is);
+      return input.readObject(type);
+    });
+  }
 
   @Override
   public String name() {
-    return "Jackson";
-  }
-
-  @Override
-  public <T> byte[] serialize(T object) throws Exception {
-    return mapper.writeValueAsBytes(object);
-  }
-
-  @Override
-  public <T> T deserialize(byte[] data, Class<T> type) throws Exception {
-    return mapper.readValue(data, type);
+    return "Hession";
   }
 
 }

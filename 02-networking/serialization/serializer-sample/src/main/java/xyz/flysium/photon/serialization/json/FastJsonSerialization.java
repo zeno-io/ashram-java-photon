@@ -22,35 +22,29 @@
  * SOFTWARE.
  */
 
-package xyz.flysium.photon.serializer.json;
+package xyz.flysium.photon.serialization.json;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import xyz.flysium.photon.serializer.Serializer;
+import com.alibaba.fastjson.JSON;
+import xyz.flysium.photon.serialization.SerializationDelegate;
 
 /**
- * Gson Serializer.
+ * FastJson Serializer.
  *
  * @author Sven Augustus
  * @version 1.0
  */
-public class GsonSerializer implements Serializer {
+@SuppressWarnings("rawtypes")
+public class FastJsonSerialization extends SerializationDelegate {
 
-  private final Gson gson = new GsonBuilder().create();
+  public FastJsonSerialization() {
+    super((t, os) -> {
+      os.write(JSON.toJSONBytes(t));
+    }, JSON::parseObject);
+  }
 
   @Override
   public String name() {
-    return "Gson";
-  }
-
-  @Override
-  public <T> byte[] serialize(T object) throws Exception {
-    return gson.toJson(object).getBytes();
-  }
-
-  @Override
-  public <T> T deserialize(byte[] data, Class<T> type) throws Exception {
-    return gson.fromJson(new String(data), type);
+    return "FastJson";
   }
 
 }

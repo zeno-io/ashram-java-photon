@@ -22,40 +22,45 @@
  * SOFTWARE.
  */
 
-package xyz.flysium.photon.serializer;
+package xyz.flysium.photon.serialization;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 
 /**
- * Serializer Interface.
+ * A strategy interface for streaming an object to an OutputStream.
  *
- * @author Sven Augustus
- * @version 1.0
+ * @param <T> the object type
+ * @author zeno
+ * @see Deserializer
  */
-public interface Serializer {
+@FunctionalInterface
+public interface Serializer<T> {
 
   /**
-   * Get The name of Serializer
+   * Write an object of type T to the given OutputStream.
+   * <p>Note: Implementations should not close the given OutputStream
+   * (or any decorators of that OutputStream) but rather leave this up to the caller.
    *
-   * @return The name of Serializer
+   * @param object       the object to serialize
+   * @param outputStream the output stream
+   * @throws IOException in case of errors writing to the stream
    */
-  String name();
+  void serialize(T object, OutputStream outputStream) throws IOException;
 
   /**
-   * serialize object to byte array.
+   * Turn an object of type T into a serialized byte array.
    *
-   * @param object Object
-   * @return data byte array
-   * @throws Exception any exception while in serialize
+   * @param object the object to serialize
+   * @return the resulting byte array
+   * @throws IOException in case of serialization failure
+   * @since 5.2.7
    */
-  <T> byte[] serialize(T object) throws Exception;
-
-  /**
-   * deserialize byte array  to object.
-   *
-   * @param data data byte array
-   * @param type Type of data
-   * @return object
-   * @throws Exception any exception while in deserialize
-   */
-  <T> T deserialize(byte[] data, Class<T> type) throws Exception;
+  default byte[] serializeToByteArray(T object) throws IOException {
+    ByteArrayOutputStream out = new ByteArrayOutputStream(1024);
+    serialize(object, out);
+    return out.toByteArray();
+  }
 
 }

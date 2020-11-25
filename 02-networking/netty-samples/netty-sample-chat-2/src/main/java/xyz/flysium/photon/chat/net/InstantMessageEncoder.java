@@ -28,7 +28,7 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;
 import xyz.flysium.photon.chat.model.InstantMessage;
-import xyz.flysium.photon.serializer.SerializerUtils;
+import xyz.flysium.photon.serialization.SerializerUtils;
 
 /**
  * Encoder for <code>InstantMessage</code>

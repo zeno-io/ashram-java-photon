@@ -63,6 +63,7 @@
     <module>01-java-core/jdk-jvm-samples</module>
     <module>01-java-core/jdk-collection-samples</module>
     <module>01-java-core/jdk-lambda-samples</module>
+    <module>02-networking/serialization</module>
     <module>02-networking/netty-samples</module>
     <module>02-networking/rmi-samples</module>
     <module>02-networking/rpc-samples</module>

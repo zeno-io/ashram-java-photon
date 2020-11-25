@@ -22,13 +22,12 @@
  * SOFTWARE.
  */
 
-package xyz.flysium.photon.serializer.binary;
+package xyz.flysium.photon.serialization.binary;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import xyz.flysium.photon.serializer.Serializer;
+import xyz.flysium.photon.serialization.SerializationDelegate;
 
 /**
  * JDK Built-in Serializer.
@@ -36,25 +35,25 @@ import xyz.flysium.photon.serializer.Serializer;
  * @author Sven Augustus
  * @version 1.0
  */
-public class JDKSerializer implements Serializer {
+@SuppressWarnings("rawtypes")
+public class JDKSerialization extends SerializationDelegate {
+
+  public JDKSerialization() {
+    super((t, os) -> {
+      new ObjectOutputStream(os).writeObject(t);
+    }, (is, type) -> {
+      ObjectInputStream in = new ObjectInputStream(is);
+      try {
+        return in.readObject();
+      } catch (ClassNotFoundException e) {
+        throw new IOException(e);
+      }
+    });
+  }
 
   @Override
   public String name() {
     return "JDK Built-in";
-  }
-
-  @Override
-  public <T> byte[] serialize(T object) throws Exception {
-    ByteArrayOutputStream out = new ByteArrayOutputStream();
-    new ObjectOutputStream(out).writeObject(object);
-    return out.toByteArray();
-  }
-
-  @Override
-  @SuppressWarnings("unchecked")
-  public <T> T deserialize(byte[] data, Class<T> type) throws Exception {
-    ObjectInputStream in = new ObjectInputStream(new ByteArrayInputStream(data));
-    return (T) in.readObject();
   }
 
 }

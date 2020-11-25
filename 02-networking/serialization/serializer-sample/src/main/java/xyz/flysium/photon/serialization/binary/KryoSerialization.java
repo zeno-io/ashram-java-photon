@@ -22,15 +22,14 @@
  * SOFTWARE.
  */
 
-package xyz.flysium.photon.serializer.binary;
+package xyz.flysium.photon.serialization.binary;
 
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import org.objenesis.strategy.StdInstantiatorStrategy;
-import xyz.flysium.photon.serializer.Serializer;
+import xyz.flysium.photon.serialization.SerializationDelegate;
 
 /**
  * Kryo Serializer.
@@ -38,7 +37,8 @@ import xyz.flysium.photon.serializer.Serializer;
  * @author Sven Augustus
  * @version 1.0
  */
-public class KryoSerializer implements Serializer {
+@SuppressWarnings("rawtypes")
+public class KryoSerialization extends SerializationDelegate {
 
   //  private final Kryo kryo = new Kryo();
 //
@@ -51,7 +51,7 @@ public class KryoSerializer implements Serializer {
     protected Kryo initialValue() {
       Kryo kryo = new Kryo();
       kryo.setInstantiatorStrategy(
-          new Kryo.DefaultInstantiatorStrategy(new StdInstantiatorStrategy()));
+        new Kryo.DefaultInstantiatorStrategy(new StdInstantiatorStrategy()));
       return kryo;
     }
   };
@@ -67,36 +67,33 @@ public class KryoSerializer implements Serializer {
 //    }
 //  }
 
-  @Override
-  public String name() {
-    return "Kryo";
-  }
-
-  @Override
-  public <T> byte[] serialize(T object) throws Exception {
-    // reset
+  public KryoSerialization() {
+    super((t, os) -> {
+      // reset
 //    output.setBuffer(buffer, -1);
 //    kryo.writeObject(output, object);
 //    return output.toBytes();
-    try (ByteArrayOutputStream bos = new ByteArrayOutputStream();
+      try (ByteArrayOutputStream bos = new ByteArrayOutputStream();
         Output output = new Output(bos)) {
 
-      Kryo kryo = THREAD_LOCAL.get();
-      kryo.writeObject(output, object);
-      return output.toBytes();
-    }
+        Kryo kryo = THREAD_LOCAL.get();
+        kryo.writeObject(output, t);
+        os.write(output.toBytes());
+      }
+    }, (is, type) -> {
+//    input.setBuffer(data);
+//    return kryo.readObject(input, type);
+      try (Input input = new Input(is)) {
+
+        Kryo kryo = THREAD_LOCAL.get();
+        return kryo.readObject(input, type);
+      }
+    });
   }
 
   @Override
-  public <T> T deserialize(byte[] data, Class<T> type) throws Exception {
-//    input.setBuffer(data);
-//    return kryo.readObject(input, type);
-    try (ByteArrayInputStream bis = new ByteArrayInputStream(data);
-        Input input = new Input(bis)) {
-
-      Kryo kryo = THREAD_LOCAL.get();
-      return kryo.readObject(input, type);
-    }
+  public String name() {
+    return "Kryo";
   }
 
 }

@@ -22,32 +22,31 @@
  * SOFTWARE.
  */
 
-package xyz.flysium.photon.serializer.json;
+package xyz.flysium.photon.serialization.json;
 
-import com.alibaba.fastjson.JSON;
-import xyz.flysium.photon.serializer.Serializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import xyz.flysium.photon.serialization.SerializationDelegate;
 
 /**
- * FastJson Serializer.
+ * Jackson Serializer.
  *
  * @author Sven Augustus
  * @version 1.0
  */
-public class FastJsonSerializer implements Serializer {
+@SuppressWarnings("rawtypes")
+public class JacksonSerialization extends SerializationDelegate {
+
+  private static final ObjectMapper MAPPER = new ObjectMapper();
+
+  public JacksonSerialization() {
+    super((t, os) -> {
+      os.write(MAPPER.writeValueAsBytes(t));
+    }, MAPPER::readValue);
+  }
 
   @Override
   public String name() {
-    return "FastJson";
-  }
-
-  @Override
-  public <T> byte[] serialize(T object) throws Exception {
-    return JSON.toJSONBytes(object);
-  }
-
-  @Override
-  public <T> T deserialize(byte[] data, Class<T> type) throws Exception {
-    return JSON.parseObject(data, type);
+    return "Jackson";
   }
 
 }

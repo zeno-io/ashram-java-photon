@@ -32,7 +32,7 @@
   <dependencies>
     <dependency>
       <groupId>xyz.flysium.photon</groupId>
-      <artifactId>netty-sample-serializer</artifactId>
+      <artifactId>serializer-sample</artifactId>
       <version>${project.version}</version>
     </dependency>
 

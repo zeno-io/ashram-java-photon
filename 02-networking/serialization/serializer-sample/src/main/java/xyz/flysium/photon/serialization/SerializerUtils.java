@@ -22,9 +22,9 @@
  * SOFTWARE.
  */
 
-package xyz.flysium.photon.serializer;
+package xyz.flysium.photon.serialization;
 
-import xyz.flysium.photon.serializer.binary.KryoSerializer;
+import xyz.flysium.photon.serialization.binary.KryoSerialization;
 
 /**
  * <code>Serializer</code> Utils
@@ -37,16 +37,15 @@ public final class SerializerUtils {
   private SerializerUtils() {
   }
 
-  private static final Serializer SERIALIZER
+  private static final SerializationDelegate DELEGATE
 //      = new JDKSerializer();
-      = new KryoSerializer();
+    = new KryoSerialization();
 //      = new ProtostuffSerializer();
 //      = new HessionSerializer();
 //      = new FSTSerializer();
 //      = new GsonSerializer();
 //      = new JacksonSerializer();
 //      = new FastJsonSerializer();
-
 
   /**
    * To bytes
@@ -62,7 +61,7 @@ public final class SerializerUtils {
 //      return baos.toByteArray();
 //    }
     try {
-      return SERIALIZER.serialize(msg);
+      return DELEGATE.serializeToByteArray(msg);
     } catch (Exception e) {
       e.printStackTrace();
       throw e;
@@ -82,7 +81,7 @@ public final class SerializerUtils {
 //      return (InstantMessage) ois.readObject();
 //    }
     try {
-      return (T) SERIALIZER.deserialize(bytes, type);
+      return (T) DELEGATE.deserializeFromByteArray(bytes, type);
     } catch (Exception e) {
       e.printStackTrace();
       throw e;

@@ -22,42 +22,35 @@
  * SOFTWARE.
  */
 
-package xyz.flysium.photon.serializer.binary;
+package xyz.flysium.photon.serialization.json;
 
-import com.caucho.hessian.io.Hessian2Input;
-import com.caucho.hessian.io.Hessian2Output;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import xyz.flysium.photon.serializer.Serializer;
+import com.google.common.io.ByteStreams;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import xyz.flysium.photon.serialization.SerializationDelegate;
 
 /**
- * Hession Serializer.
+ * Gson Serializer.
  *
  * @author Sven Augustus
  * @version 1.0
  */
-public class HessionSerializer implements Serializer {
+@SuppressWarnings("rawtypes")
+public class GsonSerialization extends SerializationDelegate {
+
+  private static final Gson GSON = new GsonBuilder().create();
+
+  public GsonSerialization() {
+    super((t, os) -> {
+      os.write(GSON.toJson(t).getBytes());
+    }, (is, type) -> {
+      return GSON.fromJson(new String(ByteStreams.toByteArray(is)), type);
+    });
+  }
 
   @Override
   public String name() {
-    return "Hession";
-  }
-
-  @Override
-  public <T> byte[] serialize(T object) throws Exception {
-    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-    Hessian2Output output = new Hessian2Output(bytes);
-    output.writeObject(object);
-    output.flush();
-    output.close(); // flush to avoid EOF error
-    return bytes.toByteArray();
-  }
-
-  @Override
-  @SuppressWarnings("unchecked")
-  public <T> T deserialize(byte[] data, Class<T> type) throws Exception {
-    Hessian2Input input = new Hessian2Input(new ByteArrayInputStream(data));
-    return (T) input.readObject(type);
+    return "Gson";
   }
 
 }
