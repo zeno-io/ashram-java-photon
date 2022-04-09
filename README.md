@@ -1,4 +1,4 @@
-# Photon Bucket
+# ashram-java-photon
 [![Build Status](https://api.travis-ci.org/SvenAugustus/ashram-java-photon.svg?branch=master)](https://travis-ci.org/SvenAugustus/ashram-java-photon) [![License](https://img.shields.io/badge/license-MIT-green)](https://opensource.org/licenses/MIT)
 
 #### Description
@@ -57,8 +57,8 @@
 * 1、JDK11+
 * 2、Maven 3.3+
 
-#### Contract
-* Email: zeno531@outlook.com (Or SvenAugustus@outlook.com)
+### Contract
+* Email: zeno.io@outlook.com
 * GitHub: https://github.com/SvenAugustus
 * GitLab: https://gitlab.com/SvenAugustus
 
