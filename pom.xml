@@ -24,7 +24,7 @@
   <version>1.0.0</version><!--<version>1.0.0-SNAPSHOT</version>-->
   <packaging>pom</packaging>
   <name>Photon bucket POM</name>
-  <url>https://github.com/SvenAugustus/photon-bucket</url>
+  <url>https://github.com/SvenAugustus/ashram-java-photon</url>
   <inceptionYear>2019</inceptionYear>
   <licenses>
     <license>
@@ -36,15 +36,15 @@
 
   <scm>
     <tag>master</tag><!-- <tag>v${project.version}</tag> -->
-    <url>git@github.com:SvenAugustus/photon-bucket.git</url>
-    <connection>scm:git@github.com:SvenAugustus/photon-bucket.git</connection>
-    <developerConnection>scm:git@github.com:SvenAugustus/photon-bucket.git
+    <url>git@github.com:SvenAugustus/ashram-java-photon.git</url>
+    <connection>scm:git@github.com:SvenAugustus/ashram-java-photon.git</connection>
+    <developerConnection>scm:git@github.com:SvenAugustus/ashram-java-photon.git
     </developerConnection>
   </scm>
 
   <issueManagement>
     <system>GitHub Issues</system>
-    <url>https://github.com/SvenAugustus/photon-bucket/issues</url>
+    <url>https://github.com/SvenAugustus/ashram-java-photon/issues</url>
   </issueManagement>
 
   <developers>

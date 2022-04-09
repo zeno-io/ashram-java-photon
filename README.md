@@ -1,5 +1,5 @@
 # Photon Bucket
-[![Build Status](https://api.travis-ci.org/SvenAugustus/photon.svg?branch=master)](https://travis-ci.org/SvenAugustus/photon) [![License](https://img.shields.io/badge/license-MIT-green)](https://opensource.org/licenses/MIT)
+[![Build Status](https://api.travis-ci.org/SvenAugustus/ashram-java-photon.svg?branch=master)](https://travis-ci.org/SvenAugustus/ashram-java-photon) [![License](https://img.shields.io/badge/license-MIT-green)](https://opensource.org/licenses/MIT)
 
 #### Description
 **The bucket of java back-end samples.**
