@@ -26,6 +26,7 @@ package xyz.flysium.photon.c100_blockingqueue;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.SynchronousQueue;
+import java.util.concurrent.TimeUnit;
 
 /**
  * SynchronousQueue 无缓冲的等待队列
@@ -38,23 +39,30 @@ public class T09_SynchronousQueue {
   // SynchronousQueue 实际上不是一个真正的队列，因为它并不能存储元素，因此 put 和 take 会一直阻塞当前线程，每一个插入操作都必须等待另一个线程的删除操作
 
   public static void main(String[] args) throws InterruptedException {
-    BlockingQueue<String> blockingQueue = new SynchronousQueue<>();
+    SynchronousQueue<String> blockingQueue = new SynchronousQueue<>();
 //    BlockingQueue<String> blockingQueue = new SynchronousQueue<>(true);
 
     new Thread(() -> {
       // while (true) {
       try {
+//        TimeUnit.SECONDS.sleep(1);
+//        System.out.println(blockingQueue.poll(5, TimeUnit.SECONDS));
         System.out.println(blockingQueue.take());
         // TimeUnit.MILLISECONDS.sleep(50);
-      } catch (InterruptedException e) {
+      } catch (Exception e) {
         e.printStackTrace();
       }
       // }
     }).start();
 
-    // SynchronousQueue 是无缓冲的等待队列， 因此put 会一直阻塞，等待消费者取走才会结束
     blockingQueue.put("a");
     // blockingQueue.put("ab");
+
+    // SynchronousQueue 是无缓冲的等待队列， 因此put 会一直阻塞，等待消费者取走才会结束
+    // SynchronousQueue offer(o) + poll(timeout,unit) 注意可能导致数据错失（当 poll 稍晚于 offer），因为 offer(o) 是非阻塞等待操作
+    //  推荐使用 offer(o,timeout,unit) + poll(timeout,unit) 或 put(o) + poll(timeout,unit)
+    //     blockingQueue.offer("a");
+
   }
 
 }

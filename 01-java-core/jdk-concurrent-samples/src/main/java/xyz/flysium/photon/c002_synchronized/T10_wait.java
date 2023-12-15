@@ -30,6 +30,9 @@ import org.slf4j.LoggerFactory;
 
 /**
  * wait and notify
+ * <p>
+ * 请谨慎使用 wait and notify，可能导致通知错失
+ * 可以考虑使用 wait and notifyAll，请注意区分区别和用法
  *
  * @author zeno (Sven Augustus)
  * @version 1.0
@@ -94,4 +97,5 @@ public class T10_wait {
       t10Wait.notifyThread();
     }
   }
+
 }
